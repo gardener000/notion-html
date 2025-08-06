@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管程学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 85%);
+            --border-color: hsl(0, 0%, 90%);
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.08);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 420px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: auto;
+            min-height: 240px;
+            margin-bottom: 16px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            background: var(--card-color);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: var(--card-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-back {
+            background: var(--card-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 8px;
+        }
+
+        .card-content {
+            flex: 1;
+            width: 100%;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 12px 0;
+        }
+
+        .progress {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                min-height: 280px;
+            }
+            
+            .card-face {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>管程学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div>为什么引入管程？ 🧩</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">🔍</div>
+                <div class="card-title">为什么引入管程？</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>信号量机制缺陷</mark>：编写程序困难且易出错，需要严格关注PV操作顺序</li>
+                        <li>举例：生产者消费者问题中，若互斥P操作在同步P操作之前会导致<mark>死锁</mark></li>
+                        <li><mark>解决方案</mark>：1973年Brinch Hansen在Pascal语言中首次引入管程</li>
+                        <li>本质：<mark>高级同步机制</mark>，比信号量更易用，仍用于实现进程互斥和同步</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div>管程的定义和特征 📋</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">📌</div>
+                <div class="card-title">管程的定义和特征</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>用途</mark>：实现进程互斥和同步，管理共享资源（如缓冲区）</li>
+                        <li><mark>组成部分</mark>：
+                            <ul>
+                                <li>共享数据结构</li>
+                                <li>操作函数集</li>
+                                <li>初始化语句</li>
+                                <li>名称标识</li>
+                            </ul>
+                        </li>
+                        <li><mark>特征</mark>：
+                            <ul>
+                                <li>数据封装性</li>
+                                <li>入口唯一性</li>
+                                <li>互斥执行</li>
+                            </ul>
+                        </li>
+                        <li>类比面向对象：数据成员→共享数据，成员函数→操作过程</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div>管程解决生产者消费者问题 🏭</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">⚙️</div>
+                <div class="card-title">管程解决生产者消费者问题</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>实现方式</mark>：
+                            <ul>
+                                <li>使用monitor...end monitor语法</li>
+                                <li>定义条件变量（full/empty）</li>
+                                <li>定义计数器（count）</li>
+                            </ul>
+                        </li>
+                        <li><mark>进程调用</mark>：
+                            <ul>
+                                <li>生产者：ProducerConsumer.insert(item)</li>
+                                <li>消费者：ProducerConsumer.remove()</li>
+                            </ul>
+                        </li>
+                        <li><mark>同步机制</mark>：
+                            <ul>
+                                <li>wait(条件变量)：阻塞并释放管程</li>
+                                <li>signal(条件变量)：唤醒等待进程</li>
+                            </ul>
+                        </li>
+                        <li><mark>编译器保障</mark>：自动实现进程互斥</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div>Java中的类似机制 ☕</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">💻</div>
+                <div class="card-title">Java中的类似机制</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>synchronized关键字</mark>：修饰函数时，同一时间只能被一个线程调用</li>
+                        <li>实现类似管程的<mark>互斥访问</mark>机制</li>
+                        <li><mark>示例代码</mark>：
+                            <pre style="background: hsl(0,0%,96%); padding: 12px; border-radius: 8px; overflow-x: auto; margin: 12px 0;">
+class Monitor {
+    private Item buffer = new Item();
+    private int count = 0;
+    public synchronized void insert(Item item) {
+        // ...
+    }
+}</pre>
+                        </li>
+                        <li><mark>实现原理</mark>：多个线程调用时需排队等待</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div>管程的核心优势 🏆</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">✨</div>
+                <div class="card-title">管程的核心优势</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>封装</mark>共享数据及其操作</li>
+                        <li>提供<mark>受控访问入口</mark>（函数）</li>
+                        <li>强制<mark>单进程访问</mark>保证互斥</li>
+                        <li>通过<mark>条件变量</mark>实现同步</li>
+                        <li><mark>编程便利性</mark>：
+                            <ul>
+                                <li>隐藏PV操作等复杂细节</li>
+                                <li>类似"缓冲区已满"等状态判断由管程内部处理</li>
+                                <li>进程只需关注业务逻辑（生产/消费）</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">1/5</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            const progressElement = document.querySelector('.progress');
+            
+            // 更新进度显示
+            function updateProgress() {
+                progressElement.textContent = `${currentCardIndex + 1}/${cards.length}`;
+            }
+            
+            // 卡片点击翻转逻辑
+            cards.forEach((card, index) => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    
+                    // 更新当前卡片索引
+                    if (this.classList.contains('flipped')) {
+                        currentCardIndex = index;
+                        updateProgress();
+                    }
+                });
+                
+                // 触摸事件处理（防止与滚动冲突）
+                let touchStartX = 0;
+                let touchStartY = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    // 如果是明显的水平滑动，则不触发翻转
+                    if (Math.abs(touchEndX - touchStartX) > Math.abs(touchEndY - touchStartY)) {
+                        return;
+                    }
+                    
+                    // 垂直滑动距离小于10px才触发翻转
+                    if (Math.abs(touchEndY - touchStartY) < 10) {
+                        this.classList.toggle('flipped');
+                        
+                        if (this.classList.contains('flipped')) {
+                            currentCardIndex = index;
+                            updateProgress();
+                        }
+                    }
+                }, {passive: true});
+            });
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' && currentCardIndex < cards.length - 1) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex++;
+                    cards[currentCardIndex].classList.add('flipped');
+                    updateProgress();
+                } else if (e.key === 'ArrowLeft' && currentCardIndex > 0) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex--;
+                    cards[currentCardIndex].classList.add('flipped');
+                    updateProgress();
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    cards[currentCardIndex].classList.toggle('flipped');
+                }
+            });
+            
+            // 初始化第一个卡片为翻转状态
+            cards[0].classList.add('flipped');
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
