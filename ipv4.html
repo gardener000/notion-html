@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv4协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 100%, 95%);
+            --card-back: hsl(0, 0%, 100%);
+            --text-dark: hsl(0, 0%, 15%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .flashcards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .flashcard {
+            aspect-ratio: 5/6;
+            perspective: 1000px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .flashcard-front {
+            background-color: var(--card-front);
+            color: hsl(var(--primary-hue), 60%, 30%);
+            font-weight: 700;
+            text-align: center;
+            align-items: center;
+            font-size: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .flashcard-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+            font-size: 1rem;
+        }
+
+        .flashcard-back dl {
+            display: grid;
+            gap: 12px;
+        }
+
+        .flashcard-back dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flashcard-back dd {
+            margin-left: 24px;
+            margin-bottom: 8px;
+        }
+
+        .flashcard-back ul {
+            padding-left: 20px;
+        }
+
+        .flashcard-back li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, hsl(var(--primary-hue)), transparent);
+            margin: 12px 0;
+            opacity: 0.3;
+        }
+
+        @media (max-width: 500px) {
+            .flashcard {
+                aspect-ratio: 4/5;
+            }
+            
+            .flashcard-front {
+                font-size: 1.3rem;
+            }
+            
+            .flashcard-back {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>IPv4协议学习卡片</h1>
+    
+    <div class="flashcards-container">
+        <!-- 卡片1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="IPv4协议核心地位">
+            <div class="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                    <div class="emoji">🌐</div>
+                    IPv4协议核心地位
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <dl>
+                        <dt>📍 核心地位</dt>
+                        <dd>互联网核心协议，位于<mark>网络层</mark></dd>
+                        
+                        <dt>🔼 上层依赖</dt>
+                        <dd>TCP/UDP都依赖IP协议进行数据传输</dd>
+                        
+                        <dt>🔽 下层调用</dt>
+                        <dd>调用数据链路层(如802.3/802.11)和物理层协议</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>📌 相关协议</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>ARP协议</mark>: 查询IP地址到MAC地址的映射</li>
+                                <li><mark>ICMP协议</mark>: 网络异常事件通知</li>
+                                <li><mark>IGMP协议</mark>: 实现IP组播功能</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="IP数据报格式">
+            <div class="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                    <div class="emoji">📄</div>
+                    IP数据报格式
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <dl>
+                        <dt>🧩 基本结构</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>首部</mark>: 固定部分(20B) + 可变部分(0-40B)</li>
+                                <li><mark>数据部分</mark>: 承载上层协议数据</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>🔑 关键字段</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>版本(4位)</mark>: 4=IPv4，6=IPv6</li>
+                                <li><mark>首部长度(4位)</mark>: 以4字节为单位(最大60B)</li>
+                                <li><mark>总长度(16位)</mark>: 以1字节为单位(最大65535B)</li>
+                                <li><mark>TTL(8位)</mark>: 每经过路由器减1</li>
+                                <li><mark>协议字段(8位)</mark>: TCP=6，UDP=17</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="分片机制">
+            <div class="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                    <div class="emoji">✂️</div>
+                    分片机制
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <dl>
+                        <dt>⚡ 触发条件</dt>
+                        <dd>当IP数据报>下一段链路的<mark>MTU</mark>时需要分片</dd>
+                        
+                        <dt>📏 分片规则</dt>
+                        <dd>
+                            <ul>
+                                <li>每个分片需包含独立IP首部(20B)</li>
+                                <li>数据部分最大容量=MTU-首部(如以太网为1480B)</li>
+                                <li>除最后分片外，其他分片数据部分必须是<mark>8B的整数倍</mark></li>
+                                <li>目的主机负责重组</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>🏷️ 控制字段</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>标识字段(16位)</mark>: 唯一标识IP数据报</li>
+                                <li><mark>标志字段(3位)</mark>: MF(还有分片)，DF(禁止分片)</li>
+                                <li><mark>片偏移(13位)</mark>: 以8字节为单位表示数据位置</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="MTU概念">
+            <div class="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                    <div class="emoji">📏</div>
+                    MTU概念
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <dl>
+                        <dt>📌 定义</dt>
+                        <dd><mark>最大传输单元</mark> - 数据链路层能承载的最大数据量</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>🌐 示例</dt>
+                        <dd>
+                            <ul>
+                                <li>以太网: <mark>1500字节</mark></li>
+                                <li>IP理论最大值: 65535字节</li>
+                                <li>实际限制: 取MTU和65535中的较小值</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>💡 关键点</dt>
+                        <dd>当跨越不同MTU的网络时，IP数据报可能需要分片</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="TTL机制">
+            <div class="flashcard-inner">
+                <div class="flashcard-face flashcard-front">
+                    <div class="emoji">⏳</div>
+                    TTL机制
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <dl>
+                        <dt>📍 字段位置</dt>
+                        <dd>IP数据报首部固定部分的第8个字节(8位)</dd>
+                        
+                        <dt>⚙️ 工作机制</dt>
+                        <dd>
+                            <ul>
+                                <li>每经过一个路由器<mark>TTL值减1</mark></li>
+                                <li>当<mark>TTL=0</mark>时，路由器丢弃分组</li>
+                                <li>丢弃分组的路由器会向源主机发送<mark>ICMP报文</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>📝 示例</dt>
+                        <dd>
+                            <ul>
+                                <li>初始TTL=6 → 经过5跳后到达目的主机</li>
+                                <li>初始TTL=4 → 在第4个路由器被丢弃</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashcards = document.querySelectorAll('.flashcard');
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            // 处理点击和触摸事件
+            flashcards.forEach(card => {
+                // 点击/轻触处理
+                card.addEventListener('click', flipCard);
+                
+                // 防止滑动误触
+                card.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    // 只有水平滑动小于30px时才翻转(防止误触)
+                    if (Math.abs(touchEndX - touchStartX) < 30) {
+                        flipCard(e);
+                    }
+                }, {passive: false});
+            });
+            
+            function flipCard(e) {
+                // 防止滚动时翻转
+                const card = e.currentTarget;
+                const inner = card.querySelector('.flashcard-inner');
+                
+                // 检查内容是否可滚动且不在顶部/底部
+                if (inner.scrollHeight > inner.clientHeight) {
+                    const scrollTop = inner.scrollTop;
+                    const scrollBottom = inner.scrollHeight - inner.clientHeight - scrollTop;
+                    
+                    // 如果不在最顶部/底部，不翻转(允许滚动)
+                    if (scrollTop > 5 || scrollBottom > 5) {
+                        return;
+                    }
+                }
+                
+                card.classList.toggle('flipped');
+                e.preventDefault();
+            }
+            
+            // 键盘导航
+            document.addEventListener('keydown', e => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    const current = document.activeElement;
+                    if (current.classList.contains('flashcard')) {
+                        current.classList.toggle('flipped');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
