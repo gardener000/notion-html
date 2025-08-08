@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>读者-写者问题学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 50%);
+            --border-color: hsl(0, 0%, 90%);
+            --shadow-color: hsla(0, 0%, 0%, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            perspective: 1000px;
+            cursor: pointer;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 35%);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: hsl(var(--primary-hue), 30%, 70%);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: hsl(var(--primary-hue), 30%, 60%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>读者-写者问题学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">📚</div>
+                <h2 class="card-title">读者-写者问题定义</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">读者-写者问题定义</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>读者进程</mark>：只读取共享文件内容，不会修改</li>
+                        <li><mark>写者进程</mark>：会修改共享文件内容</li>
+                        <li>两类进程<mark>并发访问</mark>同一个共享文件</li>
+                        <li>不同于生产者-消费者模型：读者不会"取走"数据</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">📝</div>
+                <h2 class="card-title">共享访问规则</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">共享访问规则</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>允许多个<mark>读者同时读</mark>文件</li>
+                        <li>同一时刻只允许<mark>一个写者写</mark>文件</li>
+                        <li>写者操作时<mark>禁止其他所有进程</mark>访问</li>
+                        <li>写者开始写前需<mark>确保无其他进程</mark>正在访问</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">⚙️</div>
+                <h2 class="card-title">关键实现机制</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">关键实现机制</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>rw信号量</mark>：初值1，控制文件访问互斥</li>
+                        <li><mark>count计数器</mark>：记录当前读进程数量
+                            <ul>
+                                <li>第一个读进程：对rw执行<mark>P操作</mark>(加锁)</li>
+                                <li>最后一个读进程：对rw执行<mark>V操作</mark>(解锁)</li>
+                                <li>中间读进程：跳过锁操作直接访问</li>
+                            </ul>
+                        </li>
+                        <li><mark>mutex信号量</mark>：保护count变量</li>
+                        <li><mark>w信号量</mark>：防止写者饥饿</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">进程关系分析</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">进程关系分析</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>读者-读者</mark>：无互斥要求</li>
+                        <li><mark>写者-写者</mark>：需要互斥</li>
+                        <li><mark>写者-读者</mark>：需要互斥</li>
+                        <li>数据一致性风险：
+                            <ul>
+                                <li>读写并发：可能读到部分更新数据</li>
+                                <li>写写并发：数据覆盖问题</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">典型问题与解决方案</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">典型问题与解决方案</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>读者阻塞问题</mark>：
+                            <ul>
+                                <li>多个读进程同时检查count==0</li>
+                                <li>可能导致多个P(rw)执行</li>
+                                <li>解决方案：增加<mark>mutex信号量</mark>保护count变量</li>
+                            </ul>
+                        </li>
+                        <li><mark>写进程锁死问题</mark>：
+                            <ul>
+                                <li>持续有读进程到达</li>
+                                <li>写进程可能长期无法获得访问权</li>
+                                <li>解决方案：引入<mark>w信号量</mark>实现写优先</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">📌</div>
+                <h2 class="card-title">考试重点/易混淆点</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">考试重点/易混淆点</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>允许多读者同时访问 vs 写者必须独占访问</li>
+                        <li>写者优先级处理与读者优先实现差异</li>
+                        <li><mark>count检查与修改的原子性</mark>问题</li>
+                        <li>信号量操作顺序引发的<mark>死锁风险</mark></li>
+                        <li>读者优先法 vs 读写公平法 vs 写者优先法</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">💡</div>
+                <h2 class="card-title">核心设计思想</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">核心设计思想</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>count计数器</mark>实现复杂互斥规则</li>
+                        <li><mark>PV操作</mark>保证原子性</li>
+                        <li>信号量排队解决<mark>饥饿问题</mark></li>
+                        <li>多信号量组合解决复杂互斥问题</li>
+                        <li>适用于需要区分不同进程类型互斥关系的场景</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="resetCards()">重置所有卡片</button>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            const isFlipped = card.classList.contains('flipped');
+            card.setAttribute('aria-pressed', isFlipped);
+        }
+
+        function resetCards() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.remove('flipped');
+                card.setAttribute('aria-pressed', 'false');
+            });
+        }
+
+        // Handle touch events to prevent scrolling when flipping cards
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, {passive: true});
+
+            card.addEventListener('touchend', function(e) {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                
+                // Only flip if it's a tap (not a swipe)
+                if (Math.abs(touchEndX - touchStartX) < 10 && Math.abs(touchEndY - touchStartY) < 10) {
+                    flipCard(this);
+                    e.preventDefault();
+                }
+            }, {passive: false});
+        });
+    </script>
+</body>
+</html>
