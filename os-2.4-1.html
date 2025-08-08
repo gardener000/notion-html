@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>死锁概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 60%, 95%), white);
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            text-align: left;
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+            margin-bottom: 4px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 20px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            font-weight: 500;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 280px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>死锁概念学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：死锁基本概念 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁基本概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔒</div>
+                <h2 class="card-title">死锁基本概念</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>多个进程因<mark>竞争资源</mark>而互相等待，导致所有进程阻塞无法推进的现象</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>典型示例</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>哲学家进餐问题</mark>：5位哲学家循环等待筷子</li>
+                                <li>四角关系模型："我爱你→你爱他→他爱她→她爱我"的资源占有循环</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>本质特征</dt>
+                        <dd>所有进程都持有部分资源并等待其他进程释放资源</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2：死锁必要条件 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁必要条件卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">死锁必要条件</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>1. 互斥条件</dt>
+                        <dd>资源必须<mark>互斥使用</mark>（如筷子、打印机）</dd>
+                        
+                        <dt>2. 不可剥夺条件</dt>
+                        <dd>已获得的资源在未使用完前<mark>不能被强行夺走</mark></dd>
+                        
+                        <dt>3. 请求和保持条件</dt>
+                        <dd>保持至少一个资源的同时<mark>请求新资源</mark></dd>
+                        
+                        <dt>4. 循环等待条件</dt>
+                        <dd>存在<mark>进程-资源的循环等待链</mark>（注意：不一定是充分条件）</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>关键说明</dt>
+                        <dd>当每类资源只有一个时，循环等待与死锁互为充要条件</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3：死锁 vs 饥饿 vs 死循环 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁与相关概念对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">死锁 vs 饥饿 vs 死循环</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>死锁特征</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>两个及以上</mark>进程同时发生</li>
+                                <li>进程处于<mark>阻塞态</mark></li>
+                                <li>由<mark>循环等待资源</mark>引起</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>饥饿特征</dt>
+                        <dd>
+                            <ul>
+                                <li>可能只有<mark>一个进程</mark>发生</li>
+                                <li>进程可能处于<mark>阻塞态或就绪态</mark></li>
+                                <li>由<mark>资源分配策略不合理</mark>导致</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>死循环特征</dt>
+                        <dd>
+                            <ul>
+                                <li>可能只有<mark>一个进程</mark>发生</li>
+                                <li>进程处于<mark>运行态</mark></li>
+                                <li>由<mark>代码逻辑错误</mark>导致</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4：死锁处理策略 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁处理策略卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🛠️</div>
+                <h2 class="card-title">死锁处理策略</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>1. 预防死锁</dt>
+                        <dd>破坏四个必要条件中的<mark>一个或多个</mark></dd>
+                        
+                        <dt>2. 避免死锁</dt>
+                        <dd>使用算法（如<mark>银行家算法</mark>）防止系统进入不安全状态</dd>
+                        
+                        <dt>3. 检测与解除</dt>
+                        <dd>允许死锁发生，系统负责检测并解除（如<mark>强制终止进程</mark>）</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>策略选择依据</dt>
+                        <dd>需要在<mark>安全性</mark>和<mark>系统效率</mark>之间权衡</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="progress">4/4 张卡片</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击/触摸翻转
+                card.addEventListener('click', flipCard);
+                card.addEventListener('touchstart', flipCard);
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        flipCard.call(this);
+                    }
+                });
+            });
+            
+            function flipCard() {
+                this.classList.toggle('flipped');
+            }
+        });
+    </script>
+</body>
+</html>
