@@ -7,14 +7,11 @@
     <style>
         :root {
             --primary-hue: 210;
-            --primary-color: hsl(var(--primary-hue), 80%, 50%);
-            --secondary-color: hsl(45, 100%, 50%);
-            --bg-color: hsl(0, 0%, 98%);
-            --card-bg: hsl(0, 0%, 100%);
-            --text-color: hsl(0, 0%, 20%);
-            --border-radius: 12px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 20%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * {
@@ -24,9 +21,9 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
             padding: 16px;
             display: flex;
@@ -36,7 +33,7 @@
         }
 
         h1 {
-            color: var(--primary-color);
+            color: hsl(var(--primary-hue), 60%, 40%);
             margin-bottom: 24px;
             text-align: center;
             font-size: 1.5rem;
@@ -45,79 +42,89 @@
         .cards-container {
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 16px;
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            width: 100%;
+            height: 300px;
             perspective: 1000px;
-            height: auto;
-            min-height: 200px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: var(--transition);
             cursor: pointer;
-            overflow: hidden;
         }
 
-        .card.flipped {
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
             transform: rotateY(180deg);
         }
 
-        .card-front, .card-back {
+        .card-front,
+        .card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            padding: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            border-radius: 12px;
+            background-color: white;
         }
 
         .card-front {
-            background-color: var(--card-bg);
-            z-index: 2;
+            background-color: hsl(var(--primary-hue), 80%, 95%);
+            color: hsl(var(--primary-hue), 60%, 30%);
         }
 
         .card-back {
-            background-color: var(--card-bg);
+            background-color: white;
             transform: rotateY(180deg);
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         .card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .card-emoji {
+            font-size: 2rem;
             margin-bottom: 12px;
-            color: var(--primary-color);
         }
 
         .card-content {
-            text-align: left;
             width: 100%;
         }
 
         .card-content dl {
-            margin-bottom: 12px;
+            display: grid;
+            gap: 12px;
         }
 
         .card-content dt {
             font-weight: 600;
-            color: var(--primary-color);
-            margin-top: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-bottom: 4px;
         }
 
         .card-content dd {
             margin-left: 16px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .card-content ul {
@@ -126,11 +133,11 @@
         }
 
         .card-content li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         mark {
-            background-color: hsl(45, 100%, 90%);
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
             padding: 2px 4px;
             border-radius: 4px;
         }
@@ -139,24 +146,40 @@
             height: 1px;
             background-color: hsl(0, 0%, 90%);
             margin: 12px 0;
-            width: 100%;
         }
 
-        .emoji {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: hsl(var(--primary-hue), 60%, 50%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
         }
 
         @media (max-width: 480px) {
             .card {
-                min-height: 180px;
+                height: 280px;
             }
             
             .card-title {
                 font-size: 1.2rem;
             }
             
-            .card-front, .card-back {
+            .card-front,
+            .card-back {
                 padding: 16px;
             }
         }
@@ -166,158 +189,168 @@
     <h1>多生产者-多消费者问题</h1>
     
     <div class="cards-container">
-        <!-- 卡片1：问题描述 -->
-        <div class="card" tabindex="0" role="button" aria-label="多生产者多消费者问题描述，点击翻转查看详情">
-            <div class="card-front">
-                <div class="emoji">🍎🍊</div>
-                <div class="card-title">问题描述</div>
-            </div>
-            <div class="card-back">
-                <div class="card-content">
-                    <dl>
-                        <dt>模型特点</dt>
-                        <dd>与经典生产者消费者模型不同，存在<mark>多类生产者</mark>和<mark>多类消费者</mark>，各自生产/消费不同类型的产品</dd>
-                        
-                        <dt>具体场景</dt>
-                        <dd>
-                            <ul>
-                                <li>共享资源：容量为1的盘子（缓冲区）</li>
-                                <li>生产者1（父亲）：专门放入苹果</li>
-                                <li>生产者2（母亲）：专门放入橘子</li>
-                                <li>消费者1（女儿）：专门取出苹果</li>
-                                <li>消费者2（儿子）：专门取出橘子</li>
-                            </ul>
-                        </dd>
-                    </dl>
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="问题描述卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🍎🍊</div>
+                    <div class="card-title">问题描述</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>模型特点</dt>
+                            <dd>与经典生产者消费者模型不同，存在<mark>多类生产者</mark>和<mark>多类消费者</mark>，各自生产/消费不同类型的产品</dd>
+                            
+                            <dt>具体场景</dt>
+                            <dd>
+                                <ul>
+                                    <li>共享资源：容量为1的盘子（缓冲区）</li>
+                                    <li>生产者1（父亲）：专门放入苹果</li>
+                                    <li>生产者2（母亲）：专门放入橘子</li>
+                                    <li>消费者1（女儿）：专门取出苹果</li>
+                                    <li>消费者2（儿子）：专门取出橘子</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- 卡片2：进程关系 -->
-        <div class="card" tabindex="0" role="button" aria-label="进程关系分析，点击翻转查看详情">
-            <div class="card-front">
-                <div class="emoji">🔗</div>
-                <div class="card-title">进程关系</div>
-            </div>
-            <div class="card-back">
-                <div class="card-content">
-                    <dl>
-                        <dt>互斥关系</dt>
-                        <dd>对盘子的访问需要互斥</dd>
-                        
-                        <dt>同步关系</dt>
-                        <dd>
-                            <ul>
-                                <li>父亲放入苹果 → 女儿取出苹果</li>
-                                <li>母亲放入橘子 → 儿子取出橘子</li>
-                                <li>女儿/儿子取出水果 → 父亲/母亲放入水果</li>
-                            </ul>
-                        </dd>
-                        
-                        <dt>抽象理解</dt>
-                        <dd>
-                            <ul>
-                                <li>将同步关系理解为<mark>事件先后关系</mark>而非进程行为关系</li>
-                                <li>"盘子为空"事件由女儿或儿子触发</li>
-                                <li>"放入水果"事件由父亲或母亲执行</li>
-                            </ul>
-                        </dd>
-                    </dl>
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="进程关系分析卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔗</div>
+                    <div class="card-title">进程关系分析</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>互斥关系</dt>
+                            <dd>对盘子的访问需要互斥</dd>
+                            
+                            <dt>同步关系</dt>
+                            <dd>
+                                <ul>
+                                    <li>父亲放入苹果 → 女儿取出苹果</li>
+                                    <li>母亲放入橘子 → 儿子取出橘子</li>
+                                    <li>女儿/儿子取出水果 → 父亲/母亲放入水果</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>抽象理解</dt>
+                            <dd>
+                                <ul>
+                                    <li>将同步关系理解为<mark>事件先后关系</mark>而非进程行为关系</li>
+                                    <li>"盘子为空"事件由女儿或儿子触发</li>
+                                    <li>"放入水果"事件由父亲或母亲执行</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- 卡片3：信号量设置 -->
-        <div class="card" tabindex="0" role="button" aria-label="信号量设置，点击翻转查看详情">
-            <div class="card-front">
-                <div class="emoji">🔢</div>
-                <div class="card-title">信号量设置</div>
-            </div>
-            <div class="card-back">
-                <div class="card-content">
-                    <ul>
-                        <li><mark>mutex=1</mark>：实现互斥访问盘子</li>
-                        <li><mark>apple=0</mark>：盘子中苹果数量</li>
-                        <li><mark>orange=0</mark>：盘子中橘子数量</li>
-                        <li><mark>plate=1</mark>：盘子剩余容量</li>
-                    </ul>
-                    
-                    <div class="divider"></div>
-                    
-                    <dl>
-                        <dt>生产者逻辑</dt>
-                        <dd>准备水果 → P(plate) → P(mutex) → 放入 → V(mutex) → V(对应水果信号量)</dd>
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="信号量设置卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔢</div>
+                    <div class="card-title">信号量设置</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>mutex=1</mark>：实现互斥访问盘子</li>
+                            <li><mark>apple=0</mark>：盘子中苹果数量</li>
+                            <li><mark>orange=0</mark>：盘子中橘子数量</li>
+                            <li><mark>plate=1</mark>：盘子剩余容量</li>
+                        </ul>
                         
-                        <dt>消费者逻辑</dt>
-                        <dd>P(对应水果信号量) → P(mutex) → 取出 → V(mutex) → V(plate) → 消费</dd>
-                    </dl>
+                        <div class="divider"></div>
+                        
+                        <dl>
+                            <dt>生产者逻辑</dt>
+                            <dd>准备水果 → P(plate) → P(mutex) → 放入 → V(mutex) → V(对应水果信号量)</dd>
+                            
+                            <dt>消费者逻辑</dt>
+                            <dd>P(对应水果信号量) → P(mutex) → 取出 → V(mutex) → V(plate) → 消费</dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- 卡片4：特殊情况分析 -->
-        <div class="card" tabindex="0" role="button" aria-label="特殊情况分析，点击翻转查看详情">
-            <div class="card-front">
-                <div class="emoji">⚠️</div>
-                <div class="card-title">特殊情况分析</div>
-            </div>
-            <div class="card-back">
-                <div class="card-content">
-                    <dl>
-                        <dt>缓冲区大小为1时</dt>
-                        <dd>
-                            <ul>
-                                <li>可能不需要<mark>mutex</mark>信号量</li>
-                                <li>因为三个同步信号量(apple/orange/plate)任一时刻最多一个为1</li>
-                                <li>保证任何时候只有一个进程能通过P操作</li>
-                            </ul>
-                        </dd>
-                        
-                        <dt>缓冲区大小>1时</dt>
-                        <dd>
-                            <ul>
-                                <li>必须使用<mark>mutex</mark>保证互斥访问</li>
-                                <li>否则可能出现多个生产者同时通过P(plate)，导致并发访问和数据覆盖</li>
-                            </ul>
-                        </dd>
-                    </dl>
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="特殊情况分析卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">⚠️</div>
+                    <div class="card-title">特殊情况分析</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>缓冲区大小为1时</dt>
+                            <dd>
+                                <ul>
+                                    <li>可能<mark>不需要mutex信号量</mark></li>
+                                    <li>因为三个同步信号量(apple/orange/plate)任一时刻最多一个为1</li>
+                                    <li>保证任何时候只有一个进程能通过P操作</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>缓冲区大小>1时</dt>
+                            <dd>
+                                <ul>
+                                    <li>必须使用<mark>mutex</mark>保证互斥访问</li>
+                                    <li>否则可能出现多个生产者同时通过P(plate)，导致并发访问和数据覆盖</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- 卡片5：重要原则 -->
-        <div class="card" tabindex="0" role="button" aria-label="重要原则，点击翻转查看详情">
-            <div class="card-front">
-                <div class="emoji">🔑</div>
-                <div class="card-title">重要原则</div>
-            </div>
-            <div class="card-back">
-                <div class="card-content">
-                    <ul>
-                        <li><mark>PV操作顺序</mark>：互斥P操作必须在同步P操作之后，否则可能引起死锁</li>
-                        <li><mark>分析角度</mark>：应从事件先后关系角度抽象分析同步关系，而非从单个进程行为角度分析</li>
-                    </ul>
-                    
-                    <div class="divider"></div>
-                    
-                    <dl>
-                        <dt>考试重点</dt>
-                        <dd>
-                            <ul>
-                                <li>缓冲区容量与互斥需求的关联性分析</li>
-                                <li>同步信号量设计（特别是plate信号量的使用）</li>
-                            </ul>
-                        </dd>
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="重要原则卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔑</div>
+                    <div class="card-title">重要原则</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>PV操作顺序</mark>：互斥P操作必须在同步P操作之后，否则可能引起死锁</li>
+                            <li><mark>分析角度</mark>：应从事件先后关系角度抽象分析同步关系，而非从单个进程行为角度分析</li>
+                        </ul>
                         
-                        <dt>易错点</dt>
-                        <dd>
-                            <ul>
-                                <li>混淆"多类"生产/消费者与经典单类模型的差异</li>
-                                <li>错误安排PV操作顺序导致死锁</li>
-                                <li>从进程行为而非事件关系角度分析同步</li>
-                            </ul>
-                        </dd>
-                    </dl>
+                        <div class="divider"></div>
+                        
+                        <dl>
+                            <dt>考试重点</dt>
+                            <dd>
+                                <ul>
+                                    <li>缓冲区容量与互斥需求的关联性分析</li>
+                                    <li>同步信号量设计（特别是plate信号量的使用）</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>易错点</dt>
+                            <dd>
+                                <ul>
+                                    <li>混淆"多类"生产/消费者与经典单类模型的差异</li>
+                                    <li>错误安排PV操作顺序导致死锁</li>
+                                    <li>从进程行为而非事件关系角度分析同步</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
@@ -327,7 +360,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
             
-            // 添加点击事件监听器
             cards.forEach(card => {
                 card.addEventListener('click', function() {
                     this.classList.toggle('flipped');
@@ -339,18 +371,6 @@
                         e.preventDefault();
                         this.classList.toggle('flipped');
                     }
-                });
-            });
-            
-            // 防止卡片内容滚动时触发翻转
-            cards.forEach(card => {
-                const backContent = card.querySelector('.card-back');
-                backContent.addEventListener('touchmove', function(e) {
-                    e.stopPropagation();
-                }, { passive: false });
-                
-                backContent.addEventListener('scroll', function(e) {
-                    e.stopPropagation();
                 });
             });
         });
