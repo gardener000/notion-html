@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哲学家进餐问题学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-dark: hsl(0, 0%, 15%);
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(var(--secondary-hue), 90%, 60%);
+            --highlight-color: hsl(var(--secondary-hue), 90%, 90%);
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow-y: auto;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            text-align: left;
+            width: 100%;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 8px;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>哲学家进餐问题学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 问题描述 -->
+        <div class="card" tabindex="0" role="button" aria-label="哲学家进餐问题描述卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🍽️</div>
+                    <h2 class="card-title">问题描述</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li>5位哲学家围坐在圆桌旁，每人左右各有一根<mark>筷子</mark>(共5根)</li>
+                            <li>哲学家只有两种行为：<mark>思考</mark>或<mark>进餐</mark></li>
+                            <li>进餐规则：
+                                <ul>
+                                    <li>必须同时拿到<mark>左右两根筷子</mark>才能进餐</li>
+                                    <li>若筷子被占用则需<mark>等待</mark></li>
+                                    <li>进餐完毕后放下筷子继续思考</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 问题分析 -->
+        <div class="card" tabindex="0" role="button" aria-label="哲学家进餐问题分析卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔍</div>
+                    <h2 class="card-title">问题分析</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>资源竞争</mark>特点：
+                                <ul>
+                                    <li>每位哲学家需要同时获取<mark>两个临界资源</mark>(左右筷子)</li>
+                                    <li>相邻哲学家<mark>共享</mark>同一根筷子(互斥访问)</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li>初始解决方案的<mark>死锁风险</mark>：
+                                <ul>
+                                    <li>所有哲学家同时拿起左边筷子，无法获取右边筷子而<mark>永久等待</mark></li>
+                                    <li>形成<mark>"循环等待"</mark>条件</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 解决方案1 -->
+        <div class="card" tabindex="0" role="button" aria-label="限制并发数解决方案卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">1️⃣</div>
+                    <h2 class="card-title">解决方案1: 限制并发数</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>核心思想</mark>：最多允许<mark>4位哲学家</mark>同时进餐</li>
+                            <div class="divider"></div>
+                            <li><mark>实现原理</mark>：
+                                <ul>
+                                    <li>设置初始值为4的<mark>同步信号量</mark></li>
+                                    <li>保证至少有一位哲学家能获得<mark>两根筷子</mark></li>
+                                    <li>打破<mark>"循环等待"</mark>的必要条件</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 解决方案2 -->
+        <div class="card" tabindex="0" role="button" aria-label="奇偶编号策略解决方案卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">2️⃣</div>
+                    <h2 class="card-title">解决方案2: 奇偶编号</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>执行顺序</mark>：
+                                <ul>
+                                    <li><mark>奇数号</mark>哲学家：先左后右</li>
+                                    <li><mark>偶数号</mark>哲学家：先右后左</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>优势</mark>：
+                                <ul>
+                                    <li>相邻哲学家会竞争<mark>同一根筷子</mark></li>
+                                    <li>确保至少一人能完整获取<mark>两根筷子</mark></li>
+                                    <li>避免<mark>"持有并等待"</mark>情况</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 解决方案3 -->
+        <div class="card" tabindex="0" role="button" aria-label="互斥锁方案解决方案卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">3️⃣</div>
+                    <h2 class="card-title">解决方案3: 互斥锁</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>实现方式</mark>：
+                                <ul>
+                                    <li>确保拿筷子操作是<mark>原子性</mark>的</li>
+                                    <li>哲学家要么完整拿到<mark>两根筷子</mark>，要么一根都拿不到</li>
+                                    <li>防止<mark>部分获取</mark>导致的死锁</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>关键点</mark>：
+                                <ul>
+                                    <li>mutex保护的是<mark>"拿筷子"过程</mark>而非筷子本身</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6: 核心考点 -->
+        <div class="card" tabindex="0" role="button" aria-label="核心考点卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📝</div>
+                    <h2 class="card-title">核心考点</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li>理解多资源竞争场景下的<mark>死锁条件</mark></li>
+                            <li>掌握三种典型解决方案的<mark>实现原理</mark></li>
+                            <div class="divider"></div>
+                            <li><mark>问题特征</mark>：
+                                <ul>
+                                    <li>每个进程需要同时持有<mark>多个临界资源</mark></li>
+                                    <li>资源分配存在<mark>环形依赖</mark></li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>解决思路</mark>：
+                                <ul>
+                                    <li>破坏死锁<mark>四个必要条件</mark>之一(特别是"循环等待")</li>
+                                    <li>通过资源预分配或执行顺序限制<mark>避免死锁</mark></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // 添加触摸事件支持，防止滚动时误触
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+
+            card.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                // 如果水平滑动距离小于30px才触发翻转
+                if (Math.abs(touchEndX - touchStartX) < 30) {
+                    flipCard(this);
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>
