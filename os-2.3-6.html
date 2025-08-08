@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信号量机制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight: hsl(var(--primary-hue), 80%, 60%);
+            --accent: hsl(var(--secondary-hue), 90%, 60%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --spacing: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: var(--spacing);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: var(--spacing);
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: var(--spacing);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            perspective: 1000px;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing) * 1.5);
+            background-color: var(--card-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing);
+            color: hsl(var(--primary-hue), 60%, 40%);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .card-content dl {
+            display: grid;
+            gap: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content dd {
+            margin-left: 0;
+            margin-bottom: 12px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+        }
+
+        .icon {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-top: var(--spacing);
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 35%);
+        }
+
+        button:disabled {
+            background-color: hsl(0, 0%, 80%);
+            cursor: not-allowed;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: hsl(0, 0%, 10%);
+                --card-color: hsl(0, 0%, 15%);
+                --text-color: hsl(0, 0%, 90%);
+                --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .divider {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>信号量机制学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 信号量基本概念 -->
+        <div class="card" tabindex="0" aria-label="信号量基本概念卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-title">📌 信号量基本概念</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">🔹</span>信号量机制</dt>
+                            <dd>通过设置进程的<mark>阻塞和唤醒</mark>实现<mark>让权等待</mark>，解决了硬件/软件实现互斥的缺陷</dd>
+                            
+                            <dt><span class="icon">🔹</span>信号量值</dt>
+                            <dd>表示<mark>资源剩余数量</mark>，值小于0时表示有进程正在等待该资源</dd>
+                            
+                            <dt><span class="icon">🔹</span>PV操作</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>P操作</mark>：申请资源（若资源不足则阻塞）</li>
+                                    <li><mark>V操作</mark>：释放资源（若有等待进程则唤醒）</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 进程互斥实现 -->
+        <div class="card" tabindex="0" aria-label="进程互斥实现卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-title">🔒 进程互斥实现</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">🔹</span>实现步骤</dt>
+                            <dd>
+                                <ol>
+                                    <li>分析并发进程的关键活动，划定<mark>临界区</mark></li>
+                                    <li>设置<mark>互斥信号量mutex</mark>，初值为1</li>
+                                    <li>进入临界区前执行<mark>P(mutex)</mark></li>
+                                    <li>退出临界区后执行<mark>V(mutex)</mark></li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">⚠️</span>注意事项</dt>
+                            <dd>
+                                <ul>
+                                    <li>不同临界资源需要<mark>不同的互斥信号量</mark></li>
+                                    <li>PV操作必须<mark>成对出现</mark>：
+                                        <ul>
+                                            <li>缺少P会导致<mark>互斥失效</mark></li>
+                                            <li>缺少V会导致<mark>进程永久阻塞</mark></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 进程同步实现 -->
+        <div class="card" tabindex="0" aria-label="进程同步实现卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-title">🔄 进程同步实现</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">🔹</span>同步本质</dt>
+                            <dd>解决并发进程<mark>执行顺序的不确定性</mark></dd>
+                            
+                            <dt><span class="icon">🔹</span>实现技巧</dt>
+                            <dd>口诀：<mark>前V后P</mark>
+                                <ol>
+                                    <li>设置<mark>同步信号量S</mark>，初值为0</li>
+                                    <li>在前操作之后执行<mark>V(S)</mark></li>
+                                    <li>在后操作之前执行<mark>P(S)</mark></li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🔹</span>工作原理</dt>
+                            <dd>
+                                <ul>
+                                    <li>初始资源为0，后操作进程会因<mark>P操作阻塞</mark></li>
+                                    <li>只有前操作进程执行<mark>V操作</mark>后才能唤醒后操作进程</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 前驱关系实现 -->
+        <div class="card" tabindex="0" aria-label="前驱关系实现卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-title">⏩ 前驱关系实现</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">🔹</span>本质</dt>
+                            <dd><mark>多级同步问题</mark>的组合</dd>
+                            
+                            <dt><span class="icon">🔹</span>解决方案</dt>
+                            <dd>
+                                <ol>
+                                    <li>分析前驱图，将每对前驱关系视为一个<mark>同步问题</mark></li>
+                                    <li>为每对关系设置<mark>同步信号量</mark>（初值为0）</li>
+                                    <li>在前操作后执行<mark>V</mark>，在后操作前执行<mark>P</mark></li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">📝</span>案例解析</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>S1→S2</mark>：S1后V(a)，S2前P(a)</li>
+                                    <li><mark>S2→S5</mark>：S2后V(d)，S5前P(d)</li>
+                                    <li><mark>S3→S6</mark>：S3后V(f)，S6前P(f)</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: 关键对比 -->
+        <div class="card" tabindex="0" aria-label="关键对比卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-title">⚖️ 关键对比</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <table style="width:100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: hsl(var(--primary-hue), 60%, 90%);">
+                                    <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">特性</th>
+                                    <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">互斥信号量</th>
+                                    <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">同步信号量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: 600;">初始值</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><mark>1</mark></td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;"><mark>0</mark></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: 600;">操作位置</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">临界区前后</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">操作代码前后</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: 600;">资源对应</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">临界区进入名额</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">无实际资源，仅表示顺序</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; font-weight: 600;">PV操作目的</td>
+                                    <td style="padding: 8px;">保护临界区</td>
+                                    <td style="padding: 8px;">控制执行顺序</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="divider"></div>
+                        
+                        <p><span class="icon">💡</span> <strong>应用扩展</strong><br>
+                        信号量也可用于资源分配（如3台打印机对应初值为3的信号量）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button id="prev-btn" disabled>上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // 初始化显示第一张卡片
+            cards.forEach((card, index) => {
+                if (index !== 0) {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // 卡片翻转功能
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 触摸事件处理（防止与滚动冲突）
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    // 如果水平滑动距离小于30px，则视为点击
+                    if (Math.abs(touchEndX - touchStartX) < 30) {
+                        this.classList.toggle('flipped');
+                    }
+                }, {passive: true});
+            });
+            
+            // 导航按钮功能
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            function updateNavButtons() {
+                prevBtn.disabled = currentCardIndex === 0;
+                nextBtn.disabled = currentCardIndex === cards.length - 1;
+            }
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    cards[currentCardIndex].style.display = 'none';
+                    currentCardIndex--;
+                    cards[currentCardIndex].style.display = 'block';
+                    cards[currentCardIndex].classList.remove('flipped');
+                    updateNavButtons();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    cards[currentCardIndex].style.display = 'none';
+                    currentCardIndex++;
+                    cards[currentCardIndex].style.display = 'block';
+                    cards[currentCardIndex].classList.remove('flipped');
+                    updateNavButtons();
+                }
+            });
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    if (!nextBtn.disabled) {
+                        nextBtn.click();
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (!prevBtn.disabled) {
+                        prevBtn.click();
+                    }
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    cards[currentCardIndex].click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
