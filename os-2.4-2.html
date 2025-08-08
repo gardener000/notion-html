@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>死锁预防策略学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            border-radius: var(--border-radius);
+        }
+
+        .card-front {
+            background-color: var(--card-bg);
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            text-align: left;
+            width: 100%;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: 600;
+            margin-top: 8px;
+            color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: hsl(45, 100%, 85%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>死锁预防策略学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 破坏互斥条件 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁预防策略卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <h2 class="card-title">破坏互斥条件</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">破坏互斥条件</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心思想</dt>
+                            <dd>将必须<mark>互斥使用</mark>的资源改造为可<mark>共享使用</mark></dd>
+                            
+                            <dt>实现技术</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>SPOOLing技术</mark>：将独占设备（如打印机）在逻辑上改造成共享设备</li>
+                                    <li>工作流程：进程请求被输出进程接收并缓冲，实际打印由后台完成</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>优点</dt>
+                            <dd>从进程角度看资源可共享使用</dd>
+                            
+                            <dt>缺点</dt>
+                            <dd>
+                                <ul>
+                                    <li>适用范围有限，并非所有设备都可改造</li>
+                                    <li>系统安全性要求某些资源必须保持互斥性</li>
+                                    <li>实现复杂度较高</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 破坏不剥夺条件 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁预防策略卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">⏸️</div>
+                    <h2 class="card-title">破坏不剥夺条件</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">破坏不剥夺条件</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>方案一</dt>
+                            <dd>当进程请求新资源得不到满足时，必须<mark>立即释放</mark>所有已持有资源</dd>
+                            <dd>需要重新申请全部资源</dd>
+                            
+                            <dt>方案二</dt>
+                            <dd>由操作系统协助<mark>剥夺资源</mark>（考虑进程优先级）</dd>
+                            <dd>应用场景：类似CPU剥夺调度，高优先级进程可抢占资源</dd>
+                            
+                            <dt>缺点</dt>
+                            <dd>
+                                <ul>
+                                    <li>实现复杂，需要保存和恢复进程状态</li>
+                                    <li>剥夺资源可能导致部分工作失效</li>
+                                    <li>反复申请释放增加系统开销</li>
+                                    <li>可能导致进程<mark>饥饿</mark>（长期得不到资源）</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 破坏请求和保持条件 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁预防策略卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📦</div>
+                    <h2 class="card-title">破坏请求和保持条件</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">破坏请求和保持条件</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>静态分配方法</dt>
+                            <dd>进程运行前<mark>一次性申请</mark>所有所需资源</dd>
+                            <dd>资源未满足前不投入运行，运行期间保持所有资源</dd>
+                            
+                            <dt>优点</dt>
+                            <dd>实现简单，不会出现保持资源同时请求新资源的情况</dd>
+                            
+                            <dt>缺点</dt>
+                            <dd>
+                                <ul>
+                                    <li>资源浪费严重（短期使用资源被长期占用）</li>
+                                    <li>资源利用率低</li>
+                                    <li>可能导致进程<mark>饥饿</mark>（如需要多种资源的进程可能长期得不到运行机会）</li>
+                                    <li>饥饿示例：系统中A类（需资源1）、B类（需资源2）、C类（需资源1和2）进程竞争时，C类可能长期得不到运行</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 破坏循环等待条件 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁预防策略卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <h2 class="card-title">破坏循环等待条件</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">破坏循环等待条件</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>顺序资源分配法</dt>
+                            <dd>
+                                <ul>
+                                    <li>给系统资源<mark>编号</mark></li>
+                                    <li>进程必须按编号<mark>递增顺序</mark>申请资源</li>
+                                    <li>同类资源（编号相同）需一次性申请完</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>原理</dt>
+                            <dd>持有大编号资源的进程不会逆向申请小编号资源</dd>
+                            
+                            <dt>优点</dt>
+                            <dd>确保至少有一个进程能获得所需资源（持有最大编号资源的进程）</dd>
+                            
+                            <dt>缺点</dt>
+                            <dd>
+                                <ul>
+                                    <li>新增设备需要重新编号，不便扩展</li>
+                                    <li>可能导致资源浪费（如必须先申请暂时不用的资源）</li>
+                                    <li>用户编程麻烦（需按固定顺序申请资源）</li>
+                                    <li>示例：打印机（5号）和扫描仪（7号）使用顺序受编号限制，可能造成打印机闲置</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: 综合对比 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁预防策略卡片" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📊</div>
+                    <h2 class="card-title">综合对比</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">综合对比</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>适用性</dt>
+                            <dd><mark>互斥条件</mark>破坏范围有限</dd>
+                            
+                            <dt>实现复杂度</dt>
+                            <dd><mark>不剥夺条件</mark>最高</dd>
+                            
+                            <dt>资源利用率</dt>
+                            <dd><mark>静态分配法</mark>最差</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>优先级考点</dt>
+                            <dd>
+                                <ul>
+                                    <li>理解各策略与必要条件的关系</li>
+                                    <li>掌握各策略优缺点</li>
+                                    <li>能分析实际案例采用的方法</li>
+                                    <li>联系<mark>哲学家就餐问题</mark>的解决方案</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            
+            // 确保一次只翻转一张卡片
+            document.querySelectorAll('.card').forEach(otherCard => {
+                if (otherCard !== card && otherCard.classList.contains('flipped')) {
+                    otherCard.classList.remove('flipped');
+                }
+            });
+        }
+        
+        // 添加触摸事件支持
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                this.classList.add('touched');
+            }, {passive: true});
+            
+            card.addEventListener('touchend', function(e) {
+                if (this.classList.contains('touched')) {
+                    flipCard(this);
+                    this.classList.remove('touched');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
