@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信号量机制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight-blue: hsl(var(--primary-hue), 80%, 50%);
+            --highlight-yellow: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--border-radius);
+        }
+
+        .card-front {
+            background-color: var(--card-bg);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid hsl(var(--primary-hue), 30%, 90%);
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            border: 1px solid hsl(var(--primary-hue), 30%, 85%);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 80%, 40%);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        dl {
+            margin-top: 8px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 80%, 35%);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: var(--highlight-yellow);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            font-size: 0.9rem;
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-top: 12px;
+            padding: 8px;
+            background-color: hsl(var(--primary-hue), 80%, 96%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memory-tip::before {
+            content: "💡";
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-face {
+                padding: 18px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Prevent text selection during swipe */
+        .card {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Scrollbar styling */
+        .card-face::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-face::-webkit-scrollbar-track {
+            background: hsl(0, 0%, 95%);
+        }
+
+        .card-face::-webkit-scrollbar-thumb {
+            background: hsl(var(--primary-hue), 30%, 80%);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>信号量机制学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="信号量机制概述卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔒</div>
+                <h2 class="card-title">信号量机制概述</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">信号量机制概述</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>背景与问题</dt>
+                        <dd>
+                            <ul>
+                                <li>软件实现方法存在严重问题: <mark>单标志法</mark>、<mark>双标志先检查</mark>、<mark>双标志后检查</mark></li>
+                                <li>硬件实现方法无法实现<mark>"让权等待"</mark>原则</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>信号量定义</dt>
+                        <dd>
+                            <ul>
+                                <li>一种变量，可以是整数或更复杂的<mark>记录型数据结构</mark></li>
+                                <li>用于表示系统中某种资源的数量(如打印机资源)</li>
+                                <li>可解决<mark>进程互斥</mark>和<mark>进程同步</mark>问题</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>原语特性</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>不可中断</mark>的特殊程序段</li>
+                                <li>保证检查和上锁操作的<mark>原子性</mark></li>
+                                <li>通过<mark>wait</mark>和<mark>signal</mark>一对原语操作信号量(PV操作)</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">记住: 信号量解决互斥和同步问题，通过PV操作实现</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="整型信号量卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔢</div>
+                <h2 class="card-title">整型信号量</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">整型信号量</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>
+                            <ul>
+                                <li>用<mark>整数型变量</mark>表示系统资源数量</li>
+                                <li>仅允许<mark>初始化</mark>、<mark>P操作(wait)</mark>、<mark>V操作(signal)</mark>三种操作</li>
+                                <li>不能进行常规数学运算</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>应用案例(打印机)</dt>
+                        <dd>
+                            <ul>
+                                <li>初始化: <mark>int S=1</mark></li>
+                                <li>执行流程:
+                                    <ul>
+                                        <li>P0执行wait(S): S=1→0(通过)</li>
+                                        <li>P1执行wait(S): S=0→循环等待</li>
+                                        <li>P0执行signal(S): S=0→1→P1可继续</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>存在问题</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>忙等待</mark>: 不满足"让权等待"原则</li>
+                                <li>理论矛盾: wait原语不可中断与循环等待导致的进程切换矛盾</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">记住: 整型信号量有忙等问题，不满足让权等待</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="记录型信号量卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">记录型信号量</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">记录型信号量</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>
+                            <ul>
+                                <li>数据结构包含:
+                                    <ul>
+                                        <li><mark>value</mark>: 资源剩余数量</li>
+                                        <li><mark>*L</mark>: 等待该资源的进程队列指针</li>
+                                    </ul>
+                                </li>
+                                <li>改进动机: 解决"忙等"问题，实现<mark>"让权等待"</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>操作原语实现</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>wait(S)/P(S)操作</mark>:
+                                    <ul>
+                                        <li>S.value--</li>
+                                        <li>若S.value < 0: 调用block(S.L)阻塞当前进程</li>
+                                        <li>value负数的绝对值表示等待进程数量</li>
+                                    </ul>
+                                </li>
+                                <li><mark>signal(S)/V(S)操作</mark>:
+                                    <ul>
+                                        <li>S.value++</li>
+                                        <li>若S.value ≤ 0: 调用wakeup(S.L)唤醒队首进程</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">记住: 记录型信号量通过阻塞/唤醒机制解决忙等问题</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="记录型信号量应用案例卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🖨️</div>
+                <h2 class="card-title">记录型信号量应用案例</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">记录型信号量应用案例</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>打印机资源管理</dt>
+                        <dd>
+                            <ul>
+                                <li>初始值: <mark>S.value=2</mark>，S.L=空队列</li>
+                                <li>执行序列:
+                                    <ul>
+                                        <li>P0申请: value=2→1</li>
+                                        <li>P1申请: value=1→0</li>
+                                        <li>P2申请: value=0→-1(阻塞)</li>
+                                        <li>P3申请: value=-1→-2(阻塞)</li>
+                                        <li>P0释放: value=-2→-1(唤醒P2)</li>
+                                        <li>P2释放: value=-1→0(唤醒P3)</li>
+                                        <li>P1释放: value=0→1</li>
+                                        <li>P3释放: value=1→2</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">记住: value负数表示等待进程数，释放时会唤醒</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="重要考点与对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📝</div>
+                <h2 class="card-title">重要考点与对比</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">重要考点与对比</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>整型信号量缺陷</dt>
+                        <dd>
+                            <ul>
+                                <li>仅用整型变量表示资源数</li>
+                                <li>违反<mark>"让权等待"</mark>原则，存在<mark>忙等</mark>现象</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>记录型信号量要点</dt>
+                        <dd>
+                            <ul>
+                                <li>P操作必须先<mark>S.value--</mark>，再判断是否阻塞</li>
+                                <li>V操作必须先<mark>S.value++</mark>，再判断是否唤醒</li>
+                                <li>考试中默认P(S)/V(S)指<mark>记录型信号量</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>PV操作对比</dt>
+                        <dd>
+                            <ul>
+                                <li>整型信号量: 仅检查资源数并加减</li>
+                                <li>记录型信号量: 附加<mark>进程阻塞/唤醒</mark>机制</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>高频考点</dt>
+                        <dd>
+                            <ul>
+                                <li>能自行推导<mark>block/wakeup</mark>触发条件</li>
+                                <li>理解<mark>value正负值</mark>的实际含义</li>
+                                <li>编程实现<mark>wait/signal</mark>原语</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">记住: 考试默认记录型信号量，注意value正负含义</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const swipeThreshold = 50; // Minimum swipe distance to trigger flip
+            
+            cards.forEach(card => {
+                // Click/tap handler
+                card.addEventListener('click', function(e) {
+                    // Check if the click was from a scroll (touchmove)
+                    if (Math.abs(touchEndX - touchStartX) < swipeThreshold) {
+                        this.classList.toggle('flipped');
+                        const isFlipped = this.classList.contains('flipped');
+                        this.setAttribute('aria-pressed', isFlipped);
+                    }
+                });
+                
+                // Touch handlers for swipe detection
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                        const isFlipped = this.classList.contains('flipped');
+                        this.setAttribute('aria-pressed', isFlipped);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
