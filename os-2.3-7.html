@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生产者-消费者问题学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: white;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --primary-light: hsl(var(--primary-hue), 80%, 90%);
+            --secondary-color: hsl(var(--secondary-hue), 90%, 50%);
+            --secondary-light: hsl(var(--secondary-hue), 90%, 90%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --spacing-unit: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: var(--spacing-unit);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: calc(var(--spacing-unit) * 2) 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: calc(var(--spacing-unit) * 3);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 3);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            text-align: center;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-unit);
+            text-align: center;
+        }
+
+        ul {
+            padding-left: calc(var(--spacing-unit) * 3);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        li {
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+
+        mark {
+            background-color: var(--secondary-light);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: calc(var(--spacing-unit) * 2) 0;
+        }
+
+        .hint {
+            background-color: var(--primary-light);
+            padding: calc(var(--spacing-unit) * 1.5);
+            border-radius: var(--border-radius);
+            margin-top: calc(var(--spacing-unit) * 2);
+            font-size: 0.9rem;
+        }
+
+        .hint-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-unit);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-unit);
+        }
+
+        .key-point {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-unit);
+            margin-bottom: var(--spacing-unit);
+        }
+
+        .key-point-icon {
+            color: var(--secondary-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                height: 350px;
+            }
+        }
+
+        /* Prevent text selection during swipe */
+        .card {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>生产者-消费者问题学习卡片</h1>
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>生产者-消费者问题基本模型</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">基本模型</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">🔹</span>
+                            <span>系统中存在一组<mark>生产者进程</mark>和一组<mark>消费者进程</mark></span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔹</span>
+                            <span>共享一个初始为空、大小为<mark>n</mark>的缓冲区</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔹</span>
+                            <span>生产者每次生产一个<mark>产品</mark>放入缓冲区</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔹</span>
+                            <span>消费者每次从缓冲区取出一个产品使用</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">💡 记忆提示</div>
+                            <div>"产品"可理解为某种数据，缓冲区为存放数据的区域</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>同步与互斥关系</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">同步与互斥关系</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">🔸</span>
+                            <span><mark>同步关系</mark>:</span>
+                        </div>
+                        <ul>
+                            <li>生产约束：只有缓冲区<mark>未满(empty>0)</mark>时生产者才能放入产品</li>
+                            <li>消费约束：只有缓冲区<mark>非空(full>0)</mark>时消费者才能取出产品</li>
+                        </ul>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔸</span>
+                            <span><mark>互斥关系</mark>:</span>
+                        </div>
+                        <ul>
+                            <li>缓冲区是<mark>临界资源</mark>，各进程必须互斥访问</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">⚠️ 重要考点</div>
+                            <div>同步信号量初始值：full=0（初始无产品），empty=n（初始空闲缓冲区）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>信号量设置</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">信号量设置</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">📊</span>
+                            <span><mark>mutex=1</mark>：互斥信号量（保证缓冲区访问互斥）</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">📊</span>
+                            <span><mark>empty=n</mark>：同步信号量（表示空闲缓冲区数量）</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">📊</span>
+                            <span><mark>full=0</mark>：同步信号量（表示产品数量/非空缓冲区数）</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">🔑 初始值依据</div>
+                            <div>empty初值为n（初始有n个空闲缓冲区）</div>
+                            <div>full初值为0（初始无产品）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>生产者逻辑</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">生产者逻辑</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>P(empty)</mark>：申请空闲缓冲区</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>P(mutex)</mark>：申请缓冲区访问权</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span>放入产品</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>V(mutex)</mark>：释放缓冲区</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>V(full)</mark>：增加产品计数</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">💡 关键区别</div>
+                            <div>互斥PV在同一进程内完成（上锁→访问→解锁）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>消费者逻辑</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">消费者逻辑</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>P(full)</mark>：申请产品</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>P(mutex)</mark>：申请缓冲区访问权</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span>取出产品</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>V(mutex)</mark>：释放缓冲区</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">🔄</span>
+                            <span><mark>V(empty)</mark>：增加空闲缓冲区</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">💡 关键区别</div>
+                            <div>同步PV在不同进程间配合（生产者V→消费者P）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>PV操作顺序</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">PV操作顺序</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">⚠️</span>
+                            <span><mark>危险情况</mark>：若先P(mutex)后P(empty)</span>
+                        </div>
+                        <ul>
+                            <li>当缓冲区满时，生产者阻塞在P(empty)</li>
+                            <li>消费者因无法获取mutex也被阻塞</li>
+                            <li>导致<mark>死锁</mark>（相互等待）</li>
+                        </ul>
+                        <div class="key-point">
+                            <span class="key-point-icon">✅</span>
+                            <span><mark>安全原则</mark>：</span>
+                        </div>
+                        <ul>
+                            <li>同步操作必须先于互斥P操作</li>
+                            <li>V操作顺序可交换（不会引发阻塞）</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">🔑 关键结论</div>
+                            <div>互斥P操作必须位于同步P操作之后</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>解题三步法</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">解题三步法</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">1️⃣</span>
+                            <span>分析<mark>同步/互斥关系</mark></span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">2️⃣</span>
+                            <span>确定<mark>PV操作顺序</mark></span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">3️⃣</span>
+                            <span>设置<mark>信号量及初值</mark></span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">🧠 核心难点</div>
+                            <div>识别两对同步关系（生产依赖消费释放空间，消费依赖生产提供产品）</div>
+                            <div>理解"前V后P"的实现原理</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看定义" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-content">
+                        <div>易错警示</div>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">易错警示</div>
+                    <div class="card-content">
+                        <div class="key-point">
+                            <span class="key-point-icon">❌</span>
+                            <span><mark>互斥P</mark>必须在<mark>同步P</mark>之后，否则可能死锁</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">❌</span>
+                            <span>临界区代码应尽量简短（不包含生产/消费耗时操作）</span>
+                        </div>
+                        <div class="key-point">
+                            <span class="key-point-icon">❌</span>
+                            <span>缓冲区满时生产者阻塞，缓冲区空时消费者阻塞</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="hint">
+                            <div class="hint-title">💡 优化建议</div>
+                            <div>临界区优化：生产/消费动作不宜放入PV操作间，否则延长临界区时间</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Touch event handling to prevent conflicts with scrolling
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, {passive: true});
+
+            card.addEventListener('touchend', function(e) {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                
+                // Only flip if it's a tap (not a swipe)
+                if (Math.abs(touchEndX - touchStartX) < 10 && Math.abs(touchEndY - touchStartY) < 10) {
+                    flipCard(this);
+                }
+            }, {passive: true});
+        });
+
+        // Keyboard accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const focusedCard = document.activeElement;
+                if (focusedCard.classList.contains('card')) {
+                    e.preventDefault();
+                    flipCard(focusedCard);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
