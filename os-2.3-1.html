@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程同步与互斥学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            background: white;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            padding: 24px;
+            border-radius: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front {
+            background: hsl(var(--primary-hue), 80%, 95%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 30%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: hsl(0, 0%, 50%);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>进程同步与互斥学习卡片</h1>
+    <div class="cards-container">
+        <!-- Card 1: 进程同步 -->
+        <div class="card" tabindex="0" role="button" aria-label="进程同步卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">进程同步</h2>
+                    <p class="hint">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">进程同步</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>协调进程间的执行顺序，解决<mark>异步性</mark>问题</dd>
+                            
+                            <dt>异步性问题</dt>
+                            <dd>各并发执行的进程以各自独立的、不可预知的速度向前推进</dd>
+                            
+                            <dt>同步必要性</dt>
+                            <dd>当进程间需要协调工作时，必须解决异步性带来的执行顺序不确定问题</dd>
+                            
+                            <dt>典型案例</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>老渣约会指令顺序</mark>：必须保证"给心"在"陪吃饭"之前</li>
+                                    <li><mark>管道通信</mark>：写操作必须在读操作之前完成</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>同步定义</dt>
+                            <dd>又称<mark>直接制约关系</mark>，指进程间需要协调工作次序的合作关系</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: 进程互斥 -->
+        <div class="card" tabindex="0" role="button" aria-label="进程互斥卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🚫</div>
+                    <h2 class="card-title">进程互斥</h2>
+                    <p class="hint">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">进程互斥</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>控制对<mark>临界资源</mark>的独占访问</dd>
+                            
+                            <dt>资源共享方式</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>互斥共享</mark>：一个时间段只允许一个进程访问（如打印机）</li>
+                                    <li><mark>同时共享</mark>：宏观上允许多个进程同时访问（微观上交替访问）</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>临界资源</dt>
+                            <dd>
+                                <ul>
+                                    <li>定义：一次仅允许一个进程使用的资源</li>
+                                    <li>示例：打印机、摄像头、共享内存区域</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: 临界区访问逻辑 -->
+        <div class="card" tabindex="0" role="button" aria-label="临界区访问逻辑卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔒</div>
+                    <h2 class="card-title">临界区访问逻辑</h2>
+                    <p class="hint">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">临界区访问逻辑</h2>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>进入区</mark>：检查并上锁</li>
+                            <li><mark>临界区</mark>：实际访问资源的代码段</li>
+                            <li><mark>退出区</mark>：解锁</li>
+                            <li><mark>剩余区</mark>：其他处理代码</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>易混淆点</strong>：注意区分<mark>进入区</mark>（检查上锁）和<mark>临界区</mark>（实际访问）的功能差异</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: 互斥原则 -->
+        <div class="card" tabindex="0" role="button" aria-label="互斥原则卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📜</div>
+                    <h2 class="card-title">互斥原则</h2>
+                    <p class="hint">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">互斥原则</h2>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>空闲让进</mark>：临界区空闲时应立即允许一个进程进入</li>
+                            <li><mark>忙则等待</mark>：临界区被占用时其他进程必须等待</li>
+                            <li><mark>有限等待</mark>：等待时间必须是有限的（防止饥饿）</li>
+                            <li><mark>让权等待</mark>：无法进入时应释放处理机（防止忙等）</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>记忆技巧</strong>：空闲进、忙等待、有限时、让权等</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: 同步 vs 互斥 -->
+        <div class="card" tabindex="0" role="button" aria-label="同步与互斥对比卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🆚</div>
+                    <h2 class="card-title">同步 vs 互斥</h2>
+                    <p class="hint">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">同步 vs 互斥</h2>
+                    <div class="card-content">
+                        <table style="width:100%; border-collapse: collapse; margin-bottom: 12px;">
+                            <tr style="background-color: hsl(var(--primary-hue), 80%, 90%);">
+                                <th style="padding: 8px; text-align: left;">概念</th>
+                                <th style="padding: 8px; text-align: left;">关系类型</th>
+                                <th style="padding: 8px; text-align: left;">核心要点</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #eee;"><mark>同步</mark></td>
+                                <td style="padding: 8px; border-bottom: 1px solid #eee;">直接制约</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #eee;">协调进程执行顺序</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;"><mark>互斥</mark></td>
+                                <td style="padding: 8px;">间接制约</td>
+                                <td style="padding: 8px;">控制资源独占访问</td>
+                            </tr>
+                        </table>
+                        <div class="divider"></div>
+                        <p><strong>考试重点</strong>：区分<mark>直接制约</mark>与<mark>间接制约</mark>关系</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            // Add click/touch event for each card
+            cards.forEach(card => {
+                // For mouse clicks
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // For touch devices - prevent double triggering
+                let touchStartTime = 0;
+                card.addEventListener('touchstart', function(e) {
+                    touchStartTime = e.timeStamp;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    // Only flip if it's a quick tap (not a scroll)
+                    if (e.timeStamp - touchStartTime < 200) {
+                        this.classList.toggle('flipped');
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Keyboard accessibility
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const activeCard = document.activeElement;
+                    if (activeCard.classList.contains('card')) {
+                        activeCard.classList.toggle('flipped');
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
