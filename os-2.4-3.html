@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>死锁避免策略学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 400px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 60%, 95%), var(--card-bg));
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content dd {
+            margin-bottom: 12px;
+            margin-left: 0;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: hsl(0, 0%, 10%);
+                --text-dark: hsl(0, 0%, 90%);
+                --card-bg: hsl(0, 0%, 15%);
+                --highlight: hsl(var(--secondary-hue), 100%, 30%);
+                --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.3);
+            }
+
+            .card-front {
+                background: linear-gradient(135deg, hsl(var(--primary-hue), 60%, 20%), var(--card-bg));
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>死锁避免策略学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看安全序列定义" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🔒</div>
+                <h2 class="card-title">安全序列</h2>
+                <p>点击查看定义</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">安全序列 🔒</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>系统按照某种顺序依次为进程分配资源，<mark>所有进程都能顺利完成</mark>并归还资源的执行序列</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>银行家比喻</dt>
+                        <dd>假设银行家拥有100亿资金，BAT三企业分别已借20、10、30亿，剩余40亿。当A申请20亿时，存在两种安全序列：</dd>
+                        <dd>1. T→B→A</dd>
+                        <dd>2. A→T→B</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>判断标准</dt>
+                        <dd>若存在<mark>至少一个安全序列</mark>，则系统处于安全状态；否则为不安全状态</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看安全状态与死锁关系" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">安全状态 vs 死锁</h2>
+                <p>点击查看关系</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">安全状态与死锁 ⚠️</h2>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>安全状态</mark>：存在安全序列，<strong>一定不会</strong>发生死锁</li>
+                        <li><mark>不安全状态</mark>：无安全序列，<strong>可能</strong>发生死锁</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>重要结论</dt>
+                        <dd>1. 不安全状态<strong>未必</strong>死锁（若进程未同时申请资源）</dd>
+                        <dd>2. 死锁<strong>一定</strong>处于不安全状态</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><mark>选择题高频考点</mark>：安全状态、不安全状态与死锁的三者包含关系</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看银行家算法定义" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🏦</div>
+                <h2 class="card-title">银行家算法</h2>
+                <p>点击查看定义</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">银行家算法 🏦</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>起源</dt>
+                        <dd>由<mark>Dijkstra</mark>提出，最初用于银行系统，后应用于操作系统死锁避免</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>多维扩展</dt>
+                        <dd>计算机系统含多种资源（如打印机、扫描仪），将单维资金模型扩展为多维向量</dd>
+                        <dd>示例：5个进程(P0-P4)和3种资源(R0-R2)，初始资源(10,5,7)</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>关键数据结构</dt>
+                        <dd>• <mark>Available[m]</mark>: 可用资源向量</dd>
+                        <dd>• <mark>Max[n][m]</mark>: 最大需求矩阵</dd>
+                        <dd>• <mark>Allocation[n][m]</mark>: 分配矩阵</dd>
+                        <dd>• <mark>Need[n][m]</mark>: 需求矩阵(Need = Max - Allocation)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看银行家算法流程" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">银行家算法流程</h2>
+                <p>点击查看步骤</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">银行家算法流程 🔄</h2>
+                <div class="card-content">
+                    <ol>
+                        <li><mark>请求检查</mark>：
+                            <ul>
+                                <li>检查请求是否超过Need矩阵声明值</li>
+                                <li>检查系统剩余资源(Available)能否满足请求</li>
+                            </ul>
+                        </li>
+                        <li><mark>试探分配</mark>：
+                            <ul>
+                                <li>临时修改Available、Allocation和Need数据</li>
+                            </ul>
+                        </li>
+                        <li><mark>安全性检查</mark>：
+                            <ul>
+                                <li>循环检查剩余资源能否满足某进程需求</li>
+                                <li>将可满足进程加入安全序列并模拟资源回收</li>
+                                <li>全部进程加入则安全，否则不安全</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>快速查找安全序列技巧</dt>
+                        <dd>• 首轮同时检查所有可立即满足的进程</dd>
+                        <dd>• 批量加入安全序列后更新资源为∑Allocation + Available</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看重要考点" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">📝</div>
+                <h2 class="card-title">重要考点与易错点</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">重要考点与易错点 📝</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>高频考点</dt>
+                        <dd>• 安全序列的查找（给出Max/Allocation求安全序列）</dd>
+                        <dd>• 安全状态、不安全状态与死锁的逻辑关系</dd>
+                        <dd>• 多维资源情况下的矩阵计算</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>易错点</dt>
+                        <dd>• <mark>试探分配不是真实分配</mark></dd>
+                        <dd>• <mark>不安全状态≠立即死锁</mark></dd>
+                        <dd>• Need矩阵必须通过Max-Allocation计算得到</dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><mark>选择题高频考点</mark>：死锁必然推导链（死锁→不安全状态）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">1/5</div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const cards = document.querySelectorAll('.card');
+            const flippedCards = document.querySelectorAll('.card.flipped');
+            const progress = document.querySelector('.progress');
+            progress.textContent = `${flippedCards.length}/${cards.length}`;
+        }
+        
+        // Add touch support for card flipping
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                this.classList.toggle('flipped');
+                updateProgress();
+                e.preventDefault(); // Prevent scrolling when flipping cards
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html>
