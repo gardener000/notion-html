@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>死锁处理策略学习卡片</title>
+    <style>
+        :root {
+            --primary-color: hsl(210, 80%, 50%);
+            --secondary-color: hsl(40, 90%, 60%);
+            --text-color: hsl(0, 0%, 20%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 16px;
+            max-width: 100%;
+            overflow-x: hidden;
+            word-break: break-word;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            padding: 0 8px;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+            overflow: hidden;
+        }
+
+        .card-front {
+            color: var(--primary-color);
+        }
+
+        .card-back {
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            text-align: left;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            width: 100%;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            padding: 0 8px;
+        }
+
+        .card-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 8px;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+            font-size: 0.95rem;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        mark {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: inherit;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsla(0, 0%, 0%, 0.1);
+            margin: 16px 0;
+            width: 100%;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        /* 针对小屏幕的优化 */
+        @media (max-width: 375px) {
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+            
+            .card-content li {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            
+            .emoji {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* 滚动条样式 */
+        .card-back::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-back::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 0%, 0.2);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <h1>死锁处理策略学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁处理策略卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">死锁处理策略</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>静态策略</strong>：<mark>预防死锁</mark>，不允许死锁发生</li>
+                            <li><strong>动态策略</strong>：
+                                <ul>
+                                    <li>避免死锁</li>
+                                    <li>允许死锁发生：
+                                        <ul>
+                                            <li>死锁的检测</li>
+                                            <li>死锁的检测和解除</li>
+                                            <li>死锁的解除</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁检测数据结构卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📊</div>
+                    <h2 class="card-title">死锁检测数据结构</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>两种结点</strong>：
+                                <ul>
+                                    <li><mark>进程结点</mark>：每个节点对应一个进程</li>
+                                    <li><mark>资源结点</mark>：每个节点对应一类资源（矩形表示，内部小圆表示资源数量）</li>
+                                </ul>
+                            </li>
+                            <li><strong>两种边</strong>：
+                                <ul>
+                                    <li><mark>请求边</mark>（进程→资源）：表示进程申请几个资源（每条边对应一个资源）</li>
+                                    <li><mark>分配边</mark>（资源→进程）：表示已为进程分配几个资源（每条边对应一个资源）</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁检测算法卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔍</div>
+                    <h2 class="card-title">死锁检测算法</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>核心思想</strong>：通过资源分配图的<mark>可完全简化性</mark>判断死锁</li>
+                            <li><strong>步骤</strong>：
+                                <ol>
+                                    <li>找出既不阻塞又不是孤点的进程（即申请资源数≤可用资源数）</li>
+                                    <li>消去该进程所有请求边和分配边</li>
+                                    <li>重复上述过程直到无边可消</li>
+                                </ol>
+                            </li>
+                            <li><strong>简化结果判定</strong>：
+                                <ul>
+                                    <li><mark>可完全简化</mark>：能消除所有边→无死锁（相当于找到安全序列）</li>
+                                    <li><mark>不可完全简化</mark>：剩余边连接的进程即为死锁进程</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁定理卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📜</div>
+                    <h2 class="card-title">死锁定理</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>定理内容</strong>：若某时刻系统的资源分配图<mark>不可完全简化</mark>，则系统发生死锁</li>
+                            <li><strong>应用示例</strong>：
+                                <ul>
+                                    <li>图中P1可满足请求→消去P1边→P2被唤醒→最终可消去所有边→无死锁</li>
+                                    <li>修改后P1请求2个R2（已无空闲）→仅P3可执行→归还资源后仍无法满足P1/P2→死锁</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="死锁解除方法卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔓</div>
+                    <h2 class="card-title">死锁解除方法</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><strong>资源剥夺法</strong>：
+                                <ul>
+                                    <li>挂起部分死锁进程并抢占其资源</li>
+                                    <li>注意：需防止被挂起进程长时间饥饿</li>
+                                </ul>
+                            </li>
+                            <li><strong>撤销进程法</strong>：
+                                <ul>
+                                    <li>强制终止部分/全部死锁进程</li>
+                                    <li>缺点：已执行工作可能白费，代价较大</li>
+                                </ul>
+                            </li>
+                            <li><strong>进程回退法</strong>：
+                                <ul>
+                                    <li>回退进程到避免死锁的状态（需系统记录执行历史）</li>
+                                    <li>实现难点：需设置还原点</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" role="button" aria-label="牺牲进程选择依据卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⚖️</div>
+                    <h2 class="card-title">牺牲进程选择依据</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>进程优先级</mark>（优先牺牲低优先级）</li>
+                            <li><mark>已执行时间</mark>（短时间进程优先）</li>
+                            <li><mark>剩余完成时间</mark>（接近完成的优先）</li>
+                            <li><mark>已占用资源量</mark>（持有资源多的优先）</li>
+                            <li><mark>进程类型</mark>（优先牺牲批处理式进程）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            // 添加点击事件
+            function handleCardClick() {
+                this.classList.toggle('flipped');
+                
+                // 确保只有一个卡片保持翻转状态
+                cards.forEach(card => {
+                    if (card !== this) {
+                        card.classList.remove('flipped');
+                    }
+                });
+            }
+            
+            cards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', handleCardClick);
+                
+                // 键盘事件，增强可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleCardClick.call(this);
+                    }
+                });
+                
+                // 触摸事件，优化移动端体验
+                card.addEventListener('touchend', function(e) {
+                    handleCardClick.call(this);
+                    e.preventDefault(); // 防止触摸滚动
+                }, { passive: false });
+            });
+            
+            // 点击卡片外部区域关闭所有卡片
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.card')) {
+                    cards.forEach(card => {
+                        card.classList.remove('flipped');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
