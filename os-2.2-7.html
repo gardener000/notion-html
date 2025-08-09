@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多处理机调度学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 0;
+            perspective: 1000px;
+            height: 300px;
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-color);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card {
+                transition: none;
+            }
+        }
+
+        /* Scrollbar styling for card content */
+        .card-face::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-face::-webkit-scrollbar-track {
+            background: hsl(0, 0%, 95%);
+            border-radius: 3px;
+        }
+
+        .card-face::-webkit-scrollbar-thumb {
+            background: hsl(0, 0%, 80%);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>多处理机调度学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="多处理机调度与单处理机调度的区别，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">多处理机 vs 单处理机调度</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">多处理机 vs 单处理机调度</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>单处理机调度</strong>：只需关注<mark>进程选择策略</mark>（如先来先服务、优先级调度等）</li>
+                        <li><strong>多处理机调度</strong>：需要额外考虑两个维度：
+                            <ul>
+                                <li>1. 进程选择策略</li>
+                                <li>2. <mark>CPU分配</mark>（决定进程在哪个处理机上运行）</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="多处理机调度的核心目标，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🎯</div>
+                <h2 class="card-title">核心目标</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">核心目标</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>1. <mark>负载均衡</mark>：均衡各CPU负载（避免某些CPU过载而其他CPU闲置）</li>
+                        <li>2. <mark>处理机亲和性</mark>：尽量让进程在同一个CPU运行，利用CPU缓存提升效率</li>
+                    </ul>
+                    <p><strong>注意：</strong>负载均衡与亲和性可能冲突（如迁移进程均衡负载但牺牲亲和性）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="公共就绪队列方案，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">👥</div>
+                <h2 class="card-title">公共就绪队列</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">公共就绪队列</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>实现方式：</strong>
+                            <ul>
+                                <li>所有CPU共享同一个位于内核区的就绪队列</li>
+                                <li>每个CPU空闲时运行调度程序，从公共队列选择进程运行</li>
+                                <li>访问队列时需要<mark>上锁</mark>保证互斥</li>
+                            </ul>
+                        </li>
+                        <li><strong>优点：</strong>天然实现<mark>负载均衡</mark></li>
+                        <li><strong>缺点：</strong>
+                            <ul>
+                                <li>进程可能频繁切换CPU，<mark>亲和性差</mark></li>
+                                <li>需要锁机制保证互斥访问</li>
+                            </ul>
+                        </li>
+                        <li><strong>亲和性提升方式：</strong>
+                            <ul>
+                                <li><mark>软亲和</mark>：调度程序尽量保持进程在相同CPU运行（非强制）</li>
+                                <li><mark>硬亲和</mark>：通过系统调用强制指定进程固定在某CPU运行</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="私有就绪队列方案，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🔒</div>
+                <h2 class="card-title">私有就绪队列</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">私有就绪队列</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>实现方式：</strong>
+                            <ul>
+                                <li>每个CPU维护自己的<mark>私有就绪队列</mark></li>
+                                <li>CPU空闲时只从自身队列选择进程运行</li>
+                            </ul>
+                        </li>
+                        <li><strong>负载均衡实现：</strong>
+                            <ul>
+                                <li><mark>推迁移</mark>：系统程序周期性检查各CPU负载，将高负载CPU的进程迁移到低负载CPU</li>
+                                <li><mark>拉迁移</mark>：CPU自身发现负载过低时，主动从高负载CPU拉取进程</li>
+                            </ul>
+                        </li>
+                        <li><strong>优点：</strong>天然实现<mark>处理机亲和性</mark></li>
+                        <li><strong>缺点：</strong>需要额外机制（推/拉迁移）实现负载均衡</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="方案对比，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">⚖️</div>
+                <h2 class="card-title">方案对比</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">方案对比</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>公共队列：</strong>
+                            <ul>
+                                <li>优点：易<mark>负载均衡</mark></li>
+                                <li>缺点：<mark>亲和性差</mark></li>
+                            </ul>
+                        </li>
+                        <li><strong>私有队列：</strong>
+                            <ul>
+                                <li>优点：天然<mark>亲和性好</mark></li>
+                                <li>缺点：需要额外<mark>负载均衡机制</mark></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p><strong>记忆技巧：</strong></p>
+                    <ul>
+                        <li>软/硬亲和组合使用</li>
+                        <li>推拉迁移配合实现负载均衡</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // Click/tap handler
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
