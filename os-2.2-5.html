@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调度算法学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 100%, 97%);
+            --card-back: hsl(var(--primary-hue), 30%, 95%);
+            --text-dark: hsl(0, 0%, 20%);
+            --text-light: hsl(0, 0%, 98%);
+            --accent: hsl(var(--secondary-hue), 100%, 60%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 12px;
+            --shadow: 0 4px 8px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            border: 1px solid hsl(var(--primary-hue), 50%, 85%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+            border: 1px solid hsl(var(--primary-hue), 30%, 80%);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        dl {
+            margin-top: 8px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 80%);
+            margin: 12px 0;
+        }
+
+        .hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9rem;
+            color: hsl(var(--primary-hue), 40%, 50%);
+            margin-top: 12px;
+        }
+
+        .hint-icon {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 400px) {
+            .card-face {
+                padding: 16px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>调度算法学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1: FCFS -->
+        <div class="card" tabindex="0" role="button" aria-label="先来先服务算法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-emoji">⏱️</div>
+                <h2 class="card-title">先来先服务 (FCFS)</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h2 class="card-title">先来先服务 (FCFS)</h2>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>算法思想</dt>
+                        <dd>按照作业/进程到达的先后顺序提供服务，类似排队机制</dd>
+                        
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>非抢占式</mark>算法</li>
+                                <li>实现简单，<mark>公平性强</mark></li>
+                                <li>对<mark>短作业不利</mark>（长作业后的短作业等待时间长）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>计算公式</dt>
+                        <dd>
+                            <ul>
+                                <li>周转时间 = 完成时间 - 到达时间</li>
+                                <li>带权周转时间 = 周转时间 / 运行时间</li>
+                                <li>等待时间 = 周转时间 - 运行时间</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>可能导致短作业的<mark>带权周转时间过大</mark></dd>
+                    </dl>
+                    <div class="hint">
+                        <span class="hint-icon">💡</span> 适用于作业调度和进程调度
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: SJF -->
+        <div class="card" tabindex="0" role="button" aria-label="短作业优先算法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-emoji">⚡</div>
+                <h2 class="card-title">短作业优先 (SJF)</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h2 class="card-title">短作业优先 (SJF)</h2>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>算法思想</dt>
+                        <dd>优先服务要求<mark>服务时间最短</mark>的作业/进程</dd>
+                        
+                        <dt>变体形式</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>非抢占式</mark> (SJF/SPF) - <strong>默认版本</strong></li>
+                                <li><mark>抢占式</mark> (SRTN，最短剩余时间优先)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>能获得"较短"的<mark>平均等待时间</mark>和<mark>周转时间</mark></li>
+                                <li>对<mark>长作业不利</mark>，可能导致<mark>饥饿现象</mark></li>
+                                <li>默认指非抢占式版本</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>重要细节</dt>
+                        <dd>
+                            <ul>
+                                <li>"最短平均时间"需加<mark>"所有进程同时可运行"</mark>的前提条件</li>
+                                <li>抢占式版本(SRTN)表现更优</li>
+                                <li>依赖用户提供的运行时间数据，存在<mark>用户虚拟风险</mark></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="hint">
+                        <span class="hint-icon">⚠️</span> 可能导致长作业"饿死"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: HRRN -->
+        <div class="card" tabindex="0" role="button" aria-label="高响应比优先算法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-emoji">📊</div>
+                <h2 class="card-title">高响应比优先 (HRRN)</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h2 class="card-title">高响应比优先 (HRRN)</h2>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>算法思想</dt>
+                        <dd>综合考虑<mark>等待时间</mark>和<mark>要求服务时间</mark></dd>
+                        
+                        <dt>响应比公式</dt>
+                        <dd>
+                            <p style="text-align: center; font-size: 1.2rem; margin: 12px 0;">
+                                <mark>响应比 = (等待时间 + 要求服务时间) / 要求服务时间</mark>
+                            </p>
+                            <p style="text-align: center;">(该值总是 ≥1)</p>
+                        </dd>
+                        
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>非抢占式</mark>算法</li>
+                                <li><mark>不会导致饥饿现象</mark></li>
+                                <li>综合了FCFS和SJF的优点</li>
+                                <li>长作业随着等待时间增加响应比会提高</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>调度过程示例</dt>
+                        <dd>
+                            <ul>
+                                <li>0时刻只有P1到达，直接执行7个单位</li>
+                                <li>7时刻计算各进程响应比，选择最高者执行</li>
+                                <li>当要求服务时间相同时，等待时间长的进程优先</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="hint">
+                        <span class="hint-icon">✅</span> 解决了FCFS和SJF的主要缺点
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Algorithm Comparison -->
+        <div class="card" tabindex="0" role="button" aria-label="算法对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-emoji">🆚</div>
+                <h2 class="card-title">算法对比</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h2 class="card-title">三种算法对比</h2>
+                    <div class="divider"></div>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 12px;">
+                        <tr style="background-color: hsl(var(--primary-hue), 50%, 90%);">
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">维度</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">FCFS</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">SJF</th>
+                            <th style="padding: 8px; text-align: left; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">HRRN</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%); font-weight: 600;">公平性</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">最高</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">最低</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">中等</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%); font-weight: 600;">性能指标</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">一般</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">较好 (SRTN最优)</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">折中</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%); font-weight: 600;">饥饿问题</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">无</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">可能发生</td>
+                            <td style="padding: 8px; border-bottom: 1px solid hsl(var(--primary-hue), 30%, 80%);">无</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px; font-weight: 600;">考虑因素</td>
+                            <td style="padding: 8px;">等待时间</td>
+                            <td style="padding: 8px;">运行时间</td>
+                            <td style="padding: 8px;">两者兼顾</td>
+                        </tr>
+                    </table>
+                    <div class="hint">
+                        <span class="hint-icon">📌</span> 都适用于批处理系统，不关心响应时间
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            // Handle both click and touch events
+            cards.forEach(card => {
+                // Click event for desktop and tap for mobile
+                card.addEventListener('click', function(e) {
+                    // Prevent card flip when scrolling on mobile
+                    if (Math.abs(touchStartX - touchEndX) > 5) {
+                        return;
+                    }
+                    this.classList.toggle('flipped');
+                });
+                
+                // Touch events for better mobile handling
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    // Only flip if not a significant horizontal swipe
+                    if (Math.abs(touchStartX - touchEndX) < 10) {
+                        this.classList.toggle('flipped');
+                    }
+                }, {passive: true});
+            });
+            
+            // Keyboard accessibility
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const focusedCard = document.activeElement;
+                    if (focusedCard && focusedCard.classList.contains('card')) {
+                        focusedCard.classList.toggle('flipped');
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
