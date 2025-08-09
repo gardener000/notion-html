@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程调度学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 30%, 95%);
+            --card-back: hsl(var(--primary-hue), 15%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --text-light: hsl(0, 0%, 98%);
+            --highlight: hsl(var(--secondary-hue), 90%, 60%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin: 24px 0;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .card-content dl {
+            display: grid;
+            gap: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 50%, 30%);
+            margin-bottom: 4px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            color: var(--text-dark);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsla(var(--primary-hue), 30%, 80%);
+            margin: 12px 0;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .key-term {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        @media (prefers-reduced-motion) {
+            .card-inner {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>进程调度学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看进程调度时机">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">⏱️</div>
+                    <h2 class="card-title">进程调度时机</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">进程调度时机</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>需要调度的情况：</dt>
+                            <dd>
+                                <p><span class="key-term">主动放弃处理机</span>：</p>
+                                <ul>
+                                    <li>进程正常终止</li>
+                                    <li>运行过程中发生异常而终止</li>
+                                    <li>进程主动请求阻塞（如等待I/O）</li>
+                                </ul>
+                                <p><span class="key-term">被动放弃处理机</span>：</p>
+                                <ul>
+                                    <li>分给进程的时间片用完</li>
+                                    <li>有更紧急的事需要处理（如I/O中断）</li>
+                                    <li>有更高优先级的进程进入就绪队列</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>不能调度的情况：</dt>
+                            <dd>
+                                <ul>
+                                    <li>中断处理过程</li>
+                                    <li><mark>内核程序临界区</mark>（访问内核数据结构时需上锁）</li>
+                                    <li>原子操作过程</li>
+                                </ul>
+                                <p><span class="key-term">临界区区别</span>：</p>
+                                <ul>
+                                    <li>普通临界区（如访问打印机）：可调度</li>
+                                    <li>内核程序临界区：不可调度</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看进程调度方式">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">进程调度方式</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">进程调度方式</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="key-term">非剥夺调度方式</span>：</dt>
+                            <dd>
+                                <ul>
+                                    <li><strong>特点</strong>：仅允许进程主动放弃CPU</li>
+                                    <li><strong>优点</strong>：实现简单，系统开销小</li>
+                                    <li><strong>缺点</strong>：无法及时处理紧急任务</li>
+                                    <li><strong>适用场景</strong>：早期批处理系统</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="key-term">剥夺调度方式</span>：</dt>
+                            <dd>
+                                <ul>
+                                    <li><strong>特点</strong>：操作系统可强制剥夺当前进程CPU使用权</li>
+                                    <li><strong>优点</strong>：
+                                        <ul>
+                                            <li>优先处理紧急任务</li>
+                                            <li>支持时间片轮转</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>适用场景</strong>：分时操作系统、实时操作系统</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看进程切换与过程">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">进程切换与过程</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">进程切换与过程</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="key-term">狭义的进程调度</span>：</dt>
+                            <dd>
+                                <ul>
+                                    <li><strong>定义</strong>：从就绪队列中选择要运行的进程</li>
+                                    <li><strong>与切换的关系</strong>：
+                                        <ul>
+                                            <li>选中原进程：无需切换</li>
+                                            <li>选中新进程：需进行切换</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>广义调度</strong>：包含选择+切换两个步骤</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="key-term">进程切换的过程</span>：</dt>
+                            <dd>
+                                <ul>
+                                    <li><strong>核心操作</strong>：
+                                        <ul>
+                                            <li>保存原进程运行环境（PC、PSW、寄存器等至PCB）</li>
+                                            <li>恢复新进程运行环境（从PCB读取数据）</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>性能影响</strong>：
+                                        <ul>
+                                            <li>切换需要时间开销</li>
+                                            <li>过度切换会降低系统效率</li>
+                                            <li><mark>关键结论</mark>：并非调度越频繁并发性越高</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看重要考点与易混淆点">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">⚠️</div>
+                    <h2 class="card-title">重要考点与易混淆点</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">重要考点与易混淆点</h2>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>内核程序临界区</mark>与<mark>普通临界区</mark>的调度区别</li>
+                            <li>进程切换需要保存/恢复运行环境</li>
+                            <li>调度方式的选择依据（系统类型）</li>
+                            <li>"临界区不能调度"的表述需区分内核/普通</li>
+                            <li>调度与切换的狭义/广义区分</li>
+                            <li>非剥夺式调度导致紧急任务延迟</li>
+                            <li>时间片轮转依赖剥夺式调度</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // Click/touch event for flipping
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
