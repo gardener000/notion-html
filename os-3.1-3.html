@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程内存映像学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            background-color: white;
+        }
+
+        .flashcard-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid hsl(var(--primary-hue), 60%, 85%);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-top: 8px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: hsl(var(--primary-hue), 40%, 50%);
+        }
+
+        .memory-tip::before {
+            content: "💡";
+            margin-right: 6px;
+        }
+
+        @media (max-width: 400px) {
+            .flashcard {
+                height: 350px;
+            }
+            
+            .flashcard-front,
+            .flashcard-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>进程的内存映像</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="翻转卡片查看内存布局">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="card-icon">🧠</div>
+                    <div class="card-title">32位系统内存布局</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-title">32位系统内存布局</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>虚拟地址空间</dt>
+                            <dd>4GB（0x00000000-0xFFFFFFFF）</dd>
+                            
+                            <dt>内核区</dt>
+                            <dd>高地址1GB（0xC0000000-0xFFFFFFFF）</dd>
+                            <dd>存储操作系统内核代码、进程PCB、页表等</dd>
+                            <dd><mark>用户程序无法直接访问</mark></dd>
+                            
+                            <dt>用户区</dt>
+                            <dd>低地址3GB（0x00000000-0xBFFFFFFF）</dd>
+                        </dl>
+                        <div class="memory-tip">记住内核区在高端1GB，用户程序无法访问</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="翻转卡片查看用户区结构">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="card-icon">🗂️</div>
+                    <div class="card-title">用户区详细结构</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-title">用户区详细结构</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>1. 未使用区</dt>
+                            <dd>0x00000000-0x08048000</dd>
+                            
+                            <dt>2. 只读代码/数据区</dt>
+                            <dd>从0x08048000开始</dd>
+                            <dd>存储编译后的机器指令和<mark>const修饰的常变量</mark></dd>
+                            <dd>大小固定不变</dd>
+                            
+                            <dt>3. 读写数据区</dt>
+                            <dd>存储<mark>全局变量</mark>和<mark>static静态变量</mark></dd>
+                            <dd>大小固定</dd>
+                            
+                            <dt>4. 堆区(heap)</dt>
+                            <dd>由<mark>malloc/free</mark>动态管理</dd>
+                            <dd>大小可动态增减，最大可达1GB</dd>
+                            
+                            <dt>5. 共享库映射区</dt>
+                            <dd>存储库函数代码（如printf）</dd>
+                            
+                            <dt>6. 用户栈(stack)</dt>
+                            <dd>存储函数调用的<mark>局部变量</mark>、参数及返回地址</dd>
+                        </dl>
+                        <div class="memory-tip">从低到高记忆：未使用→只读→读写→堆→共享库→栈</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="翻转卡片查看变量存储区域">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="card-icon">📍</div>
+                    <div class="card-title">变量存储区域</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-title">变量存储区域</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>全局变量</dt>
+                            <dd>→ <mark>读写数据区</mark></dd>
+                            
+                            <dt>static变量</dt>
+                            <dd>→ <mark>读写数据区</mark></dd>
+                            
+                            <dt>const变量</dt>
+                            <dd>→ <mark>只读数据区</mark></dd>
+                            
+                            <dt>malloc分配</dt>
+                            <dd>→ <mark>堆区</mark></dd>
+                            
+                            <dt>局部变量</dt>
+                            <dd>→ <mark>用户栈</mark></dd>
+                            
+                            <dt>库函数调用</dt>
+                            <dd>→ <mark>共享库映射区</mark></dd>
+                        </dl>
+                        <div class="memory-tip">考试重点：区分不同变量的存储位置</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="翻转卡片查看宏定义与const对比">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="card-icon">🆚</div>
+                    <div class="card-title">宏定义 vs const</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-title">宏定义常量 vs const常变量</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>宏定义（如#define X 1024）</dt>
+                            <dd>预处理阶段直接替换为字面值</dd>
+                            <dd><mark>不单独分配内存</mark></dd>
+                            <dd>通过立即数寻址方式嵌入指令</dd>
+                            
+                            <dt>const变量（如const int b=2）</dt>
+                            <dd>存储在<mark>只读数据区</mark></dd>
+                            <dd>分配固定存储空间</dd>
+                            <dd>运行时不可修改</dd>
+                        </dl>
+                        <div class="memory-tip">关键区别：宏不占内存，const占用只读区</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="翻转卡片查看考试重点">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="card-icon">⚠️</div>
+                    <div class="card-title">考试重点与易错点</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-title">考试重点与易错点</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>易混淆点</dt>
+                            <dd><mark>宏定义</mark>与<mark>const</mark>的存储方式差异</dd>
+                            <dd>static变量的特殊存储位置</dd>
+                            <dd>未初始化变量的存储区域判断</dd>
+                            
+                            <dt>注意事项</dt>
+                            <dd>内核区普通程序无法直接访问</dd>
+                            <dd><mark>栈溢出</mark>风险（如递归过深）</dd>
+                            <dd>堆空间分配需考虑其他区域占用</dd>
+                        </dl>
+                        <div class="memory-tip">常考：给出代码片段判断变量存储区域</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashcards = document.querySelectorAll('.flashcard');
+            
+            flashcards.forEach(card => {
+                // Click/touch event for flipping
+                card.addEventListener('click', flipCard);
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        flipCard.call(this, e);
+                    }
+                });
+                
+                // Prevent card content from triggering flip
+                const cardBack = card.querySelector('.flashcard-back');
+                cardBack.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            
+            function flipCard(e) {
+                e.stopPropagation();
+                this.classList.toggle('flipped');
+                
+                // Focus management for accessibility
+                if (this.classList.contains('flipped')) {
+                    const firstFocusable = this.querySelector('a, button, [tabindex]');
+                    if (firstFocusable) {
+                        firstFocusable.focus();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
