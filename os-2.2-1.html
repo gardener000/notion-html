@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统调度概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 80%, 95%);
+            --card-back: hsl(0, 0%, 100%);
+            --text-dark: hsl(0, 0%, 15%);
+            --text-light: hsl(0, 0%, 100%);
+            --accent: hsl(var(--primary-hue), 70%, 50%);
+            --highlight: hsl(var(--secondary-hue), 90%, 70%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin: 16px 0 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px hsla(0, 0%, 0%, 0.15);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        .card-front .card-title {
+            font-size: 1.6rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            display: grid;
+            gap: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .memory-tip {
+            display: inline-flex;
+            background-color: hsl(var(--secondary-hue), 80%, 90%);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .card-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front .card-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统调度概念学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：调度基本概念 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="调度基本概念卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">调度基本概念</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">调度基本概念</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>当<mark>资源有限</mark>时，按照特定规则决定任务处理顺序的机制</dd>
+                            
+                            <dt>生活实例</dt>
+                            <dd>
+                                <ul>
+                                    <li>银行服务：普通客户<mark>先到先服务</mark>，VIP客户<mark>优先级更高</mark></li>
+                                    <li>宿舍卫生间：使用时间短的优先（1分钟>3分钟>10分钟）</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>核心问题</dt>
+                            <dd>在资源受限情况下，通过规则（如短作业优先、优先级等）实现<mark>任务有序处理</mark></dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：调度就像生活中的排队规则</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2：高级调度 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="高级调度卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📁</div>
+                    <div class="card-title">高级调度</div>
+                    <div>(作业调度)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">高级调度 (作业调度)</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>从<mark>外存作业后备队列</mark>选择作业调入内存，建立PCB</dd>
+                            
+                            <dt>关键特征</dt>
+                            <dd>
+                                <ul>
+                                    <li>每个作业生命周期内只<mark>调入/调出各一次</mark></li>
+                                    <li>调入时创建PCB，调出时撤销PCB</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>实例</dt>
+                            <dd>Windows系统提示"<mark>内存不足，请关闭程序</mark>"即涉及作业调度决策</dd>
+                            
+                            <dt>考试重点</dt>
+                            <dd>作业与进程的关系（作业启动程序，进程是执行实体）</dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：作业调度是"大门"，控制谁进入内存</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3：低级调度 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="低级调度卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">低级调度</div>
+                    <div>(进程调度)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">低级调度 (进程调度)</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>别名</dt>
+                            <dd>进程调度/<mark>处理机调度</mark></dd>
+                            
+                            <dt>核心功能</dt>
+                            <dd>从<mark>就绪队列</mark>选取进程分配CPU资源</dd>
+                            
+                            <dt>重要性</dt>
+                            <dd>
+                                <ul>
+                                    <li>实现<mark>多道程序并发执行</mark>的基础</li>
+                                    <li>通过<mark>高频调度</mark>（毫秒级）制造"并行"假象</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>运行机制</dt>
+                            <dd>快速轮转使宏观上表现为多进程同时运行</dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：进程调度是"裁判"，快速决定谁用CPU</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4：中级调度 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="中级调度卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">中级调度</div>
+                    <div>(内存调度)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">中级调度 (内存调度)</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>触发条件</dt>
+                            <dd><mark>内存资源紧张</mark>时</dd>
+                            
+                            <dt>核心操作</dt>
+                            <dd>
+                                <ul>
+                                    <li>将非紧急进程数据移至<mark>外存</mark>→进入<mark>挂起态</mark></li>
+                                    <li>内存空闲时选择挂起队列进程调回内存</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>现实表现</dt>
+                            <dd>手机APP切换卡顿常因进程数据需从外存重新加载</dd>
+                            
+                            <dt>与阻塞态区别</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>挂起态</mark>：进程映像在<mark>外存</mark></li>
+                                    <li><mark>阻塞态</mark>：进程映像在<mark>内存</mark></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：内存调度是"临时工"，平衡内存使用</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5：三层调度对比 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="三层调度对比卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-title">三层调度对比</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">三层调度对比</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>空间维度</dt>
+                            <dd>
+                                <ul>
+                                    <li>高级/中级：<mark>外存←内存</mark>（前者面向作业，后者面向进程）</li>
+                                    <li>低级：<mark>内存→CPU</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>频率梯度</dt>
+                            <dd>高级(最低) < 中级 < 低级(最高)</dd>
+                            
+                            <dt>状态影响</dt>
+                            <dd>
+                                <ul>
+                                    <li>高级：无→创建态→就绪态</li>
+                                    <li>中级：挂起态↔就绪态</li>
+                                    <li>低级：就绪态→运行态</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>生命周期</dt>
+                            <dd>
+                                <ul>
+                                    <li>高级：单次调入调出</li>
+                                    <li>中级：可能多次调入调出</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：从低频到高频，从外存到CPU</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6：七状态模型 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="七状态模型卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">七状态模型</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-title">七状态模型</div>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>状态细分</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>就绪挂起</mark>：内存不足时从就绪态转入</li>
+                                    <li><mark>阻塞挂起</mark>：从阻塞态转入</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>状态转换</dt>
+                            <dd>
+                                <ul>
+                                    <li>就绪态↔就绪挂起（通过中级调度）</li>
+                                    <li>阻塞态↔阻塞挂起</li>
+                                    <li>特殊情形：阻塞挂起→事件发生→直接进入就绪挂起</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>创建异常</dt>
+                            <dd>新建进程可能因内存不足直接进入就绪挂起</dd>
+                            
+                            <dt>与阻塞态区别</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>挂起态</mark>：进程映像在<mark>外存</mark></li>
+                                    <li><mark>阻塞态</mark>：进程映像在<mark>内存</mark></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="memory-tip">💡 记忆点：七状态=五状态+两个挂起状态</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // 添加键盘支持
+        document.addEventListener('keydown', function(event) {
+            const cards = document.querySelectorAll('.card');
+            const activeElement = document.activeElement;
+            
+            if (event.key === ' ' || event.key === 'Enter') {
+                if (activeElement.classList.contains('card')) {
+                    flipCard(activeElement);
+                    event.preventDefault();
+                }
+            } else if (event.key === 'ArrowRight') {
+                const index = Array.from(cards).indexOf(activeElement);
+                if (index < cards.length - 1) {
+                    cards[index + 1].focus();
+                    event.preventDefault();
+                }
+            } else if (event.key === 'ArrowLeft') {
+                const index = Array.from(cards).indexOf(activeElement);
+                if (index > 0) {
+                    cards[index - 1].focus();
+                    event.preventDefault();
+                }
+            }
+        });
+
+        // 触摸设备优化
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            const cards = document.querySelectorAll('.card');
+            const activeElement = document.activeElement;
+            const index = Array.from(cards).indexOf(activeElement);
+            
+            if (Math.abs(touchEndX - touchStartX) > 50) { // 最小滑动距离
+                if (touchEndX < touchStartX && index < cards.length - 1) {
+                    // 向左滑动，下一张卡片
+                    cards[index + 1].focus();
+                } else if (touchEndX > touchStartX && index > 0) {
+                    // 向右滑动，上一张卡片
+                    cards[index - 1].focus();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
