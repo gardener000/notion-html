@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统调度学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .flashcards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .flashcard {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--border-radius);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .flashcard-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .flashcard-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .flashcard-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .flashcard-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .flashcard-content {
+            width: 100%;
+        }
+
+        .flashcard-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-top: 12px;
+        }
+
+        .flashcard-content dd {
+            margin-left: 0;
+            margin-bottom: 12px;
+            padding-left: 16px;
+        }
+
+        .flashcard-content ul {
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+
+        .flashcard-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        @media (max-width: 400px) {
+            .flashcard {
+                height: 350px;
+            }
+            
+            .flashcard-face {
+                padding: 16px;
+            }
+            
+            .flashcard-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统调度学习卡片</h1>
+    
+    <div class="flashcards-container">
+        <!-- 卡片1: 调度程序的作用 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="调度程序的作用卡片，点击翻转">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-icon">📊</div>
+                <h2 class="flashcard-title">调度程序的作用</h2>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="flashcard-content">
+                    <dl>
+                        <dt>状态转换控制</dt>
+                        <dd>负责进程在<mark>就绪态</mark>和<mark>运行态</mark>之间的转换</dd>
+                        
+                        <dt>决策内容</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>进程选择</mark>：通过调度算法决定哪个就绪进程获得CPU资源</li>
+                                <li><mark>时间分配</mark>：确定进程获得的时间片大小</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>本质功能</dt>
+                        <dd>管理当前运行进程的下处理机决策和就绪队列进程的上处理机选择</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 调度时机 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="调度时机卡片，点击翻转">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-icon">⏱️</div>
+                <h2 class="flashcard-title">调度时机</h2>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="flashcard-content">
+                    <dl>
+                        <dt>常规触发事件</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>进程创建</mark>：新进程加入就绪队列可能引发抢占</li>
+                                <li><mark>进程终止</mark>：运行进程结束导致CPU空闲</li>
+                                <li><mark>进程阻塞</mark>：运行进程主动放弃CPU</li>
+                                <li><mark>I/O中断</mark>：可能唤醒阻塞进程改变就绪队列</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>调度策略差异</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>非抢占式</mark>：仅当运行进程阻塞或退出时触发</li>
+                                <li><mark>抢占式</mark>：每个时钟中断或每个时钟中断强制触发检查</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>关键机制</dt>
+                        <dd>就绪队列的任何变动都会触发调度程序重新评估</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 线程调度 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="线程调度卡片，点击翻转">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-icon">🧵</div>
+                <h2 class="flashcard-title">线程调度</h2>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="flashcard-content">
+                    <dl>
+                        <dt>不支持内核级线程的操作系统</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>调度单位</mark>：以整个进程为基本调度单位</li>
+                                <li><mark>资源分配</mark>：进程既是调度单位也是资源分配单位</li>
+                                <li><mark>执行特点</mark>：进程内所有线程共享同一个CPU时间内</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>支持内核级线程的操作系统</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>调度单位</mark>：内核线程成为基本调度单位</li>
+                                <li><mark>资源分离</mark>：
+                                    <ul>
+                                        <li>调度层面: 内核线程独立参与CPU竞争</li>
+                                        <li>资源层面: 进程仍作为内存等资源的分配单位</li>
+                                    </ul>
+                                </li>
+                                <li><mark>并发优势</mark>：同一进程的多个线程可并行执行在不同CPU核心</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 闲逛进程 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="闲逛进程卡片，点击翻转">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-icon">😴</div>
+                <h2 class="flashcard-title">闲逛进程</h2>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="flashcard-content">
+                    <dl>
+                        <dt>核心作用</dt>
+                        <dd>作为就绪队列为空时的默认运行进程，保持CPU持续运转</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>特性</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>优先级特征</mark>：系统最低优先级，确保随时可被其他进程抢占</li>
+                                <li><mark>执行特点</mark>：
+                                    <ul>
+                                        <li>循环执行零地址指令（不涉及访存或寄存器访问）</li>
+                                        <li>完整指令周期后自动检查中断</li>
+                                    </ul>
+                                </li>
+                                <li><mark>能效优势</mark>：特殊指令设计使CPU处于低功耗状态</li>
+                                <li><mark>调度关联</mark>：通过周期性中断唤醒调度程序检查新就绪进程</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashcards = document.querySelectorAll('.flashcard');
+            
+            flashcards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止卡片内部滚动时触发翻转
+            const cardBacks = document.querySelectorAll('.flashcard-back');
+            cardBacks.forEach(back => {
+                back.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
