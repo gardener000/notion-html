@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Level Queue Scheduling Flashcards</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight-color: hsl(var(--primary-hue), 80%, 60%);
+            --accent-color: hsl(var(--secondary-hue), 80%, 60%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .flashcards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .flashcard {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            border-radius: var(--border-radius);
+        }
+
+        .flashcard-front {
+            background-color: var(--card-color);
+        }
+
+        .flashcard-back {
+            background-color: var(--card-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            text-align: left;
+            width: 100%;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: var(--highlight-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .flashcard {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>多级队列调度算法学习卡</h1>
+    
+    <div class="flashcards-container">
+        <!-- Card 1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📊</div>
+                    <div class="card-title">多级队列调度算法概念</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>基本定义</mark>: 系统中按进程类型设置多个队列，进程创建成功后插入对应类型的队列</li>
+                            <li><mark>队列特点</mark>: 
+                                <ul style="margin-top: 8px;">
+                                    <li>不同队列具有不同优先级</li>
+                                    <li>每个队列可采用独立的调度策略</li>
+                                    <li>系统进程队列优先级最高，批处理队列优先级最低</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">🏷️</div>
+                    <div class="card-title">典型队列分类</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>最高优先级</mark>: 系统进程（如内存管理进程）</li>
+                            <li><mark>中等优先级</mark>: 交互式进程（如游戏、打字软件）</li>
+                            <li><mark>最低优先级</mark>: 批处理进程（如AI模型训练、视频特效渲染）</li>
+                            <div class="divider"></div>
+                            <li><mark>设计原因</mark>:
+                                <ul style="margin-top: 8px;">
+                                    <li>系统进程优先级最高是必然需求</li>
+                                    <li>交互式进程需要快速响应</li>
+                                    <li>批处理进程对实时性要求低</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⚖️</div>
+                    <div class="card-title">队列优先级策略</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>固定优先级策略</mark>:
+                                <ul style="margin-top: 8px;">
+                                    <li>高优先级队列非空时，低优先级队列不会被调度</li>
+                                    <li>缺点：可能导致低优先级进程长期饥饿</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>时间片划分策略</mark>:
+                                <ul style="margin-top: 8px;">
+                                    <li>示例分配比例：系统进程50%、交互式进程40%、批处理进程10%</li>
+                                    <li>优点：保证各类进程都能获得响应时间</li>
+                                    <li>实际应用：可设置100ms周期，按比例分配各队列执行时间</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">🔄</div>
+                    <div class="card-title">队列内调度策略选择</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>系统进程队列</mark>: 可采用优先级调度（选择最紧急的进程）</li>
+                            <li><mark>交互式队列</mark>: 适合时间片轮转（RR），保证快速响应</li>
+                            <li><mark>批处理队列</mark>: 可采用先来先服务（FCFS）</li>
+                            <div class="divider"></div>
+                            <li><mark>灵活性</mark>:
+                                <ul style="margin-top: 8px;">
+                                    <li>实际系统中可设置更多队列级别</li>
+                                    <li>各队列调度策略可根据需求自由组合</li>
+                                    <li>选择队列后，再在队列内部选择具体进程执行</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" onclick="this.classList.toggle('flipped')">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📌</div>
+                    <div class="card-title">核心流程与考点</div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>核心流程</mark>:
+                                <ol style="margin-top: 8px; padding-left: 24px;">
+                                    <li>进程分类入队列</li>
+                                    <li>选择队列（按优先级/时间片）</li>
+                                    <li>队列内部选择具体进程执行</li>
+                                </ol>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>重要考点</mark>:
+                                <ul style="margin-top: 8px;">
+                                    <li>队列优先级设计逻辑（系统进程>交互式>批处理）</li>
+                                    <li>交互式进程优先级高于批处理的实际意义</li>
+                                    <li>绝对优先级可能导致低优先级进程饥饿</li>
+                                    <li>不同队列可采用独立调度策略</li>
+                                    <li>多级队列与单一队列调度（如RR）的本质差异</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add touch support for mobile devices
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.flashcard');
+            
+            cards.forEach(card => {
+                // For touch devices
+                card.addEventListener('touchstart', function(e) {
+                    this.classList.toggle('flipped');
+                    e.preventDefault(); // Prevent scrolling when touching cards
+                });
+                
+                // For keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        this.classList.toggle('flipped');
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
