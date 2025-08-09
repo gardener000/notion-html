@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内存基础知识学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(var(--secondary-hue), 90%, 60%);
+            --highlight-color: hsl(var(--secondary-hue), 90%, 90%);
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            perspective: 1000px;
+            height: 300px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background: var(--card-bg);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: var(--card-bg);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .memory-tip::before {
+            content: "💡";
+            margin-right: 6px;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>内存基础知识学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" aria-label="内存基本概念卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">💾</div>
+                <h2 class="card-title">内存基本概念</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">内存基本概念</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>硬件定义</dt>
+                        <dd>计算机中用于<mark>临时存储数据</mark>的硬件设备</dd>
+                        <dd>示例：华为P30的8GB内存，外星人笔记本的32GB内存</dd>
+                        
+                        <dt>与外存区别</dt>
+                        <dd>内存是<mark>临时存储</mark>(如8GB)，外存是<mark>永久存储</mark>(如64GB)</dd>
+                        
+                        <dt>价格参考</dt>
+                        <dd>三星DDR4 4GB内存条约355元</dd>
+                    </dl>
+                    <div class="memory-tip">内存是临时存储设备，与外存有本质区别</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" aria-label="内存核心功能卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">⚙️</div>
+                <h2 class="card-title">内存核心功能</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">内存核心功能</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>数据缓冲</dt>
+                        <dd>解决<mark>CPU(10Hz级)</mark>与<mark>硬盘(10Hz级)</mark>速度矛盾</dd>
+                        
+                        <dt>存储单元</dt>
+                        <dd>内存被划分为若干"<mark>小房间</mark>"(存储单元)</dd>
+                        
+                        <dt>编址方式</dt>
+                        <dd><mark>字节编址</mark>：1地址=1字节=8bit(最常见)</dd>
+                        <dd><mark>字编址</mark>：1地址=1字(长度取决于字长，如16/32/64位)</dd>
+                    </dl>
+                    <div class="memory-tip">编址方式决定存储单元大小，字节编址最常见</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" aria-label="地址管理机制卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">📍</div>
+                <h2 class="card-title">地址管理机制</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">地址管理机制</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>地址分配</dt>
+                        <dd>从<mark>0开始连续编号</mark></dd>
+                        
+                        <dt>存储容量计算</dt>
+                        <dd>8GB内存按字节编址：8×2³⁰=2³³个存储单元</dd>
+                        <dd>需要<mark>33位二进制地址</mark>表示(2³³需要33个二进制位)</dd>
+                        
+                        <dt>数据单位换算</dt>
+                        <dd>1B=8b</dd>
+                        <dd>1KB=2¹⁰B=1024B</dd>
+                        <dd>1MB=2²⁰B=1,048,576B</dd>
+                        <dd>1GB=2³⁰B=1,073,741,824B</dd>
+                    </dl>
+                    <div class="memory-tip">内存容量与地址位数关系：n位地址可寻址2ⁿ个存储单元</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" aria-label="指令工作原理卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">📝</div>
+                <h2 class="card-title">指令工作原理</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">指令工作原理</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>机器指令组成</dt>
+                        <dd><mark>操作码</mark>(操作类型)+<mark>参数</mark>(内存地址/寄存器编号)</dd>
+                        
+                        <dt>示例：x=x+1</dt>
+                        <dd>编译为3条机器指令：</dd>
+                        <dd>1. 从内存地址79读取数据到3号寄存器</dd>
+                        <dd>2. 将3号寄存器值加1</dd>
+                        <dd>3. 将3号寄存器值写回内存地址79</dd>
+                    </dl>
+                    <hr>
+                    <p><mark>程序段</mark>存放进程的指令代码</p>
+                    <p><mark>数据段</mark>存放程序变量(如x变量)</p>
+                    <div class="memory-tip">指令=操作码+地址参数，理解x=x+1的3步执行过程</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" aria-label="地址转换策略卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">地址转换策略</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">地址转换策略</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>绝对装入</dt>
+                        <dd>编译时确定<mark>物理地址</mark></dd>
+                        <dd>灵活性差，仅适用于<mark>单道程序</mark>环境</dd>
+                        
+                        <dt>可重定位装入(静态重定位)</dt>
+                        <dd>装入时<mark>一次性地址转换</mark></dd>
+                        <dd>需分配<mark>连续内存空间</mark>，运行期间不可移动</dd>
+                        
+                        <dt>动态运行时装入(动态重定位)</dt>
+                        <dd>运行时通过<mark>重定位寄存器</mark>计算物理地址</dd>
+                        <dd>支持进程移动和<mark>不连续分配</mark>(现代系统采用)</dd>
+                    </dl>
+                    <div class="memory-tip">动态重定位最灵活，现代系统普遍采用</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" aria-label="程序运行流程卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🖥️</div>
+                <h2 class="card-title">程序运行流程</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">程序运行流程</h2>
+                <div class="card-content">
+                    <ol>
+                        <li><mark>源代码编写</mark>(.c文件)</li>
+                        <li><mark>编译</mark>生成目标模块(.o文件)</li>
+                        <li><mark>链接</mark>形成装入模块(.exe文件)</li>
+                        <li><mark>装入内存</mark>并执行</li>
+                    </ol>
+                    <hr>
+                    <dl>
+                        <dt>链接方式</dt>
+                        <dd><mark>静态链接</mark>：运行前完成所有链接工作</dd>
+                        <dd><mark>装入时动态链接</mark>：装入内存时实时链接</dd>
+                        <dd><mark>运行时动态链接</mark>：执行时按需调入并链接(如Windows的DLL)</dd>
+                    </dl>
+                    <div class="memory-tip">记住4个步骤：编写→编译→链接→装入</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
