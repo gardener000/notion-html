@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数值分析学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 100%, 97%);
+            --card-back: hsl(var(--primary-hue), 30%, 95%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            margin-bottom: 24px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            border: 1px solid hsl(var(--primary-hue), 60%, 85%);
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            border: 1px solid hsl(var(--primary-hue), 30%, 80%);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 80%);
+            margin: 12px 0;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: hsl(var(--primary-hue), 60%, 50%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>数值分析学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    函数逼近 vs 曲线拟合
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">📊</div>
+                <div class="card-title">函数逼近 vs 曲线拟合</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>函数逼近</mark>：用简单函数近似代替给定函数</li>
+                        <li><mark>逼近</mark>：用连续函数"逼近"连续函数</li>
+                        <li><mark>拟合</mark>：用连续函数"拟合"离散数据</li>
+                        <li>逼近/拟合 vs 插值：</li>
+                        <ul>
+                            <li>逼近/拟合不要求函数通过已知点</li>
+                            <li>插值要求函数必须经过已知点</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    拟合 vs 插值
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">🔍</div>
+                <div class="card-title">拟合 vs 插值</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>拟合</mark>：整体接近</li>
+                        <li><mark>插值</mark>：局部限制</li>
+                        <li>关键区别：</li>
+                        <ul>
+                            <li>拟合追求整体趋势匹配</li>
+                            <li>插值要求精确通过每个数据点</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    逼近的度量方法
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">📏</div>
+                <div class="card-title">逼近的度量方法</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>一致逼近</mark>：最大的偏差不超过阈值</li>
+                        <li>公式：‖f(x)-y(x)‖ = max|f(x)-y(x)|</li>
+                        <li><mark>平方逼近</mark>：平方和不超过阈值</li>
+                        <li>公式：‖f(x)-y(x)‖ = √∫[f(x)-y(x)]²dx</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    二次函数拟合示例
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="icon">🧮</div>
+                <div class="card-title">二次函数拟合示例</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>给定数据点：(1,10), (3,5), ..., (10,4)</li>
+                        <li>拟合函数：y(x) = a + bx + cx²</li>
+                        <li>使用<mark>最小二乘法</mark>求解系数</li>
+                        <li>建立正规方程组：</li>
+                        <ul>
+                            <li>n·a + b·Σx_i + c·Σx_i² = Σy_i</li>
+                            <li>a·Σx_i + b·Σx_i² + c·Σx_i³ = Σx_i y_i</li>
+                            <li>a·Σx_i² + b·Σx_i³ + c·Σx_i⁴ = Σx_i² y_i</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Add keyboard accessibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        flipCard(this);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
