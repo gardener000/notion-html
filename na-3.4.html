@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>线性代数与逼近理论学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --primary: hsl(var(--primary-hue), 80%, 50%);
+            --radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            height: 300px;
+            position: relative;
+            width: 100%;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: var(--radius);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--card-color);
+        }
+
+        .card-back {
+            background: var(--card-color);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 12px;
+            color: var(--primary);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, hsl(0, 0%, 80%), transparent;
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: hsl(0, 0%, 10%);
+                --card-color: hsl(0, 0%, 15%);
+                --text-color: hsl(0, 0%, 90%);
+                --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>线性无关函数族和权函数</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="最小二乘法基础卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📊</div>
+                <h2 class="card-title">最小二乘法基础</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">最小二乘法基础</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>基本概念</dt>
+                        <dd>给定数据点 <mark>(xᵢ, yᵢ)</mark> (i=1,2,...,m)，其中 <mark>m >> n</mark></dd>
+                        <dd>构建近似函数 <mark>s(x)</mark> 逼近真实函数 <mark>y=f(x)</mark></dd>
+                        
+                        <dt>最佳平方逼近</dt>
+                        <dd>最小化残差平方和: <mark>||δ||₂² = ∑[s*(xᵢ) - f(xᵢ)]²</mark></dd>
+                        <dd>常用多项式形式: <mark>s(x) = a + bx + cx² + dx³ + ...</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="线性无关函数族卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧩</div>
+                <h2 class="card-title">线性无关函数族</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">线性无关函数族</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>函数集合 <mark>{φ₀, φ₁, ..., φₙ}</mark> 线性无关当且仅当 <mark>∑αⱼφⱼ(x)=0 ⇒ αⱼ=0 ∀j</mark></dd>
+                        
+                        <dt>典型例子</dt>
+                        <dd><mark>{1, x, x², ..., xⁿ}</mark> 构成多项式空间 <mark>Hₙ</mark></dd>
+                        
+                        <dt>作用</dt>
+                        <dd>作为逼近函数的"素材库"</dd>
+                        <dd>用于构建近似函数: <mark>s*(x) = ∑aⱼφⱼ(x)</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="权函数卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">⚖️</div>
+                <h2 class="card-title">权函数</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">权函数</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>非负函数 <mark>ρ(x)</mark> 满足特定积分条件</dd>
+                        
+                        <dt>作用</dt>
+                        <dd>为不同数据点赋予不同重要性</dd>
+                        
+                        <dt>加权最小二乘</dt>
+                        <dd><mark>||δ||₂² = ∑ω(xᵢ)[s*(xᵢ) - f(xᵢ)]²</mark></dd>
+                        <dd>当某些点更重要时，增大其权重</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="内积空间卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📐</div>
+                <h2 class="card-title">内积空间</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">内积空间</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>离散形式</dt>
+                        <dd><mark>(f,g) = ∑ω(xᵢ)f(xᵢ)g(xᵢ)</mark></dd>
+                        
+                        <dt>连续形式</dt>
+                        <dd><mark>(f,g) = ∫ω(x)f(x)g(x)dx</mark></dd>
+                        
+                        <dt>性质</dt>
+                        <dd>对称性: <mark>(u,v) = (v,u)</mark></dd>
+                        <dd>线性性: <mark>(αu+βv,w) = α(u,w)+β(v,w)</mark></dd>
+                        <dd>正定性: <mark>(u,u) ≥ 0</mark> 且等于0当且仅当 <mark>u=0</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="正规方程组卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧮</div>
+                <h2 class="card-title">正规方程组</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">正规方程组</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>形式</dt>
+                        <dd>矩阵方程 <mark>Ga = b</mark></dd>
+                        <dd>其中 <mark>Gⱼₖ = (φⱼ,φₖ)</mark>, <mark>bⱼ = (φⱼ,f)</mark></dd>
+                        
+                        <dt>解的存在性</dt>
+                        <dd>当函数族线性无关时，<mark>G</mark> 非奇异，解唯一</dd>
+                        
+                        <dt>多项式基特例</dt>
+                        <dd>当 <mark>φⱼ = xʲ</mark> 且 <mark>ω(x)≡1</mark> 时，矩阵元素变为 <mark>∑xᵢʲ⁺ᵏ</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">卡片 1/5</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // Update progress text
+            function updateProgress() {
+                document.querySelector('.progress').textContent = `卡片 ${currentCardIndex + 1}/${cards.length}`;
+            }
+            
+            // Flip card on click/tap
+            cards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    
+                    // Update current card index
+                    if (this.classList.contains('flipped')) {
+                        currentCardIndex = index;
+                        updateProgress();
+                    }
+                });
+                
+                // Also support keyboard navigation
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Initialize progress
+            updateProgress();
+            
+            // Support swipe gestures for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // minimum swipe distance
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // Swipe left - go to next card
+                    if (currentCardIndex < cards.length - 1) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex++;
+                        cards[currentCardIndex].classList.add('flipped');
+                        updateProgress();
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // Swipe right - go to previous card
+                    if (currentCardIndex > 0) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex--;
+                        cards[currentCardIndex].classList.add('flipped');
+                        updateProgress();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
