@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正交函数组学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 20%);
+            --card-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: hsl(var(--primary-hue), 20%, 95%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 50%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-light);
+            box-shadow: var(--card-shadow);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 50%, 90%);
+            border: 2px solid hsl(var(--primary-hue), 50%, 70%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 50%, 30%);
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 50%, 40%);
+            margin-top: 8px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>正交函数组学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" aria-label="正交函数组定义卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📐</div>
+                    <div class="card-title">正交函数组的定义</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">🔍</div>
+                        <dl>
+                            <dt>带权正交函数组</dt>
+                            <dd>不同函数间<mark>内积为零</mark>，同一函数内积为<mark>非零常数</mark></dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>几何意义</dt>
+                            <dd>类比向量的垂直性，连续函数的<mark>积分内积为零</mark></dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>关键作用</dt>
+                            <dd>使法方程组的<mark>系数矩阵变为对角阵</mark>，大幅降低计算复杂度</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" aria-label="正交函数组优势卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">✨</div>
+                    <div class="card-title">正交函数组的优势</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">🏆</div>
+                        <dl>
+                            <dt>计算简化</dt>
+                            <dd>使系数矩阵<mark>对角化</mark>，求解过程极大简化</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>解决病态问题</dt>
+                            <dd>能有效解决<mark>希尔伯特矩阵</mark>的病态问题</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>数值稳定性</dt>
+                            <dd>提高数值计算的<mark>稳定性</mark>和<mark>精度</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" aria-label="正交多项式卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🧮</div>
+                    <div class="card-title">正交多项式</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">📊</div>
+                        <dl>
+                            <dt>生成方法</dt>
+                            <dd><mark>逐个递推</mark>生成，确保每个多项式与之前所有正交</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>常见类型</dt>
+                            <dd>勒让德多项式、切比雪夫多项式、拉盖尔多项式、埃尔米特多项式</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>多项式优势</dt>
+                            <dd>方便<mark>加减乘除</mark>运算，适合数值分析</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" aria-label="勒让德多项式卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📈</div>
+                    <div class="card-title">勒让德多项式</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">🔢</div>
+                        <dl>
+                            <dt>性质</dt>
+                            <dd><mark>正交性</mark>、<mark>奇偶性</mark>、递推关系</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>图形特征</dt>
+                            <dd>波浪形态，零点分布均匀</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>递推公式</dt>
+                            <dd>Pₙ₊₁(x) = [(2n+1)xPₙ(x) - nPₙ₋₁(x)]/(n+1)</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" aria-label="切比雪夫多项式卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🌀</div>
+                    <div class="card-title">切比雪夫多项式</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">🎯</div>
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>Tₙ(x) = cos(n·arccos x)，权函数1/√(1-x²)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>特征</dt>
+                            <dd>波动范围固定在<mark>[-1,1]</mark>区间</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>应用</dt>
+                            <dd>在<mark>最佳一致逼近</mark>中具有核心作用</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>零点分布</dt>
+                            <dd>与余弦函数对应，在单位圆上均匀分布</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" aria-label="最佳平方逼近卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🎯</div>
+                    <div class="card-title">最佳平方逼近</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">📉</div>
+                        <dl>
+                            <dt>原理</dt>
+                            <dd>正交多项式使法方程组变为<mark>对角阵</mark></dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>系数计算</dt>
+                            <dd>Aₖ = (f,φₖ)/(φₖ,φₖ)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>示例</dt>
+                            <dd>eˣ在[-1,1]区间的三次逼近：计算内积得四个系数</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>结果</dt>
+                            <dd>最终多项式为各系数乘以对应勒让德多项式之和</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片7 -->
+        <div class="card" tabindex="0" aria-label="最小二乘拟合卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">✂️</div>
+                    <div class="card-title">最小二乘拟合</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <div class="emoji">🔧</div>
+                        <dl>
+                            <dt>特点</dt>
+                            <dd>内积计算为<mark>向量点乘</mark>，比连续情况简单</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>现推多项式</dt>
+                            <dd>优于直接使用现成多项式，适应不同数据点</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>三步骤</dt>
+                            <dd>1. 递推正交多项式<br>2. 计算内积<br>3. 求解系数</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>优势</dt>
+                            <dd>易于<mark>编程实现</mark>，适合反复迭代和误差控制</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加触摸事件支持
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                this.classList.toggle('flipped');
+                e.preventDefault(); // 防止触摸事件触发其他行为
+            });
+        });
+    </script>
+</body>
+</html>
