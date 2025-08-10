@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最小二乘法学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 16px 0;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 0;
+            perspective: 1000px;
+            height: 300px;
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 80%, 95%), hsl(var(--primary-hue), 80%, 90%));
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 8px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>最小二乘法学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" aria-label="最小二乘法概念卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">📊</div>
+                <div class="card-title">最小二乘法基本概念</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">最小二乘法基本概念</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>基本任务</dt>
+                        <dd>用<mark>连续函数逼近</mark>离散测量数据</dd>
+                        
+                        <dt>核心思想</dt>
+                        <dd>通过<mark>平方误差最小化</mark>实现最佳拟合</dd>
+                        
+                        <dt>误差处理</dt>
+                        <dd>简单误差相加会因正负抵消而失真 → 采用<mark>平方误差累加</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" aria-label="函数选择卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🧩</div>
+                <div class="card-title">拟合函数选择</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">拟合函数选择</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>常用选择</dt>
+                        <dd><mark>多项式函数</mark>是最常用的拟合函数形式</dd>
+                        
+                        <dt>通用表达</dt>
+                        <dd>数学家追求更通用的<mark>线性无关函数族</mark>作为逼近工具</dd>
+                        
+                        <dt>素材库比喻</dt>
+                        <dd>线性无关函数族就像做菜的调料，不同函数具有独特性质才能组合逼近任意函数</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" aria-label="数学表达卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">∫</div>
+                <div class="card-title">最小二乘数学表达</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">最小二乘数学表达</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>目标函数</dt>
+                        <dd>最小化所有点<mark>误差平方和</mark>: Σ(yᵢ - f(xᵢ))²</dd>
+                        
+                        <dt>求解方法</dt>
+                        <dd>对系数求<mark>偏导</mark>并令导数为零，得到多元函数极值的必要条件</dd>
+                        
+                        <dt>权重扩展</dt>
+                        <dd>引入<mark>权重函数</mark>可调整不同数据点的重要性</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" aria-label="内积应用卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">⊗</div>
+                <div class="card-title">内积在最小二乘法中的应用</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">内积在最小二乘法中的应用</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>内积定义</dt>
+                        <dd>两个函数乘积在区间内的<mark>积分</mark>，推广了点乘概念</dd>
+                        
+                        <dt>离散形式</dt>
+                        <dd>向量内积 Σf(xᵢ)g(xᵢ) 是连续内积的离散对应</dd>
+                        
+                        <dt>统一表达</dt>
+                        <dd>通过<mark>带权内积</mark>将最小二乘问题转化为线性方程组</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" aria-label="正规方程组卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🧮</div>
+                <div class="card-title">正规方程组</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">正规方程组</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>矩阵形式</dt>
+                        <dd>系数矩阵为<mark>Kramer矩阵</mark>，要求函数组线性无关保证可解</dd>
+                        
+                        <dt>求解步骤</dt>
+                        <dd>1. 计算所有必要的累加项<br>2. 列出正规方程组<br>3. 求解系数</dd>
+                        
+                        <dt>示例计算</dt>
+                        <dd>通过计算各阶次幂次和加权和构建法方程矩阵</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" aria-label="数值问题卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <div class="card-title">数值计算问题</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">数值计算问题</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>希尔伯特矩阵</dt>
+                        <dd>在0到1区间内多项式最小二乘法中出现的<mark>病态矩阵</mark></dd>
+                        
+                        <dt>误差放大</dt>
+                        <dd>高阶多项式拟合(≥4次)会因矩阵病态性导致<mark>数值不稳定</mark></dd>
+                        
+                        <dt>实践建议</dt>
+                        <dd>谨慎选择拟合函数阶数，避免高阶多项式拟合</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">点击卡片翻转查看内容</div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // 添加键盘交互支持
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                const focusedCard = document.activeElement;
+                if (focusedCard.classList.contains('card')) {
+                    flipCard(focusedCard);
+                    event.preventDefault();
+                }
+            }
+        });
+
+        // 触摸设备优化
+        let touchStartX = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        document.addEventListener('touchend', function(e) {
+            const touchEndX = e.changedTouches[0].screenX;
+            const diffX = touchEndX - touchStartX;
+            
+            // 如果水平滑动距离大于50px，认为是滑动而不是点击
+            if (Math.abs(diffX) > 50) return;
+            
+            const target = e.target.closest('.card');
+            if (target) {
+                flipCard(target);
+            }
+        }, {passive: true});
+    </script>
+</body>
+</html>
