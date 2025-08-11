@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据链路层学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            height: 280px;
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 95%), white);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            background: hsl(var(--primary-hue), 60%, 95%);
+            padding: 4px 8px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>数据链路层功能学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 数据链路层概述 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="数据链路层概述卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🌐</div>
+                <h2 class="card-title">数据链路层概述</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">数据链路层概述</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>层次位置</dt>
+                        <dd>位于五层结构中的<mark>第二层</mark>，介于物理层和网络层之间</dd>
+                        
+                        <dt>节点功能差异</dt>
+                        <dd>
+                            <ul>
+                                <li>主机需实现<mark>1-5层</mark>全部功能</li>
+                                <li>路由器仅需实现<mark>1-3层</mark>功能</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>服务关系</dt>
+                        <dd>
+                            <ul>
+                                <li>使用<mark>物理层</mark>提供的比特传输服务</li>
+                                <li>为<mark>网络层</mark>提供帧传输服务</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">💡 记忆点：承上启下的第二层</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 帧定界 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="帧定界卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔲</div>
+                <h2 class="card-title">帧定界</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">帧定界</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>核心问题</dt>
+                        <dd>接收方如何从<mark>比特流</mark>中识别帧的起始和结束位置</dd>
+                        
+                        <dt>必要性</dt>
+                        <dd>物理层仅传输比特串，可能包含多个帧或部分帧</dd>
+                        
+                        <dt>实现方式</dt>
+                        <dd>通过<mark>特殊比特模式</mark>标记帧边界</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>考试重点：</strong>透明传输时网络层感知不到链路层对SDU的改造</p>
+                    <div class="memory-tip">💡 记忆点：找帧的边界</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 透明传输 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="透明传输卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">👻</div>
+                <h2 class="card-title">透明传输</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">透明传输</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd><mark>网络层</mark>感知不到数据链路层对分组数据的处理过程</dd>
+                        
+                        <dt>实现要求</dt>
+                        <dd>
+                            <ul>
+                                <li>接收方能从帧中完整恢复原始<mark>SDU</mark>(服务数据单元)</li>
+                                <li>需要处理SDU内部可能存在的特殊控制字符</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>协议关系</dt>
+                        <dd><mark>SDU</mark>+控制信息=<mark>PDU</mark>(协议数据单元)</dd>
+                    </dl>
+                    <div class="memory-tip">💡 记忆点：上层无感知</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 差错控制 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="差错控制卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">✅</div>
+                <h2 class="card-title">差错控制</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">差错控制</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>问题类型</dt>
+                        <dd>解决帧内部的<mark>比特错误</mark>(0→1或1→0)</dd>
+                        
+                        <dt>解决方案</dt>
+                        <dd>
+                            <ul>
+                                <li><strong>方案一(常用)：</strong><mark>检错编码</mark>+重传机制
+                                    <ul>
+                                        <li>采用检错编码发现错误后丢弃帧</li>
+                                        <li>发送方超时重传</li>
+                                    </ul>
+                                </li>
+                                <li><strong>方案二：</strong><mark>纠错编码</mark>自主修复
+                                    <ul>
+                                        <li>可定位并纠正错误比特位</li>
+                                        <li>实现复杂度更高</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>考试重点：</strong>纠错编码是检错编码的进阶</p>
+                    <div class="memory-tip">💡 记忆点：发现错误 vs 纠正错误</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 可靠传输 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="可靠传输卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔄</div>
+                <h2 class="card-title">可靠传输</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">可靠传输</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>问题类型</dt>
+                        <dd>解决<mark>帧级别</mark>的传输错误</dd>
+                        
+                        <dt>三种典型错误</dt>
+                        <dd>
+                            <ul>
+                                <li><strong>帧丢失：</strong>如发送①②③④，收到①②④(缺少③)</li>
+                                <li><strong>帧重复：</strong>如发送①②③④，收到①②③④(3重复)</li>
+                                <li><strong>帧失序：</strong>如发送①②③④，收到①②③④(顺序错乱)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>解决机制</dt>
+                        <dd>需包含<mark>帧编号</mark>、确认和重传机制</dd>
+                    </dl>
+                    <div class="memory-tip">💡 记忆点：丢、重、乱三种错误</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6: 流量控制 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="流量控制卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🚦</div>
+                <h2 class="card-title">流量控制</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">流量控制</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>核心目的</dt>
+                        <dd>协调收发速率，防止<mark>接收方</mark>处理不过来</dd>
+                        
+                        <dt>实现方式</dt>
+                        <dd>通过<mark>反馈机制</mark>动态调整发送速率</dd>
+                        
+                        <dt>典型场景</dt>
+                        <dd>适用于所有链路类型</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>考试重点：</strong>与传输层流量控制的区别(链路层针对帧级)</p>
+                    <div class="memory-tip">💡 记忆点：控制发送速度</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片7: 介质访问控制 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="介质访问控制卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📶</div>
+                <h2 class="card-title">介质访问控制</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">介质访问控制</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>信道类型差异</dt>
+                        <dd>
+                            <ul>
+                                <li><strong>广播信道：</strong>必须实现(如总线型拓扑)
+                                    <ul>
+                                        <li>需解决<mark>多节点争用</mark>问题</li>
+                                        <li>示例：WiFi网络中的载波监听</li>
+                                    </ul>
+                                </li>
+                                <li><strong>点对点信道：</strong>通常不需要(如网线直连)
+                                    <ul>
+                                        <li>专用介质支持<mark>全双工</mark>通信</li>
+                                        <li>示例：路由器与电脑的网线连接</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">💡 记忆点：广播要争用，点对点不用</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', String(!isPressed));
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // 触摸设备优化
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // 最小滑动距离阈值
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // 向左滑动 - 翻转下一张卡片
+                    const activeElement = document.activeElement;
+                    if (activeElement.classList.contains('card')) {
+                        const nextCard = activeElement.nextElementSibling;
+                        if (nextCard && nextCard.classList.contains('card')) {
+                            nextCard.focus();
+                            nextCard.classList.add('flipped');
+                            nextCard.setAttribute('aria-pressed', 'true');
+                            setTimeout(() => {
+                                nextCard.classList.remove('flipped');
+                                nextCard.setAttribute('aria-pressed', 'false');
+                            }, 2000);
+                        }
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // 向右滑动 - 翻转上一张卡片
+                    const activeElement = document.activeElement;
+                    if (activeElement.classList.contains('card')) {
+                        const prevCard = activeElement.previousElementSibling;
+                        if (prevCard && prevCard.classList.contains('card')) {
+                            prevCard.focus();
+                            prevCard.classList.add('flipped');
+                            prevCard.setAttribute('aria-pressed', 'true');
+                            setTimeout(() => {
+                                prevCard.classList.remove('flipped');
+                                prevCard.setAttribute('aria-pressed', 'false');
+                            }, 2000);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
