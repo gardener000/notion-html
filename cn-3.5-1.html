@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE 802 学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 100%, 97%);
+            --card-back: hsl(0, 0%, 100%);
+            --text-dark: hsl(0, 0%, 15%);
+            --text-light: hsl(0, 0%, 99%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --accent: hsl(var(--primary-hue), 70%, 50%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--accent);
+            margin: 16px 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            margin: 16px 0;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            color: var(--accent);
+            font-weight: bold;
+            text-align: center;
+            align-items: center;
+            border: 2px solid var(--accent);
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+            border: 2px solid hsl(var(--primary-hue), 30%, 85%);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        dl {
+            margin-top: 12px;
+        }
+
+        dt {
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 85%);
+            margin: 12px 0;
+        }
+
+        .memory-hint {
+            display: inline-block;
+            background-color: hsl(var(--secondary-hue), 80%, 90%);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>IEEE 802 学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="IEEE 802委员会翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-face card-front">
+                <div class="card-icon">🏛️</div>
+                <div class="card-title">IEEE 802委员会</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>组织架构</dt>
+                        <dd>IEEE下属的专门委员会，负责局域网技术标准化</dd>
+                        
+                        <dt>主要工作组</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>802.3</mark>: 有线以太网标准</li>
+                                <li><mark>802.11</mark>: 无线Wi-Fi标准</li>
+                                <li><mark>802.10</mark>: VLAN标准</li>
+                                <li>已解散: 802.5(令牌环网), 802.8(FDDI)</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-hint">记忆: "3有线11无线10虚拟"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="局域网技术标准化翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <div class="card-title">技术标准化过程</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>技术来源</mark>: 企业研发(如IBM令牌环网, DEC/Intel/Xerox以太网)</li>
+                        <li><mark>标准化机制</mark>: 市场筛选，接受度高的成为标准</li>
+                        <li><mark>典型案例</mark>:
+                            <ul>
+                                <li>以太网淘汰令牌环网成为802.3标准</li>
+                                <li>Wi-Fi技术成为802.11标准</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-hint">记忆: "市场决定标准"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="Wi-Fi代际演进翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-face card-front">
+                <div class="card-icon">📶</div>
+                <div class="card-title">Wi-Fi代际演进</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>802.11b (1999)</dt>
+                        <dd>Wi-Fi 1 (2.4GHz)</dd>
+                        
+                        <dt>802.11a (1999)</dt>
+                        <dd>Wi-Fi 2</dd>
+                        
+                        <dt>802.11g (2003)</dt>
+                        <dd>Wi-Fi 3</dd>
+                        
+                        <dt>802.11n (2009)</dt>
+                        <dd>Wi-Fi 4</dd>
+                        
+                        <dt>802.11ac (2013)</dt>
+                        <dd>Wi-Fi 5</dd>
+                        
+                        <dt>802.11ax (2021)</dt>
+                        <dd><mark>Wi-Fi 6</mark></dd>
+                        
+                        <dt>802.11be (2024)</dt>
+                        <dd><mark>Wi-Fi 7</mark></dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-hint">记忆: "数字越大越新"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="协议分层结构翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-face card-front">
+                <div class="card-icon">📚</div>
+                <div class="card-title">协议分层结构</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>对应OSI层</dt>
+                        <dd>物理层 + 数据链路层</dd>
+                        
+                        <dt>MAC子层</dt>
+                        <dd>
+                            <ul>
+                                <li>功能: 组帧、差错控制、介质访问控制</li>
+                                <li>主流技术: <mark>802.3</mark>(有线)和<mark>802.11</mark>(无线)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>LLC子层</dt>
+                        <dd>
+                            <ul>
+                                <li>设计目的: 统一不同局域网技术的网络层接口</li>
+                                <li>现状: 因技术垄断已名存实亡</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-hint">记忆: "MAC实际在用，LLC已淘汰"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="虚拟局域网翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-face card-front">
+                <div class="card-icon">🌐</div>
+                <div class="card-title">虚拟局域网(VLAN)</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li>标准: <mark>IEEE 802.10</mark></li>
+                        <li>作用: 实现<mark>逻辑网络划分</mark> (区别于物理局域网)</li>
+                        <li>特点:
+                            <ul>
+                                <li>提高网络安全性</li>
+                                <li>简化网络管理</li>
+                                <li>减少广播流量</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-hint">记忆: "10号做虚拟"</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加触摸支持
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                this.classList.toggle('flipped');
+                e.preventDefault(); // 防止触摸事件触发其他行为
+            });
+        });
+    </script>
+</body>
+</html>
