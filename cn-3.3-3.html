@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBN Protocol Flashcards</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight: hsl(var(--secondary-hue), 100%, 50%);
+            --accent: hsl(var(--primary-hue), 80%, 50%);
+            --border-radius: 16px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .flashcards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .flashcard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 80%, 40%);
+        }
+
+        .flashcard-content {
+            text-align: left;
+            width: 100%;
+        }
+
+        .flashcard-content dl {
+            margin-bottom: 12px;
+        }
+
+        .flashcard-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 80%, 30%);
+            margin-top: 8px;
+        }
+
+        .flashcard-content dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 100%, 90%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 350px;
+            }
+            
+            .flashcard-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>GBN Protocol Flashcards</h1>
+    
+    <div class="flashcards-container" role="region" aria-label="GBN Protocol Flashcards">
+        <!-- Card 1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about GBN Protocol Basics">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📡</div>
+                    <h2 class="flashcard-title">GBN Protocol Basics</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">📡</div>
+                        <dl>
+                            <dt>Full Name</dt>
+                            <dd>Go-Back-N Protocol (GBN)</dd>
+                            
+                            <dt>Core Mechanism</dt>
+                            <dd>Based on <mark>sliding window</mark> mechanism</dd>
+                            
+                            <dt>Key Differences from Stop-and-Wait</dt>
+                            <dd>
+                                <ul>
+                                    <li>Sender window: <mark>W<sub>T</sub> > 1</mark></li>
+                                    <li>Receiver window: <mark>W<sub>R</sub> = 1</mark></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <p><mark>Typical setting</mark>: W<sub>T</sub> = 3, W<sub>R</sub> = 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Frame Numbering">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">🔢</div>
+                    <h2 class="flashcard-title">Frame Numbering</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">🔢</div>
+                        <dl>
+                            <dt>Numbering Requirements</dt>
+                            <dd>At least <mark>n bits</mark> for frame numbering</dd>
+                            
+                            <dt>Key Condition</dt>
+                            <dd><mark>W<sub>T</sub> + W<sub>R</sub> ≤ 2<sup>n</sup></mark></dd>
+                            
+                            <dt>Example</dt>
+                            <dd>When W<sub>T</sub> = 3, W<sub>R</sub> = 1 → n ≥ 2 (3 + 1 ≤ 4)</dd>
+                            
+                            <dt>Numbering Cycle</dt>
+                            <dd>2-bit cycle: 0→1→2→3→0→1...</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Cumulative ACK">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">✅</div>
+                    <h2 class="flashcard-title">Cumulative ACK</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">✅</div>
+                        <dl>
+                            <dt>Definition</dt>
+                            <dd>Receiver can return only the <mark>last frame's ACK</mark> for multiple correct frames</dd>
+                            
+                            <dt>Example</dt>
+                            <dd>After receiving frames 0,1,2 → returns only <mark>ACK2</mark></dd>
+                            
+                            <dt>Meaning</dt>
+                            <dd>ACKi means <mark>i and all previous frames</mark> were received correctly</dd>
+                            
+                            <dt>Window Sliding</dt>
+                            <dd>Sender receives ACK2 → confirms 0-2 received → slides window</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Exception Handling">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⚠️</div>
+                    <h2 class="flashcard-title">Exception Handling</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">⚠️</div>
+                        <dl>
+                            <dt>Data Frame Loss</dt>
+                            <dd>
+                                <ol>
+                                    <li>Sender sends frames 3,0,1</li>
+                                    <li>0 is lost</li>
+                                    <li>Receiver expects 0 but gets 1 (illegal)</li>
+                                    <li>Discards 1, returns <mark>ACK3</mark></li>
+                                    <li>Sender times out, retransmits <mark>0 and all after</mark></li>
+                                </ol>
+                            </dd>
+                            
+                            <dt>ACK Loss</dt>
+                            <dd>
+                                <ol>
+                                    <li>Receiver gets 0-2, sends ACK2 (lost)</li>
+                                    <li>Sender times out, retransmits 0-2</li>
+                                    <li>Receiver has moved window → discards "old" frames</li>
+                                    <li>Resends <mark>ACK2</mark></li>
+                                </ol>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Window Size Limitation">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">🚧</div>
+                    <h2 class="flashcard-title">Window Size Limitation</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">🚧</div>
+                        <dl>
+                            <dt>Problem Scenario</dt>
+                            <dd>n=2 (4 numbers), but W<sub>T</sub>=4, W<sub>R</sub>=1 (4+1>4)</dd>
+                            
+                            <dt>What Happens</dt>
+                            <dd>
+                                <ol>
+                                    <li>Sender sends 0-3, ACK3 lost</li>
+                                    <li>Retransmits 0</li>
+                                    <li>Receiver window has cycled to new 0</li>
+                                </ol>
+                            </dd>
+                            
+                            <dt>Consequence</dt>
+                            <dd>Receiver <mark>cannot distinguish</mark> old and new 0 frames</dd>
+                            
+                            <dt>Solution</dt>
+                            <dd>Must maintain <mark>W<sub>T</sub> + W<sub>R</sub> ≤ 2<sup>n</sup></mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Protocol Characteristics">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📋</div>
+                    <h2 class="flashcard-title">Protocol Characteristics</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">📋</div>
+                        <dl>
+                            <dt>Sender Rules</dt>
+                            <dd>W<sub>T</sub> > 1, allows <mark>continuous sending</mark></dd>
+                            
+                            <dt>Receiver Rules</dt>
+                            <dd>W<sub>R</sub> = 1, must receive <mark>in order</mark></dd>
+                            
+                            <dt>Special Rules</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>Cumulative ACK</mark></li>
+                                    <li><mark>Go-back retransmission</mark> on timeout</li>
+                                    <li>Illegal frame handling</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>Frame Numbering</dt>
+                            <dd>Next frame after i is <mark>(i+1) mod 2<sup>n</sup></mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="flashcard" tabindex="0" role="button" aria-pressed="false" aria-label="Flashcard about Pros and Cons">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⚖️</div>
+                    <h2 class="flashcard-title">Pros & Cons</h2>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="flashcard-back">
+                    <div class="flashcard-content">
+                        <div class="emoji">⚖️</div>
+                        <dl>
+                            <dt>Advantages</dt>
+                            <dd>
+                                <ul>
+                                    <li>Implements <mark>flow control</mark></li>
+                                    <li>More efficient than Stop-and-Wait</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>Disadvantages</dt>
+                            <dd>
+                                <ul>
+                                    <li>Inefficient when receiver is slow (frequent retransmissions)</li>
+                                    <li>Performance drops sharply with <mark>high error rates</mark></li>
+                                    <li>Compared to Selective Repeat: less efficient</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <p><mark>Key point</mark>: Trade-off between simplicity and efficiency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashcards = document.querySelectorAll('.flashcard');
+            
+            flashcards.forEach(card => {
+                // Click/touch handler
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const pressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', String(!pressed));
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                        const pressed = this.getAttribute('aria-pressed') === 'true';
+                        this.setAttribute('aria-pressed', String(!pressed));
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
