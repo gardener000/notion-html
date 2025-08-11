@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紧凑版组帧技术卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 85%);
+            --border-color: hsl(0, 0%, 90%);
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --shadow: 0 2px 4px hsla(0, 0%, 0%, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.4;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 380px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 0;
+            padding-bottom: 120%;
+            position: relative;
+            margin-bottom: 12px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-color);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--primary-color);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-list {
+            list-style-type: none;
+            font-size: 0.95rem;
+        }
+
+        .card-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card-list li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            position: absolute;
+            left: 4px;
+            top: -1px;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 8px 0;
+        }
+
+        .sub-list {
+            list-style-type: circle;
+            margin: 6px 0 6px 16px;
+            font-size: 0.9rem;
+        }
+
+        .progress {
+            width: 100%;
+            text-align: center;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: hsl(0, 0%, 10%);
+                --card-color: hsl(0, 0%, 15%);
+                --text-color: hsl(0, 0%, 90%);
+                --border-color: hsl(0, 0%, 25%);
+                --highlight-color: hsl(var(--secondary-hue), 100%, 30%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>组帧技术学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 组帧概述 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="组帧概述卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📦</div>
+                <h2 class="card-title">组帧概述</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">组帧概述 📦</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>核心功能</strong>：将网络层<mark>IP数据报</mark>封装成帧，实现相邻节点间的可靠传输</li>
+                    <li><strong>两大问题</strong>：
+                        <ul class="sub-list">
+                            <li><mark>帧定界</mark>：识别帧的起始和结束位置</li>
+                            <li><mark>透明传输</mark>：去除定界信息，还原原始数据</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 卡片2: 字符计数法 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="字符计数法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔢</div>
+                <h2 class="card-title">字符计数法</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">字符计数法 🔢</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>实现方式</strong>：帧首部使用固定长度（如1字节）<mark>计数字段</mark>表示总帧长</li>
+                    <li><strong>注意</strong>：总长度=计数字段长度+数据部分长度</li>
+                    <li><strong>缺陷</strong>：
+                        <ul class="sub-list">
+                            <li>最大帧长受限（如8位最大255字节）</li>
+                            <li><mark>多米诺效应</mark>：单个计数字段出错会导致后续所有帧定界错误</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 卡片3: 字节填充法 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="字节填充法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">✏️</div>
+                <h2 class="card-title">字节填充法</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">字节填充法 ✏️</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>特殊字符</strong>：
+                        <ul class="sub-list">
+                            <li><mark>SOH</mark>（0x01）：帧起始标记</li>
+                            <li><mark>EOT</mark>（0x04）：帧结束标记</li>
+                            <li><mark>ESC</mark>（0x1B）：转义字符</li>
+                        </ul>
+                    </li>
+                    <li><strong>处理规则</strong>：
+                        <ul class="sub-list">
+                            <li>数据部分出现SOH/EOT时，前插ESC字符</li>
+                            <li>数据部分出现ESC时，前插另一个ESC字符</li>
+                            <li>接收方执行逆操作</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 卡片4: 零比特填充法 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="零比特填充法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">0101</div>
+                <h2 class="card-title">零比特填充法</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">零比特填充法 0101</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>帧标记</strong>：特殊比特串<mark>01111110</mark>标识帧首尾</li>
+                    <li><strong>发送方处理</strong>：
+                        <ul class="sub-list">
+                            <li>扫描数据部分，每连续5个1立即填充1个0</li>
+                            <li>确保数据部分不会出现6个连续1</li>
+                        </ul>
+                    </li>
+                    <li><strong>接收方处理</strong>：
+                        <ul class="sub-list">
+                            <li>检测到01111110即为帧边界</li>
+                            <li>数据部分每连续5个1则删除后续0</li>
+                        </ul>
+                    </li>
+                    <li><strong>应用协议</strong>：<mark>HDLC协议</mark>、<mark>PPP协议</mark></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 卡片5: 违规编码法 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="违规编码法卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">⚡</div>
+                <h2 class="card-title">违规编码法</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">违规编码法 ⚡</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>物理层配合</strong>：利用<mark>曼彻斯特编码</mark>规则</li>
+                    <li><strong>正常编码</strong>：周期中点跳变（上跳0/下跳1）</li>
+                    <li><strong>违规信号</strong>：周期中点无跳变</li>
+                    <li><strong>实现方式</strong>：
+                        <ul class="sub-list">
+                            <li>帧首尾各插入1个时钟周期的违规信号</li>
+                            <li>数据部分原样传输不作处理</li>
+                        </ul>
+                    </li>
+                    <li><strong>优势</strong>：无需修改数据内容，硬件实现效率高</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 卡片6: 方法对比 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="方法对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">方法对比</h2>
+                <p style="font-size:0.9rem;">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">方法对比 📊</h2>
+                <div class="divider"></div>
+                <ul class="card-list">
+                    <li><strong>健壮性</strong>：零比特填充 > 字节填充 > 违规编码 > 字符计数</li>
+                    <li><strong>效率</strong>：零比特填充硬件易实现</li>
+                    <li><strong>关键记忆点</strong>：
+                        <ul class="sub-list">
+                            <li>透明传输的本质是"加壳-传壳-去壳"过程</li>
+                            <li><mark>PPP协议</mark>采用零比特填充法（高频考点）</li>
+                            <li>违规编码法需与物理层编码方案配合使用</li>
+                        </ul>
+                    </li>
+                    <li><strong>字符计数法</strong>：容错差，易受多米诺效应影响</li>
+                    <li><strong>零比特填充法</strong>：现代网络主流方法</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">1/6</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            function updateProgress() {
+                document.querySelector('.progress').textContent = `${currentCardIndex + 1}/${cards.length}`;
+            }
+            
+            updateProgress();
+            
+            cards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    if (currentCardIndex < cards.length - 1) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex++;
+                        cards[currentCardIndex].focus();
+                        updateProgress();
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    if (currentCardIndex > 0) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex--;
+                        cards[currentCardIndex].focus();
+                        updateProgress();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
