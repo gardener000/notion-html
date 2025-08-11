@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRC学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 20%);
+            --card-primary: hsl(var(--primary-hue), 80%, 50%);
+            --card-secondary: hsl(var(--secondary-hue), 80%, 60%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            width: 100%;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 80%, 95%), white);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid hsl(var(--primary-hue), 80%, 90%);
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            border: 1px solid hsl(var(--secondary-hue), 80%, 90%);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 8px;
+        }
+
+        .card-front .card-title {
+            font-size: 1.4rem;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-top: 8px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-top: 8px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 80%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, hsl(var(--primary-hue), 80%, 80%), transparent);
+            margin: 8px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CRC学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🔍</div>
+                <div class="card-title">CRC基本概念</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">CRC基本概念</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>全称</dt>
+                        <dd><mark>循环冗余校验码</mark> (Cyclic Redundancy Check)</dd>
+                        
+                        <dt>核心功能</dt>
+                        <dd>通过添加校验位检测数据传输错误</dd>
+                        
+                        <dt>主要应用</dt>
+                        <dd>数据通信中的错误检测，特定条件下可实现单比特错误纠正</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">💡</div>
+                <div class="card-title">CRC核心思想</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">CRC核心思想</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>类比十进制：类似约定除数检查余数是否为0的方法</li>
+                        <li><mark>发送方</mark>：在k位信息位后添加r位校验位，使整个数据与约定除数相除余数为0</li>
+                        <li><mark>接收方</mark>：用相同除数进行模2除运算，检查余数是否为0判断传输正确性</li>
+                        <li>错误检测：若余数非零，则表明传输过程中出现错误</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🛠️</div>
+                <div class="card-title">CRC构造步骤</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">CRC构造步骤</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ol>
+                        <li>根据<mark>生成多项式</mark>确定除数（最高次为R→除数R+1位）<br>例：G(x) = x³ + x² + 1 → 1101</li>
+                        <li>信息位补R个0构成校除数</li>
+                        <li>进行<mark>模2除</mark>得R位余数</li>
+                        <li>信息位+余数=CRC码</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">✅</div>
+                <div class="card-title">检错与纠错机制</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">检错与纠错机制</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <dl>
+                        <dt>检错原理</dt>
+                        <dd>接收方用相同生成多项式进行模2除<br>
+                            - 余数000表示无错误<br>
+                            - 余数≠000表示出错</dd>
+                        
+                        <dt>纠错能力</dt>
+                        <dd>
+                            <ul>
+                                <li>余数与错误位置存在固定对应关系（需满足<mark>2ᴿ ≥ K + R + 1</mark>）</li>
+                                <li>3位校验位最多定位7个错误位置</li>
+                                <li>实际应用中多用于检错而非纠错</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">✨</div>
+                <div class="card-title">CRC特性</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">CRC特性</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li>可检测所有<mark>奇数个错误</mark></li>
+                        <li>可检测所有<mark>双比特错误</mark></li>
+                        <li>可检测<mark>≤r位的连续错误</mark></li>
+                        <li>满足2ᴿ ≥ K + R + 1时可纠正单比特错</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <div class="card-title">CRC命名由来</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">CRC命名由来</div>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <p>余数模式呈现<mark>循环特性</mark>：</p>
+                    <p>001 → 010 → 100 → ... → 001</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            const isPressed = card.getAttribute('aria-pressed') === 'true';
+            card.setAttribute('aria-pressed', !isPressed);
+        }
+
+        // Add keyboard support for accessibility
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard(card);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
