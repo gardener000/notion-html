@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择重传协议(SR)学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            cursor: pointer;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .card-back {
+            background: white;
+            border-radius: 12px;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-front .card-title {
+            font-size: 1.5rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .highlight {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: hsl(var(--primary-hue), 70%, 40%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>选择重传协议(SR)学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" aria-label="窗口大小限制条件卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">📏</div>
+                <h2 class="card-title">窗口大小限制条件</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">窗口大小限制条件</h2>
+                <div class="card-content">
+                    <ul>
+                        <li>发送窗口 <mark>W<sub>T</sub> > 1</mark>，接收窗口 <mark>W<sub>R</sub> > 1</mark></li>
+                        <li>接收窗口 ≤ 发送窗口：<mark>W<sub>R</sub> ≤ W<sub>T</sub></mark></li>
+                        <li>用n比特编号时：<mark>W<sub>T</sub> + W<sub>R</sub> ≤ 2<sup>n</sup></mark></li>
+                        <li class="highlight">实际应用：通常取 W<sub>T</sub> = W<sub>R</sub></li>
+                        <li>示例：3bit编号时 W<sub>T</sub> = W<sub>R</sub> = 4</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">考试重点：</span>窗口大小限制条件的推导与验证</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" aria-label="确认机制卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">✅</div>
+                <h2 class="card-title">确认机制</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">确认机制</h2>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>不支持累计确认</mark>，必须逐帧返回ACK</li>
+                        <li>正确帧返回<mark>ACK_i</mark>（如ACK0、ACK1）</li>
+                        <li>检测到错误帧时返回<mark>NAK_i</mark>主动请求重传</li>
+                        <li class="highlight">与后退N帧协议的区别：后退N帧支持累计确认</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">易混淆点：</span>与后退N帧协议的累计确认机制对比</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" aria-label="重传机制卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">重传机制</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">重传机制</h2>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>超时重传</mark>：未收到ACK时触发</li>
+                        <li><mark>NAK请求重传</mark>：收到NAK后立即重传</li>
+                        <li class="highlight">NAK机制优势：相比单纯超时重传能提升效率</li>
+                        <li>与停止等待协议的区别：SR允许多个帧在传输中</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">核心优势：</span>NAK机制可提前触发重传</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" aria-label="异常处理卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">异常处理</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">异常处理</h2>
+                <div class="card-content">
+                    <p><span class="highlight">数据帧丢失：</span></p>
+                    <ul>
+                        <li>发送方通过独立计时器超时重传</li>
+                        <li>接收方通过窗口位置识别重复帧</li>
+                    </ul>
+                    
+                    <p><span class="highlight">数据帧错误：</span></p>
+                    <ul>
+                        <li>接收方丢弃错误帧并返回NAK</li>
+                        <li>发送方立即重传，无需等待超时</li>
+                    </ul>
+                    
+                    <p><span class="highlight">ACK丢失：</span></p>
+                    <ul>
+                        <li>接收方通过窗口位置判断重复帧</li>
+                        <li>对重复帧再次返回ACK</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">高频考点：</span>窗口滑动与帧编号循环的匹配逻辑</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" aria-label="窗口违规后果卡片，点击翻转查看详情">
+            <div class="card-face card-front">
+                <div class="emoji">❌</div>
+                <h2 class="card-title">窗口违规后果</h2>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">窗口违规后果</h2>
+                <div class="card-content">
+                    <ul>
+                        <li>当 <mark>W<sub>T</sub> + W<sub>R</sub> > 2<sup>n</sup></mark> 时：</li>
+                        <li>接收方无法正确判别重复帧</li>
+                        <li>可能导致错误接收已处理过的帧</li>
+                        <li class="highlight">示例：3bit编号下 W<sub>T</sub> = 5, W<sub>R</sub> = 4 不满足条件</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">根本原因：</span>窗口过大导致新旧帧编号无法区分</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="reset-btn">重置所有卡片</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 重置按钮
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                cards.forEach(card => {
+                    card.classList.remove('flipped');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
