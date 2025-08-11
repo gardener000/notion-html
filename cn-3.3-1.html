@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据链路层学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 45;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            aspect-ratio: 3/4;
+            width: 100%;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front {
+            background: hsl(var(--primary-hue), 80%, 95%);
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            width: 100%;
+            text-align: left;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 8px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 80%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>数据链路层学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="数据链路层功能卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📡</div>
+                <h2 class="card-title">数据链路层功能</h2>
+                <p class="hint">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>核心功能</dt>
+                        <dd>• <mark>流量控制</mark>：控制发送方速率，确保接收方处理能力匹配</dd>
+                        <dd>• <mark>可靠传输</mark>：解决帧丢失、帧重复、帧失序问题</dd>
+                        <dd>• <mark>差错控制</mark>：处理比特错误（位错）</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>差错控制方案</dt>
+                        <dd>• <mark>检错编码</mark>：发现错误后丢弃错误帧</dd>
+                        <dd>• <mark>纠错编码</mark>：直接纠正错误</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="滑动窗口机制卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🪟</div>
+                <h2 class="card-title">滑动窗口机制</h2>
+                <p class="hint">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>窗口定义</dt>
+                        <dd>• <mark>发送窗口(W<sub>T</sub>)</mark>：允许连续发送的帧范围</dd>
+                        <dd>• <mark>接收窗口(W<sub>R</sub>)</mark>：允许接收的帧范围</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>工作流程</dt>
+                        <dd>• 发送规则：仅窗口内帧允许发送</dd>
+                        <dd>• 接收规则：仅窗口内帧允许接收</dd>
+                        <dd>• 编号要求：满足 W<sub>T</sub> + W<sub>R</sub> ≤ 2<sup>n</sup></dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>窗口滑动</dt>
+                        <dd>• 接收方通过<mark>确认机制</mark>控制发送窗口滑动</dd>
+                        <dd>• 滑动速度决定发送速率，实现<mark>流量控制</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="可靠传输协议卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔄</div>
+                <h2 class="card-title">可靠传输协议</h2>
+                <p class="hint">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>停止-等待协议</dt>
+                        <dd>• W<sub>T</sub>=1, W<sub>R</sub>=1</dd>
+                        <dd>• 每次发送一帧，等待确认后再发下一帧</dd>
+                        <dd>• 简单但效率低</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>后退N帧(GBN)</dt>
+                        <dd>• W<sub>T</sub>>1, W<sub>R</sub>=1</dd>
+                        <dd>• 发送方连续发送多帧</dd>
+                        <dd>• 出错时需重传该帧及其后所有帧</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>选择重传(SR)</dt>
+                        <dd>• W<sub>T</sub>>1, W<sub>R</sub>>1</dd>
+                        <dd>• 接收方缓存乱序帧</dd>
+                        <dd>• 仅重传出错帧，效率高但实现复杂</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="核心机制卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">⚙️</div>
+                <h2 class="card-title">核心机制</h2>
+                <p class="hint">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>确认机制</dt>
+                        <dd>• <mark>ACK</mark>：确认正确接收</dd>
+                        <dd>• <mark>MAK</mark>：否认错误帧</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>重传机制</dt>
+                        <dd>• 超时未收到ACK时触发</dd>
+                        <dd>• 收到MAK时触发</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>易混淆点</dt>
+                        <dd>• <mark>差错控制</mark> vs <mark>可靠传输</mark></dd>
+                        <dd>• 窗口大小对传输效率的影响</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击/触摸翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isFlipped = this.classList.contains('flipped');
+                    this.setAttribute('aria-pressed', isFlipped);
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                        const isFlipped = this.classList.contains('flipped');
+                        this.setAttribute('aria-pressed', isFlipped);
+                    }
+                });
+            });
+            
+            // 防止卡片内容滚动时意外翻转
+            const cardBacks = document.querySelectorAll('.card-back');
+            cardBacks.forEach(back => {
+                back.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
