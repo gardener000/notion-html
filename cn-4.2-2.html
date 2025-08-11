@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP地址学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-sat: 100%;
+            --primary-light: 40%;
+            --secondary-hue: 45;
+            --secondary-sat: 100%;
+            --secondary-light: 60%;
+            --bg-light: 98%;
+            --text-dark: 10%;
+            --card-width: 90vw;
+            --card-height: 60vh;
+            --border-radius: 16px;
+            --spacing-unit: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: hsl(var(--primary-hue), 20%, 95%);
+            color: hsl(0, 0%, var(--text-dark));
+            line-height: 1.6;
+            padding: var(--spacing-unit);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            margin: calc(var(--spacing-unit) * 2) 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            margin: 0 auto calc(var(--spacing-unit) * 3);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 20%, 98%);
+            border: 2px solid hsl(var(--primary-hue), 50%, 85%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            margin-top: calc(var(--spacing-unit) * 1.5);
+        }
+
+        .card-content dd {
+            margin-left: calc(var(--spacing-unit) * 2);
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+
+        .card-content ul {
+            padding-left: calc(var(--spacing-unit) * 2);
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+
+        .card-content li {
+            margin-bottom: calc(var(--spacing-unit) * 0.75);
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), var(--secondary-sat), 90%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: calc(var(--spacing-unit) * 1.5) 0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: var(--card-width);
+            max-width: 500px;
+            margin-top: auto;
+        }
+
+        button {
+            padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+            background-color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), var(--primary-sat), calc(var(--primary-light) - 10%));
+        }
+
+        button:disabled {
+            background-color: hsl(0, 0%, 80%);
+            cursor: not-allowed;
+        }
+
+        .card-counter {
+            text-align: center;
+            margin: calc(var(--spacing-unit) * 2) 0;
+            color: hsl(0, 0%, 40%);
+            font-size: 0.9rem;
+        }
+
+        @media (max-height: 700px) {
+            :root {
+                --card-height: 55vh;
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --card-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>IP地址学习卡片</h1>
+    <div class="card-counter"><span id="current-card">1</span>/<span id="total-cards">8</span></div>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" aria-label="IP数据报格式学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">📦 IP数据报格式</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">📦 IP数据报格式</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>固定部分</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>源地址字段</mark>：32位，发送方的IP地址</li>
+                                <li><mark>目的地址字段</mark>：32位，接收方的IP地址</li>
+                                <li>版本字段：标识IP协议版本（IPv4为4）</li>
+                                <li>首部长度：以32位字为单位</li>
+                                <li>总长度：包括首部和数据部分</li>
+                                <li>生存时间(TTL)：防止数据报无限循环</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>可变部分</dt>
+                        <dd>
+                            <ul>
+                                <li>可选字段：路由记录、时间戳等（实际使用较少）</li>
+                                <li>填充机制：保证首部长度为32位的整数倍</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" aria-label="IP地址分类学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">🔠 IP地址分类</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">🔠 IP地址分类</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>单播地址</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>A类</mark>：1-126开头，前8位网络号，后24位主机号</li>
+                                <li><mark>B类</mark>：128-191开头，前16位网络号，后16位主机号</li>
+                                <li><mark>C类</mark>：192-223开头，前24位网络号，后8位主机号</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>多播地址</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>D类</mark>：224-239开头，用于组播通信</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>保留地址</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>E类</mark>：240-255开头，供未来使用</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" aria-label="IP地址两级结构学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">🏗️ IP地址两级结构</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">🏗️ IP地址两级结构</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>组成</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>&lt;网络号&gt;&lt;主机号&gt;</mark>，共32位</li>
+                                <li>网络号：标识所属网络（长度可变：A类8位/B类16位/C类24位）</li>
+                                <li>主机号：标识网络内特定主机</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>分配规则</dt>
+                        <dd>
+                            <ul>
+                                <li>每台主机/路由器接口需全局唯一IP</li>
+                                <li>同一网络所有设备网络号相同</li>
+                                <li>新主机接入需分配IP并配置默认网关</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>识别方法</dt>
+                        <dd>
+                            <ul>
+                                <li>通过前几位比特判断类别（A类0/B类10/C类110/D类1110）</li>
+                                <li>表示形式：每8位转为十进制（0-255），如192.168.1.1</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" aria-label="特殊IP地址学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">✨ 特殊IP地址</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">✨ 特殊IP地址</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt><span class="emoji">🔢</span> 网络号固定，主机号全0</dt>
+                        <dd>
+                            <ul>
+                                <li>表示整个网络本身（如166.1.0.0表示166.1网络）</li>
+                                <li>不能作为分组源地址或目的地址</li>
+                                <li>仅用于路由表和转发表</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt><span class="emoji">📢</span> 网络号固定，主机号全1</dt>
+                        <dd>
+                            <ul>
+                                <li>向指定网络广播IP分组（如200.1.1.255）</li>
+                                <li>只能作为目的地址使用</li>
+                                <li>不能作为源地址</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt><span class="emoji">🏠</span> 网络号全0，主机号非0</dt>
+                        <dd>
+                            <ul>
+                                <li>表示本网络中指定主机（如0.0.0.1）</li>
+                                <li>可作为源地址</li>
+                                <li>不能作为目的地址</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" aria-label="更多特殊IP地址学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">✨ 更多特殊IP地址</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">✨ 更多特殊IP地址</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt><span class="emoji">🆕</span> 网络号全0，主机号全0</dt>
+                        <dd>
+                            <ul>
+                                <li>本网络上的本主机（用于DHCP协议）</li>
+                                <li>可作为源地址</li>
+                                <li>不能作为目的地址</li>
+                                <li>使用场景：新主机接入网络时尚未获得IP地址</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt><span class="emoji">🔁</span> 网络号127，主机号非全0/1</dt>
+                        <dd>
+                            <ul>
+                                <li>环回自检地址（如127.0.0.1表示本机）</li>
+                                <li>数据包不会进入实际网络</li>
+                                <li>使用场景：本地软件开发和测试</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" aria-label="默认网关学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">🚪 默认网关</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">🚪 默认网关</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>
+                            <ul>
+                                <li>默认网关即默认路由器</li>
+                                <li>是主机发送跨网络数据包的第一跳路由器接口IP地址</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>配置要求</dt>
+                        <dd>
+                            <ul>
+                                <li>学校主机默认网关：166.1.0.5（路由器B2接口）</li>
+                                <li>公司主机默认网关：200.1.1.1（路由器C2接口）</li>
+                                <li>作用：告知主机如何将数据包发送到其他网络</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>不处理同网络通信</li>
+                                <li>通过ARP协议查询MAC地址</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="card" tabindex="0" aria-label="路由转发学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">🔄 路由转发流程</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">🔄 路由转发流程</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>匹配机制</dt>
+                        <dd>
+                            <ul>
+                                <li>路由器提取目的IP的网络号，与转发表条目逐项匹配</li>
+                                <li>学校路由器匹配166.1.0.0→B2接口</li>
+                                <li>匹配200.1.1.0→B0接口</li>
+                                <li>其他目的网络→B1接口</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>转发特点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>IP数据报首部地址不变</mark></li>
+                                <li><mark>封装成的MAC帧地址在每跳都会变化</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>跨网络通信实例</dt>
+                        <dd>
+                            <ul>
+                                <li>H1→H7通信过程：</li>
+                                <li>1. H1构造IP数据报（源166.1.0.1，目的200.1.1.2）</li>
+                                <li>2. 通过ARP查询默认网关B2的MAC地址</li>
+                                <li>3. 学校路由器匹配目的网络200.1.1.0，从B0转发</li>
+                                <li>4. 公司路由器匹配目的网络200.1.1.0，从C2转发</li>
+                                <li>5. H7最终接收数据报</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="card" tabindex="0" aria-label="关键记忆点学习卡片">
+            <div class="card-face card-front">
+                <h2 class="card-title">🧠 关键记忆点</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">🧠 关键记忆点</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt><span class="emoji">⚠️</span> 重要规则</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>全0和全1主机号地址不可分配</mark></li>
+                                <li><mark>广播地址只能作为目的地址</mark></li>
+                                <li><mark>DHCP使用全0源地址和全1目的地址</mark></li>
+                                <li><mark>127.x.x.x地址用于本地环回测试</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt><span class="emoji">📝</span> 地址分类总结</dt>
+                        <dd>
+                            <ul>
+                                <li>网络表示：网络号+全0主机号</li>
+                                <li>定向广播：网络号+全1主机号</li>
+                                <li>本机标识：全0网络号+主机号</li>
+                                <li>初始状态：全0地址</li>
+                                <li>本地测试：127.x.x.x地址</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button id="prev-btn" disabled>上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentCardDisplay = document.getElementById('current-card');
+            const totalCardsDisplay = document.getElementById('total-cards');
+            
+            let currentCardIndex = 0;
+            totalCardsDisplay.textContent = cards.length;
+            
+            // Initialize cards
+            cards.forEach((card, index) => {
+                card.style.display = index === 0 ? 'block' : 'none';
+                
+                // Add click/touch event for flipping
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Add keyboard support
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // Navigation functions
+            function showCard(index) {
+                cards.forEach((card, i) => {
+                    card.style.display = i === index ? 'block' : 'none';
+                    card.classList.remove('flipped');
+                });
+                currentCardIndex = index;
+                currentCardDisplay.textContent = index + 1;
+                
+                // Update button states
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === cards.length - 1;
+            }
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    showCard(currentCardIndex - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    showCard(currentCardIndex + 1);
+                }
+            });
+            
+            // Swipe support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // Minimum swipe distance
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // Swipe left - next card
+                    if (currentCardIndex < cards.length - 1) {
+                        showCard(currentCardIndex + 1);
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // Swipe right - previous card
+                    if (currentCardIndex > 0) {
+                        showCard(currentCardIndex - 1);
+                    }
+                }
+            }
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' && currentCardIndex < cards.length - 1) {
+                    showCard(currentCardIndex + 1);
+                } else if (e.key === 'ArrowLeft' && currentCardIndex > 0) {
+                    showCard(currentCardIndex - 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
