@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海明校验码学习卡片</title>
+    <style>
+        :root {
+            --primary: hsl(210, 80%, 50%);
+            --secondary: hsl(40, 90%, 60%);
+            --bg: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text: hsl(0, 0%, 20%);
+            --highlight: hsl(210, 80%, 90%);
+            --border: hsl(0, 0%, 85%);
+            --success: hsl(120, 60%, 50%);
+            --warning: hsl(40, 90%, 60%);
+            --danger: hsl(0, 70%, 60%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            perspective: 1000px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            border: 1px solid var(--border);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* 启用iOS弹性滚动 */
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .card-front .card-title {
+            font-size: 1.6rem;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 8px;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: var(--primary);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .key-term {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .example {
+            background-color: hsl(210, 50%, 96%);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .progress {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .flip-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .flip-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front .card-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>海明校验码学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">海明校验码发明者</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📜 海明校验码发明者</div>
+                <div class="card-content">
+                    <ul>
+                        <li>由<mark>理查德·汉明</mark>(Richard Hamming)发明</li>
+                        <li>因其对信息纠错领域的贡献获得<mark>1968年图灵奖</mark></li>
+                        <li>中文名称音译差异：<mark>海明码/汉明码</mark></li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">💡 记忆提示</div>
+                        <p>"汉"字代表发明者姓氏，"明"代表编码的明确纠错能力</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">海明码核心思想</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">💡 海明码核心思想</div>
+                <div class="card-content">
+                    <ul>
+                        <li>将信息位<mark>分组进行偶校验</mark></li>
+                        <li>通过<mark>多个校验位</mark>标注出错位置</li>
+                        <li>相比传统奇偶校验只能检测奇数位错误，海明码能<mark>定位错误位置</mark></li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">🔍 对比传统奇偶校验</div>
+                        <p>奇偶校验：只能发现奇数位错误<br>
+                        海明码：能定位具体错误位置</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">校验位数计算</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">🧮 校验位数计算</div>
+                <div class="card-content">
+                    <ul>
+                        <li>必须满足不等式：<mark>2<sup>k</sup> ≥ n + k + 1</mark></li>
+                        <li>其中：<br>
+                            - <span class="key-term">n</span> = 信息位数<br>
+                            - <span class="key-term">k</span> = 校验位数</li>
+                        <li>例如：4个信息位时，k=3才能满足该不等式</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">📝 示例计算</div>
+                        <p>n=4时：<br>
+                        2<sup>3</sup>=8 ≥ 4+3+1=8 → k=3</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">位置分配规则</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📍 位置分配规则</div>
+                <div class="card-content">
+                    <ul>
+                        <li>校验位<mark>P<sub>i</sub></mark>放在海明位号为<mark>2<sup>i-1</sup></mark>的位置</li>
+                        <li>位置序列：<mark>1, 2, 4, 8, 16...</mark></li>
+                        <li>信息位按顺序填充剩余位置</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">📌 示例</div>
+                        <p>P<sub>1</sub>在位置1<br>
+                        P<sub>2</sub>在位置2<br>
+                        P<sub>3</sub>在位置4<br>
+                        P<sub>4</sub>在位置8</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">分组规则</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">🔗 分组规则</div>
+                <div class="card-content">
+                    <ul>
+                        <li>将信息位位置序号转为<mark>k位二进制表示</mark></li>
+                        <li>校验位<mark>P<sub>i</sub></mark>与二进制表示<mark>第i位为1</mark>的信息位归为同一组</li>
+                        <li>对每个分组内的信息位进行<mark>异或运算</mark>(偶校验)</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">📊 示例分组</div>
+                        <p>信息位D<sub>1</sub>(位置3=011)归P<sub>1</sub>,P<sub>2</sub>组<br>
+                        异或规则：相同为0，不同为1</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+        
+        <!-- Card 6 -->
+        <div class="card" tabindex="0">
+            <div class="card-face card-front">
+                <div class="card-title">检错与纠错能力</div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">✅ 检错与纠错能力</div>
+                <div class="card-content">
+                    <ul>
+                        <li><span class="key-term">1位纠错能力</span>：可精确定位并纠正单个错误位</li>
+                        <li><span class="key-term">2位检错能力</span>：能检测出两位错误但无法定位</li>
+                        <li>改进方案：添加"<mark>全校验位</mark>"对整体进行偶校验</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="example">
+                        <div class="example-title">🔧 改进方案判断</div>
+                        <p>S<sub>1</sub>-S<sub>k</sub>全0且全校验成功→无错误<br>
+                        S<sub>1</sub>-S<sub>k</sub>非全0且全校验失败→1位错<br>
+                        S<sub>1</sub>-S<sub>k</sub>非全0且全校验成功→2位错需重传</p>
+                    </div>
+                </div>
+                <button class="flip-btn" aria-label="翻转卡片">↻</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">6张卡片</div>
+
+    <script>
+        // 改进的翻转逻辑
+        document.querySelectorAll('.flip-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // 阻止事件冒泡，避免触发父元素的点击事件
+                e.stopPropagation();
+                const card = this.closest('.card');
+                card.classList.toggle('flipped');
+            });
+            
+            // 添加触摸支持
+            btn.addEventListener('touchstart', function(e) {
+                e.stopPropagation(); // 防止触发父元素的触摸事件
+                const card = this.closest('.card');
+                card.classList.toggle('flipped');
+                e.preventDefault(); // 防止触摸事件触发其他行为
+            });
+        });
+        
+        // 改进滚动体验
+        document.querySelectorAll('.card-content').forEach(content => {
+            content.addEventListener('touchmove', function(e) {
+                e.stopPropagation(); // 允许在内容区域滚动
+            });
+        });
+        
+        // 键盘导航支持
+        document.addEventListener('keydown', function(e) {
+            const cards = document.querySelectorAll('.card');
+            const currentCard = document.activeElement;
+            
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (currentCard.classList.contains('card')) {
+                    currentCard.classList.toggle('flipped');
+                    e.preventDefault();
+                }
+            }
+            
+            if (e.key === 'ArrowRight') {
+                const nextCard = currentCard.nextElementSibling;
+                if (nextCard && nextCard.classList.contains('card')) {
+                    nextCard.focus();
+                    e.preventDefault();
+                }
+            }
+            
+            if (e.key === 'ArrowLeft') {
+                const prevCard = currentCard.previousElementSibling;
+                if (prevCard && prevCard.classList.contains('card')) {
+                    prevCard.focus();
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
