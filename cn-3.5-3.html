@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>以太网与IEEE 802.3学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content dl {
+            margin-top: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .memory-tip {
+            background-color: hsl(var(--secondary-hue), 80%, 95%);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .memory-tip::before {
+            content: "💡 记忆技巧: ";
+            font-weight: bold;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: hsl(0, 0%, 10%);
+                --text-dark: hsl(0, 0%, 90%);
+                --card-bg: hsl(0, 0%, 15%);
+                --highlight: hsl(var(--secondary-hue), 100%, 25%);
+                --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.3);
+            }
+            
+            .card-front {
+                background-color: hsl(var(--primary-hue), 60%, 20%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>以太网与IEEE 802.3学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 物理层标准 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="物理层标准学习卡片">
+            <div class="card-face card-front">
+                <div class="emoji">📶</div>
+                <h2 class="card-title">物理层标准</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">物理层标准</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>命名规则</dt>
+                        <dd>速率+Base+传输介质<br>例: <mark>10Base5</mark>(同轴), <mark>10BaseT</mark>(双绞线)</dd>
+                        
+                        <dt>同轴电缆</dt>
+                        <dd><mark>10BASE5</mark>: 粗缆, 500m, 100节点</dd>
+                        <dd><mark>10BASE2</mark>: 细缆, 185m, 30节点</dd>
+                        <dd>共同特点: <mark>曼彻斯特编码</mark>, 仅<mark>半双工</mark></dd>
+                        
+                        <dt>双绞线</dt>
+                        <dd><mark>10BASE-T</mark>: 100m, 星形拓扑</dd>
+                        <dd><mark>100Base-T</mark>: 100Mb/s, 半/全双工</dd>
+                        <dd>吉比特以太网: 1Gb/s, 仅<mark>全双工</mark></dd>
+                    </dl>
+                    
+                    <div class="memory-tip">同轴必半双，双绞看设备，光纤全双工</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 双工模式 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="双工模式学习卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">双工模式</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">双工模式</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>半双工</dt>
+                        <dd>同轴电缆<mark>仅支持半双工</mark></dd>
+                        <dd>双绞线连接<mark>集线器</mark>时为半双工</dd>
+                        <dd>必须使用<mark>CSMA/CD</mark>协议</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>全双工</dt>
+                        <dd>双绞线连接<mark>交换机</mark>默认全双工</dd>
+                        <dd><mark>光纤</mark>仅支持全双工</dd>
+                        <dd><mark>无需</mark>CSMA/CD协议</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">集线器→半双工，交换机→全双工</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: MAC帧格式 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="MAC帧格式学习卡片">
+            <div class="card-face card-front">
+                <div class="emoji">📦</div>
+                <h2 class="card-title">MAC帧格式</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">MAC帧格式</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>DIX Ethernet V2</dt>
+                        <dd>结构: <mark>"662N4"</mark>口诀</dd>
+                        <dd>6B目的MAC + 6B源MAC + 2B类型 + N数据 + 4B CRC</dd>
+                        <dd>类型字段标识<mark>网络层协议</mark>(如IPv4/IPv6)</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>IEEE 802.3</dt>
+                        <dd>与V2主要区别: 第3字段表示<mark>长度</mark>而非类型</dd>
+                        <dd>原设计包含<mark>LLC子层</mark>(现已被淘汰)</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">"六六二N四，收发协数验"</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 设备特性 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="网络设备特性学习卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🖧</div>
+                <h2 class="card-title">设备特性</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">设备特性</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>集线器(Hub)</dt>
+                        <dd><mark>物理层</mark>设备，无MAC地址</dd>
+                        <dd>不隔离<mark>冲突域</mark>和<mark>广播域</mark></dd>
+                        <dd>强制<mark>半双工</mark></dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>交换机(Switch)</dt>
+                        <dd><mark>数据链路层</mark>设备，有MAC地址</dd>
+                        <dd>隔离<mark>冲突域</mark>，不隔离广播域</dd>
+                        <dd>默认<mark>全双工</mark></dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>路由器(Router)</dt>
+                        <dd><mark>网络层</mark>设备</dd>
+                        <dd>隔离<mark>冲突域</mark>和<mark>广播域</mark></dd>
+                    </dl>
+                    
+                    <div class="memory-tip">集线器→物理层，交换机→链路层，路由器→网络层</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: 冲突域与广播域 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="冲突域与广播域学习卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🌐</div>
+                <h2 class="card-title">冲突域与广播域</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">冲突域与广播域</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>冲突域</dt>
+                        <dd>集线器连接区域为<mark>同一冲突域</mark></dd>
+                        <dd>交换机<mark>隔离冲突域</mark></dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>广播域</dt>
+                        <dd>路由器<mark>隔离广播域</mark></dd>
+                        <dd>交换机<mark>不隔离</mark>广播域</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>例题分析</dt>
+                        <dd>4个冲突域(每个集线器区域1个+交换机间3个)</dd>
+                        <dd>2个广播域(路由器左右各1个)</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">冲突域看集线器和交换机，广播域看路由器</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', !isPressed);
+                });
+                
+                // 键盘辅助功能
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // 检测系统颜色模式偏好
+            const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            darkModeMediaQuery.addListener(updateColorScheme);
+            updateColorScheme(darkModeMediaQuery);
+            
+            function updateColorScheme(e) {
+                const root = document.documentElement;
+                if (e.matches) {
+                    root.style.setProperty('--bg-light', 'hsl(0, 0%, 10%)');
+                    root.style.setProperty('--text-dark', 'hsl(0, 0%, 90%)');
+                    root.style.setProperty('--card-bg', 'hsl(0, 0%, 15%)');
+                } else {
+                    root.style.setProperty('--bg-light', 'hsl(0, 0%, 98%)');
+                    root.style.setProperty('--text-dark', 'hsl(0, 0%, 15%)');
+                    root.style.setProperty('--card-bg', 'hsl(0, 0%, 100%)');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
