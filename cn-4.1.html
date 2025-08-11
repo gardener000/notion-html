@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络层功能学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-sat: 100%;
+            --primary-light: 40%;
+            --secondary-hue: 45;
+            --secondary-sat: 100%;
+            --secondary-light: 60%;
+            --bg-hue: 0;
+            --bg-sat: 0%;
+            --bg-light: 98%;
+            --text-hue: 0;
+            --text-sat: 0%;
+            --text-light: 20%;
+            --card-width: 90vw;
+            --card-height: 70vh;
+            --border-radius: 16px;
+            --box-shadow: 0 8px 24px hsla(var(--text-hue), var(--text-sat), var(--text-light), 0.1);
+            --transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: hsl(var(--bg-hue), var(--bg-sat), var(--bg-light));
+            color: hsl(var(--text-hue), var(--text-sat), var(--text-light));
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            max-height: 500px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), var(--primary-sat), 95%);
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: white;
+            color: hsl(var(--text-hue), var(--text-sat), var(--text-light));
+            transform: rotateY(180deg);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .card-back-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .card-back-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-back-content::-webkit-scrollbar-thumb {
+            background-color: hsl(var(--primary-hue), var(--primary-sat), 80%);
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+            text-align: left;
+        }
+
+        li:before {
+            content: "•";
+            color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), var(--secondary-sat), 90%);
+            color: hsl(var(--text-hue), var(--text-sat), var(--text-light));
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--bg-hue), var(--bg-sat), 85%);
+            margin: 16px 0;
+            width: 100%;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), var(--primary-sat), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .progress {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: hsl(var(--text-hue), var(--text-sat), 60%);
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --card-height: 65vh;
+            }
+            
+            .card-front {
+                font-size: 1.3rem;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>网络层功能学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 网络层基本功能 -->
+        <div class="card" tabindex="0" aria-label="学习卡片：网络层基本功能">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🌐</div>
+                    <div>网络层基本功能</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="card-title">网络层基本功能</div>
+                        <div class="emoji">🌐</div>
+                        <ul>
+                            <li>处理数据传输过程中的<mark>IP数据报(分组)</mark>封装</li>
+                            <li>首部包含<mark>源IP</mark>和<mark>目的IP地址</mark></li>
+                            <li>实现<mark>主机到主机</mark>的传输</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>数据传输过程：</strong></p>
+                        <ul>
+                            <li>应用层传输单位是<mark>报文</mark></li>
+                            <li>传输层将报文拆分为<mark>报文段</mark></li>
+                            <li>网络层在报文段基础上添加<mark>IP首部</mark>形成IP数据报</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 异构网络互联 -->
+        <div class="card" tabindex="0" aria-label="学习卡片：异构网络互联">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔌</div>
+                    <div>异构网络互联</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="card-title">异构网络互联</div>
+                        <div class="emoji">🔌</div>
+                        <p><strong>异构性表现：</strong></p>
+                        <ul>
+                            <li><mark>拓扑结构</mark>不同</li>
+                            <li><mark>物理层/链路层</mark>实现不同（如以太网、无线局域网、令牌环网等）</li>
+                            <li><mark>主机类型</mark>各异（电脑、手机等）</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>关键设备：</strong></p>
+                        <ul>
+                            <li><mark>路由器(Router)</mark></li>
+                            <li>术语注意：在TCP/IP文献中路由器也称为<mark>网关(Gateway)</mark></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 路由与转发 -->
+        <div class="card" tabindex="0" aria-label="学习卡片：路由与转发">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🛣️</div>
+                    <div>路由与转发</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="card-title">路由与转发</div>
+                        <div class="emoji">🛣️</div>
+                        <p><strong>路由功能：</strong></p>
+                        <ul>
+                            <li><mark>多台路由器</mark>协同工作</li>
+                            <li>运行<mark>路由协议</mark>（如RIP、OSPF）</li>
+                            <li>生成<mark>路由表</mark>规划最佳路径</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>转发功能：</strong></p>
+                        <ul>
+                            <li><mark>单台路由器</mark>独立完成</li>
+                            <li>基于<mark>转发表</mark>（路由表的精简版）选择转发接口</li>
+                            <li>转发表格索速度更快</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>重要区别：</strong></p>
+                        <p><mark>路由（多设备协作）</mark> vs <mark>转发（单设备行为）</mark></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 拥塞控制 -->
+        <div class="card" tabindex="0" aria-label="学习卡片：拥塞控制">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🚦</div>
+                    <div>拥塞控制</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="card-title">拥塞控制</div>
+                        <div class="emoji">🚦</div>
+                        <p><strong>拥塞现象：</strong></p>
+                        <ul>
+                            <li>网络<mark>分组过量</mark>导致性能下降</li>
+                            <li>类比：节假日道路车辆增多导致收费站吞吐量下降</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>控制方法：</strong></p>
+                        <p><mark>开环控制（静态）：</mark></p>
+                        <ul>
+                            <li>网络部署时预先设计</li>
+                            <li>运行后不再修改（如预先规划多条备用路径）</li>
+                        </ul>
+                        <p><mark>闭环控制（动态）：</mark></p>
+                        <ul>
+                            <li>实时监测网络状态</li>
+                            <li>通过<mark>ICMP协议</mark>传递拥塞信息</li>
+                            <li>动态调整路由表（如高德地图实时路径规划）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 考试重点提示 -->
+        <div class="card" tabindex="0" aria-label="学习卡片：考试重点提示">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📝</div>
+                    <div>考试重点提示</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="card-title">考试重点提示</div>
+                        <div class="emoji">📝</div>
+                        <p><strong>高频考点：</strong></p>
+                        <ul>
+                            <li>网关术语的等价性（<mark>路由器=网关</mark>）</li>
+                            <li><mark>开环与闭环</mark>拥塞控制的区别</li>
+                            <li><mark>IP数据报</mark>结构(特别是首部内容)</li>
+                            <li><mark>路由与转发</mark>的区别</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>考研重点：</strong></p>
+                        <ul>
+                            <li><mark>IPv4</mark>(占80%大题)</li>
+                            <li><mark>路由算法与协议</mark>(4小题+2大题)</li>
+                            <li><mark>网络层设备</mark>(路由器)</li>
+                            <li><mark>SDN</mark>(2023新增考点)</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>低优先级考点：</strong></p>
+                        <ul>
+                            <li>IP多播</li>
+                            <li>移动IP</li>
+                            <li>IPv6(仅1小题)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <div class="progress" id="progress">1/5</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const progress = document.getElementById('progress');
+            let currentCardIndex = 0;
+            
+            // 更新进度显示
+            function updateProgress() {
+                progress.textContent = `${currentCardIndex + 1}/${cards.length}`;
+            }
+            
+            // 显示指定卡片
+            function showCard(index) {
+                cards.forEach((card, i) => {
+                    if (i === index) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                currentCardIndex = index;
+                updateProgress();
+            }
+            
+            // 初始化显示第一张卡片
+            showCard(0);
+            
+            // 下一张卡片
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    showCard(currentCardIndex + 1);
+                } else {
+                    showCard(0); // 循环到第一张
+                }
+            });
+            
+            // 上一张卡片
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    showCard(currentCardIndex - 1);
+                } else {
+                    showCard(cards.length - 1); // 循环到最后一张
+                }
+            });
+            
+            // 卡片翻转功能
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 确保点击卡片内容不会冒泡到卡片翻转
+                const cardBackContent = card.querySelector('.card-back-content');
+                if (cardBackContent) {
+                    cardBackContent.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                }
+            });
+            
+            // 键盘导航
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    nextBtn.click();
+                } else if (e.key === 'ArrowLeft') {
+                    prevBtn.click();
+                } else if (e.key === ' ') {
+                    cards[currentCardIndex].click();
+                }
+            });
+            
+            // 触摸滑动支持
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // 最小滑动距离
+                if (touchEndX < touchStartX - threshold) {
+                    nextBtn.click(); // 向左滑动，下一张
+                } else if (touchEndX > touchStartX + threshold) {
+                    prevBtn.click(); // 向右滑动，上一张
+                }
+            }
+        });
+    </script>
+</body>
+</html>
