@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>停止等待协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-front: hsl(var(--primary-hue), 100%, 97%);
+            --card-back: hsl(var(--primary-hue), 30%, 95%);
+            --text-dark: hsl(0, 0%, 15%);
+            --text-light: hsl(0, 0%, 98%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-front);
+            color: hsl(var(--primary-hue), 60%, 30%);
+            font-weight: bold;
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: bold;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 8px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsla(var(--primary-hue), 30%, 70%, 0.5);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>停止等待协议学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 协议基本概念 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <div class="card-title">停止等待协议基本概念</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>协议全称</dt>
+                            <dd><mark>Stop-and-Wait Protocol (S-W)</mark></dd>
+                            
+                            <dt>核心机制</dt>
+                            <dd>滑动窗口、确认(ACK)、重传、帧编号</dd>
+                            
+                            <dt>窗口设置</dt>
+                            <dd>
+                                <ul>
+                                    <li>发送窗口(WT) = 1</li>
+                                    <li>接收窗口(WR) = 1</li>
+                                    <li>实现<mark>单帧传输控制</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>编号要求</dt>
+                            <dd>满足 WT + WR ≤ 2ⁿ (n为编号比特数，S-W仅需1比特)</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 协议工作原理 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⚙️</div>
+                    <div class="card-title">协议工作原理</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>窗口运作</dt>
+                            <dd>
+                                <ul>
+                                    <li>发送方每次只能发送<mark>一个帧</mark></li>
+                                    <li>接收方每次只能接收<mark>一个帧</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>编号原理</dt>
+                            <dd>采用<mark>1比特循环编号</mark> (0→1→0→1)</dd>
+                            
+                            <dt>帧类型</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>数据帧(Data)</mark>: 包含首部、数据部分、尾部</li>
+                                    <li><mark>确认帧(ACK)</mark>: 首部标记为ACK类型，数据部分可为空</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 正常传输流程 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄➡️</div>
+                    <div class="card-title">正常传输流程</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ol>
+                            <li>发送方发送<mark>Data0</mark></li>
+                            <li>接收方检错通过后返回<mark>ACK0</mark></li>
+                            <li>双方窗口右移</li>
+                            <li>发送方发送<mark>Data1</mark>，接收方返回<mark>ACK1</mark></li>
+                        </ol>
+                        <div class="divider"></div>
+                        <p><strong>窗口滑动规则:</strong> 接收方先滑动窗口并返回ACK后，发送方才能滑动窗口</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 异常情况处理 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⚠️</div>
+                    <div class="card-title">异常情况处理</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>数据帧丢失</dt>
+                            <dd>
+                                <ul>
+                                    <li>发送方启动<mark>计时器</mark></li>
+                                    <li>超时未收到ACK则<mark>重传原帧</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>确认帧丢失</dt>
+                            <dd>
+                                <ul>
+                                    <li>接收方收到Data1但ACK1丢失</li>
+                                    <li>发送方超时重传Data1</li>
+                                    <li>接收方发现重复帧则<mark>丢弃并返回ACK1</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>数据帧差错</dt>
+                            <dd>
+                                <ul>
+                                    <li>接收方检错发现错误→<mark>直接丢弃</mark></li>
+                                    <li>不返回ACK导致发送方<mark>超时重传</mark></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 帧编号的必要性 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔢</div>
+                    <div class="card-title">帧编号的必要性</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心原因</dt>
+                            <dd>
+                                <ul>
+                                    <li>区分<mark>重复帧</mark>与新帧</li>
+                                    <li>接收方通过序号判断帧是否在<mark>窗口内</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>比特数依据</dt>
+                            <dd>WT + WR = 2 ≤ 2¹，故<mark>1比特足够</mark></dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <p><strong>记忆提示:</strong> 相邻帧数据可能相同，必须用编号区分!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6: 协议特性 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">✨</div>
+                    <div class="card-title">协议特性</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心机制</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>流量控制</mark>: 通过窗口大小=1限制发送速率</li>
+                                    <li><mark>可靠传输</mark>: 解决丢失、差错、重复问题</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>特性优势</dt>
+                            <dd>
+                                <ul>
+                                    <li>无<mark>失序问题</mark> (接收窗口=1保证顺序接收)</li>
+                                    <li>简单可靠 (但<mark>信道利用率低</mark>)</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>典型问题</dt>
+                            <dd>
+                                <ul>
+                                    <li>数据帧丢失→超时重传</li>
+                                    <li>ACK丢失→接收方丢弃重复帧并重发ACK</li>
+                                    <li>帧差错→丢弃不响应触发重传</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
