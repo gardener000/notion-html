@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局域网概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            perspective: 1000px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            background: white;
+            align-items: center;
+            text-align: center;
+            border: 1px solid hsl(var(--primary-hue), 20%, 90%);
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            border: 1px solid hsl(var(--secondary-hue), 40%, 85%);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .progress {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>局域网概念学习卡片</h1>
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">🌐</div>
+                <div class="card-title">局域网基本概念</div>
+                <div>点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>覆盖<mark>较小地理范围</mark>的网络，具有<mark>低时延</mark>、<mark>低误码率</mark>和<mark>高带宽</mark></dd>
+                        
+                        <dt>数据传输方式</dt>
+                        <dd>• <mark>单播</mark>：一对一传输（A→B）<br>
+                            • <mark>广播</mark>：一对所有传输<br>
+                            • <mark>多播</mark>：一对部分传输</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><mark>MAC地址</mark>：48位全球唯一物理地址，高24位由IEEE分配，低24位由厂商分配</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">🔌</div>
+                <div class="card-title">有线局域网</div>
+                <div>点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>以太网 (IEEE 802.3)</dt>
+                        <dd>• 主流技术，支持<mark>同轴电缆</mark>、<mark>双绞线</mark>、<mark>光纤</mark><br>
+                            • 编码方式：<mark>曼彻斯特编码</mark><br>
+                            • <mark>半双工</mark>：使用CSMA/CD协议<br>
+                            • <mark>全双工</mark>：无需介质访问控制</dd>
+                        
+                        <dt>令牌环网</dt>
+                        <dd>• <mark>环形拓扑</mark><br>
+                            • 使用<mark>令牌传递协议</mark><br>
+                            • 已被以太网取代</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">📶</div>
+                <div class="card-title">无线局域网</div>
+                <div>点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>WLAN (IEEE 802.11)</dt>
+                        <dd>• <mark>星型拓扑</mark>（1个AP+N台设备）<br>
+                            • 使用<mark>CSMA/CA</mark>协议<br>
+                            • 支持单播/广播/多播</dd>
+                        
+                        <dt>特点</dt>
+                        <dd>• 覆盖较小地理范围<br>
+                            • 内置WiFi天线<br>
+                            • 电磁波传输</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><mark>CSMA/CA</mark> vs <mark>CSMA/CD</mark>：无线使用冲突避免，有线使用冲突检测</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">💻</div>
+                <div class="card-title">网络适配器</div>
+                <div>点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>组成</dt>
+                        <dd>• <mark>RAM芯片</mark>：用于帧缓冲<br>
+                            • <mark>ROM芯片</mark>：存储MAC地址</dd>
+                        
+                        <dt>功能</dt>
+                        <dd>• 帧发送与接收<br>
+                            • <mark>串/并行数据转换</mark><br>
+                            • MAC地址存储<br>
+                            • 帧缓冲</dd>
+                        
+                        <dt>MAC地址</dt>
+                        <dd>• <mark>48位全球唯一</mark>标识符<br>
+                            • 高24位：厂商号<br>
+                            • 低24位：厂商分配</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">🔄</div>
+                <div class="card-title">数据传输过程</div>
+                <div>点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>发送过程</dt>
+                        <dd>1. 主机通过I/O总线告知适配器<br>
+                            2. 适配器<mark>封装成帧</mark><br>
+                            3. 完成<mark>串行通信</mark>发送</dd>
+                        
+                        <dt>接收过程</dt>
+                        <dd>1. 检查<mark>MAC地址匹配性</mark><br>
+                            2. 验证帧完整性<br>
+                            3. 通过<mark>中断信号</mark>通知CPU<br>
+                            4. 主机解封装IP分组</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p>双模设备：现代笔记本可能同时具备<mark>以太网</mark>和<mark>WiFi</mark>适配器</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">5/5 张卡片</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止卡片内容滚动时意外翻转
+            const cardBacks = document.querySelectorAll('.card-back');
+            cardBacks.forEach(back => {
+                back.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
