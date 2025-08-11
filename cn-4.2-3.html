@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>子网划分学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --spacing-unit: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: var(--spacing-unit);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: calc(var(--spacing-unit) * 2) 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .flashcards-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: auto;
+            min-height: 300px;
+            max-height: 60vh;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+            position: relative;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .flashcard-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: calc(var(--spacing-unit) * 3);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .card-content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: calc(var(--spacing-unit) * 3);
+            -webkit-overflow-scrolling: touch; /* 平滑滚动(iOS) */
+        }
+
+        .flashcard-content dl {
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .flashcard-content dt {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: calc(var(--spacing-unit) * 2);
+        }
+
+        .flashcard-content dd {
+            margin-left: calc(var(--spacing-unit) * 2);
+            margin-bottom: var(--spacing-unit);
+        }
+
+        .flashcard-content ul {
+            padding-left: calc(var(--spacing-unit) * 2);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+
+        .flashcard-content li {
+            margin-bottom: var(--spacing-unit);
+        }
+
+        mark {
+            background-color: hsl(45, 100%, 90%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: calc(var(--spacing-unit) * 2) 0;
+        }
+
+        .icon {
+            display: inline-block;
+            margin-right: var(--spacing-unit);
+            font-size: 1.2em;
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: calc(var(--spacing-unit) * 2);
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        /* 自定义滚动条 */
+        .card-content-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-content-wrapper::-webkit-scrollbar-track {
+            background: hsl(0, 0%, 95%);
+            border-radius: 3px;
+        }
+
+        .card-content-wrapper::-webkit-scrollbar-thumb {
+            background: hsl(0, 0%, 80%);
+            border-radius: 3px;
+        }
+
+        .card-content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: hsl(0, 0%, 70%);
+        }
+
+        @media (max-width: 400px) {
+            .flashcard {
+                min-height: 250px;
+            }
+            
+            .flashcard-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>子网划分学习卡片</h1>
+    
+    <div class="flashcards-container">
+        <!-- Card 1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-title">IPv4地址分类 🏷️</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="card-content-wrapper">
+                    <div class="flashcard-content">
+                        <dl>
+                            <dt><span class="icon">🔢</span> 最初IP地址分类</dt>
+                            <dd>IPv4地址最初分为<mark>A、B、C、D、E</mark>五类</dd>
+                            
+                            <dt><span class="icon">🅱️</span> B类地址结构</dt>
+                            <dd>前<mark>16位</mark>为网络号，后<mark>16位</mark>为主机号（如166.1.x.x）</dd>
+                            
+                            <dt><span class="icon">©️</span> C类地址结构</dt>
+                            <dd>前<mark>24位</mark>为网络号，后<mark>8位</mark>为主机号（如200.1.1.x）</dd>
+                            
+                            <dt><span class="icon">⚠️</span> 地址分配问题</dt>
+                            <dd>B类地址可支持65534台主机，但实际局域网往往用不到这么多，导致<mark>地址资源浪费</mark></dd>
+                            
+                            <dt><span class="icon">🔄</span> 子网划分目的</dt>
+                            <dd>通过从主机号中借用若干高位作为子网号，形成三级结构：<br><mark>网络号 + 子网号 + 主机号</mark></dd>
+                            
+                            <dt><span class="icon">📊</span> 实际应用</dt>
+                            <dd>每个子网对应路由器的<mark>一个独立接口</mark>，形成逻辑上分离的网络</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-title">子网划分原理 🧩</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="card-content-wrapper">
+                    <div class="flashcard-content">
+                        <dl>
+                            <dt><span class="icon">⚙️</span> 技术本质</dt>
+                            <dd>从<mark>主机号</mark>中借用若干高位作为<mark>子网号</mark>，形成三级结构：<br>网络号 + 子网号 + 主机号</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">📊</span> 划分示例</dt>
+                            <dd>B类地址166.1.x.x，借用1bit作为子网号：
+                                <ul>
+                                    <li>子网0：子网号=0，主机号范围<mark>166.1.0.1~166.1.127.254</mark></li>
+                                    <li>子网1：子网号=1，主机号范围<mark>166.1.128.1~166.1.255.254</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt><span class="icon">📝</span> 多子网划分</dt>
+                            <dd>借用2bit可划分4个子网（00/01/10/11）：
+                                <ul>
+                                    <li>子网掩码变为<mark>255.255.192.0</mark></li>
+                                    <li>示例：子网2可用地址范围<mark>166.1.128.1~166.1.191.254</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt><span class="icon">🚫</span> 特殊地址限制</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>全0主机号</mark>：表示子网本身</li>
+                                    <li><mark>全1主机号</mark>：子网广播地址</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">✨</span> 技术优势</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>资源利用率</mark>：将大地址块拆分为多个小地址块</li>
+                                    <li><mark>管理便利</mark>：实现不同物理网络的逻辑隔离</li>
+                                    <li><mark>灵活性</mark>：自由控制子网数量和每个子网容量</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-title">子网掩码作用 🛡️</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="card-content-wrapper">
+                    <div class="flashcard-content">
+                        <dl>
+                            <dt><span class="icon">🎯</span> 核心作用</dt>
+                            <dd>标识<mark>网络号和子网号</mark>的总比特数</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🧮</span> 运算原理</dt>
+                            <dd>通过IP地址与子网掩码<mark>逐位"与"运算</mark>，结果即为网络前缀</dd>
+                            
+                            <dt><span class="icon">📝</span> 配置示例</dt>
+                            <dd>
+                                <ul>
+                                    <li>B类地址166.1.x.x划分2个子网</li>
+                                    <li>子网掩码<mark>255.255.128.0</mark>（前17位为1）</li>
+                                    <li>对应二进制为<mark>17个1+15个0</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt><span class="icon">🔍</span> 归属判断</dt>
+                            <dd>只有<mark>网络前缀相同</mark>的IP地址才属于同一子网</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">📋</span> 默认子网掩码</dt>
+                            <dd>
+                                <ul>
+                                    <li>A类：<mark>255.0.0.0</mark></li>
+                                    <li>B类：<mark>255.255.0.0</mark></li>
+                                    <li>C类：<mark>255.255.255.0</mark></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-title">路由器转发机制 🔄</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="card-content-wrapper">
+                    <div class="flashcard-content">
+                        <dl>
+                            <dt><span class="icon">📋</span> 转发表改造</dt>
+                            <dd>支持子网划分的路由器需包含：<br><mark>目的网络号</mark> + <mark>子网掩码</mark> + <mark>转发接口</mark></dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🔎</span> 查表流程</dt>
+                            <dd>
+                                <ol>
+                                    <li>目的IP与子网掩码<mark>逐位相与</mark></li>
+                                    <li>提取网络前缀与目的网络号对比</li>
+                                    <li>匹配成功则按转发接口发送</li>
+                                </ol>
+                            </dd>
+                            
+                            <dt><span class="icon">📊</span> 实例分析</dt>
+                            <dd>
+                                <ul>
+                                    <li>目的IP <mark>166.1.0.1</mark>：与255.255.128.0相与得166.1.0.0</li>
+                                    <li>目的IP <mark>166.1.128.2</mark>：第17位为1，匹配第二行</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt><span class="icon">🔄</span> 默认路由</dt>
+                            <dd><mark>0.0.0.0/0</mark>：当所有表项都不匹配时使用</dd>
+                            
+                            <dt><span class="icon">❌</span> 异常处理</dt>
+                            <dd>若转发接口与接收接口相同，则<mark>丢弃数据包</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-face flashcard-front">
+                <div class="flashcard-title">CIDR记法 📏</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+                <div class="card-content-wrapper">
+                    <div class="flashcard-content">
+                        <dl>
+                            <dt><span class="icon">✏️</span> 格式</dt>
+                            <dd>IP地址后加<mark>斜线和数字</mark>（如166.1.0.1/17）</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🔢</span> 含义</dt>
+                            <dd>数字表示子网掩码中<mark>连续1的位数</mark></dd>
+                            
+                            <dt><span class="icon">📐</span> 示例</dt>
+                            <dd>
+                                <ul>
+                                    <li>/17 → 255.255.128.0（前17位为1）</li>
+                                    <li>/24 → 255.255.255.0</li>
+                                    <li>默认路由 → 0.0.0.0/0</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt><span class="icon">✨</span> 优势</dt>
+                            <dd>书写简洁，便于<mark>人类阅读和记忆</mark></dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🖥️</span> 实际配置</dt>
+                            <dd>
+                                <ul>
+                                    <li>主机H1~H2配置：默认网关166.1.0.5，子网掩码255.255.128.0（即/17）</li>
+                                    <li>路由器接口配置示例：IP地址166.1.0.5/17</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">
+        <span>1/5</span>
+        <span>点击卡片翻转</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashcards = document.querySelectorAll('.flashcard');
+            let currentCard = 0;
+            
+            // Update progress indicator
+            function updateProgress() {
+                document.querySelector('.progress span:first-child').textContent = 
+                    `${currentCard + 1}/${flashcards.length}`;
+            }
+            
+            // Add click/touch event to each flashcard
+            flashcards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                card.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        this.classList.toggle('flipped');
+                    }
+                });
+                
+                // Track current card for progress
+                card.addEventListener('animationend', function() {
+                    if (this.classList.contains('flipped')) {
+                        currentCard = Math.max(currentCard, index);
+                        updateProgress();
+                    }
+                });
+            });
+            
+            // Initialize progress
+            updateProgress();
+            
+            // Make cards focusable for keyboard navigation
+            flashcards.forEach(card => {
+                card.setAttribute('tabindex', '0');
+            });
+            
+            // Prevent scrolling when touching card content (iOS fix)
+            document.querySelectorAll('.card-content-wrapper').forEach(wrapper => {
+                wrapper.addEventListener('touchmove', function(e) {
+                    // Only allow scrolling if content is scrollable
+                    if (this.scrollHeight > this.clientHeight) {
+                        e.stopPropagation();
+                    } else {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
