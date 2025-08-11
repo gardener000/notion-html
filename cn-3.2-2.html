@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>奇偶校验码学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 400px;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            width: 100%;
+            min-height: 300px;
+            margin-bottom: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            touch-action: manipulation;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            overflow: hidden;
+        }
+
+        .card-front {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            flex-grow: 1;
+            width: 100%;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .card-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 2px;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--primary-color);
+        }
+
+        .card-content dd {
+            margin-bottom: 12px;
+            margin-left: 16px;
+        }
+
+        mark {
+            background-color: hsl(45, 100%, 90%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .key-term {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .limitation {
+            color: hsl(0, 70%, 50%);
+        }
+
+        .example {
+            background-color: hsl(120, 50%, 95%);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                min-height: 280px;
+            }
+            .card-face {
+                padding: 16px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion) {
+            .card {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>奇偶校验码学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🔍</div>
+                <h2 class="card-title">什么是奇偶校验码?</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>一种简单的<mark>检错编码</mark>技术，用于检测数据传输过程中的比特错误</dd>
+                        
+                        <dt>组成</dt>
+                        <dd>
+                            <span class="key-term">信息位</span>: n位有效数据<br>
+                            <span class="key-term">校验位</span>: 1位冗余位(可添加在首部或尾部)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">⚖️</div>
+                <h2 class="card-title">奇校验 vs 偶校验</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>奇校验</dt>
+                        <dd>整个校验码中"1"的个数为<mark>奇数</mark></dd>
+                        
+                        <dt>偶校验</dt>
+                        <dd>整个校验码中"1"的个数为<mark>偶数</mark> (更常用)</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>示例</dt>
+                        <dd>
+                            <div class="example">
+                                信息位: 1001101<br>
+                                奇校验码: 11001101 (5个1)<br>
+                                偶校验码: 01001101 (4个1)
+                            </div>
+                            <div class="example">
+                                信息位: 1010111<br>
+                                奇校验码: 01010111 (5个1)<br>
+                                偶校验码: 11010111 (6个1)
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">⚙️</div>
+                <h2 class="card-title">实现原理</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>发送端</dt>
+                        <dd>
+                            偶校验位 = 所有信息位<mark>异或</mark>的结果<br>
+                            <div class="example">
+                                1001101的偶校验位 = 1⊕0⊕0⊕1⊕1⊕0⊕1 = 0
+                            </div>
+                        </dd>
+                        
+                        <dt>接收端</dt>
+                        <dd>
+                            对所有位(信息位+校验位)进行异或运算<br>
+                            偶校验: 结果为0表示无错，1表示有错
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>异或运算规则</dt>
+                        <dd>
+                            0 ⊕ 0 = 0<br>
+                            0 ⊕ 1 = 1<br>
+                            1 ⊕ 0 = 1<br>
+                            1 ⊕ 1 = 0
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">特点与局限性</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>优点</dt>
+                        <dd>实现简单，硬件成本低</dd>
+                        
+                        <dt class="limitation">局限性</dt>
+                        <dd>
+                            <ul>
+                                <li>只能检测<mark>奇数位</mark>错误</li>
+                                <li>无法检测<mark>偶数位</mark>错误(如2位同时出错)</li>
+                                <li>无纠错能力</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>应用场景</dt>
+                        <dd>适用于对错误检测要求不高的简单通信系统，通常与其他更强大的校验技术(如CRC)结合使用</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            // 改进的触摸和点击处理
+            function handleCardFlip(card) {
+                // 确保卡片翻转时不会触发滚动
+                if (!card.classList.contains('is-flipped')) {
+                    card.style.overflow = 'hidden';
+                }
+                card.classList.toggle('is-flipped');
+                
+                // 翻转后允许内容滚动
+                setTimeout(() => {
+                    if (card.classList.contains('is-flipped')) {
+                        card.style.overflow = '';
+                    }
+                }, 600);
+            }
+            
+            cards.forEach(card => {
+                // 触摸支持
+                card.addEventListener('touchstart', function(e) {
+                    // 防止触摸导致页面滚动
+                    e.preventDefault();
+                });
+                
+                card.addEventListener('touchend', function(e) {
+                    if (!e.target.closest('.card-content')) {
+                        handleCardFlip(this);
+                    }
+                    e.preventDefault();
+                });
+                
+                // 点击支持
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.card-content')) {
+                        handleCardFlip(this);
+                    }
+                });
+                
+                // 键盘无障碍支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        handleCardFlip(this);
+                        e.preventDefault();
+                    }
+                });
+                
+                // 卡片背面内容滚动处理
+                const backContent = card.querySelector('.card-content');
+                backContent.addEventListener('touchmove', function(e) {
+                    e.stopPropagation(); // 防止事件冒泡触发卡片翻转
+                });
+            });
+            
+            // 防止iOS橡皮筋效果
+            document.body.addEventListener('touchmove', function(e) {
+                if (e.target.closest('.card-content')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html>
