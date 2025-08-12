@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAT学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-saturation: 80%;
+            --primary-lightness: 50%;
+            --secondary-hue: 40;
+            --secondary-saturation: 90%;
+            --secondary-lightness: 60%;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform var(--transition-speed);
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 20%, 95%);
+            border: 2px solid hsl(var(--primary-hue), 50%, 80%);
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: white;
+            border: 2px solid hsl(var(--secondary-hue), 50%, 80%);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: hsl(var(--primary-hue), 30%, 50%);
+            margin-bottom: 16px;
+        }
+
+        .card-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        dl {
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), var(--secondary-saturation), 90%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .tip {
+            background-color: hsl(var(--secondary-hue), 30%, 95%);
+            border-left: 4px solid hsl(var(--secondary-hue), var(--secondary-saturation), var(--secondary-lightness));
+            padding: 8px 12px;
+            margin: 12px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>网络地址转换(NAT)学习卡片</h1>
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="NAT基本概念卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🌐</div>
+                    <h2 class="card-title">NAT基本概念</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">NAT基本概念</h3>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>定义</dt>
+                            <dd><mark>网络地址转换技术</mark>，允许局域网内多台主机共享一个公网IP地址</dd>
+                            
+                            <dt>核心功能</dt>
+                            <dd>将外网IP地址映射为内网IP地址，实现局域网与互联网的通信</dd>
+                            
+                            <dt>应用价值</dt>
+                            <dd>
+                                <ul>
+                                    <li>解决IPv4地址不足问题</li>
+                                    <li>隐藏内部网络结构</li>
+                                    <li>实现多个内网设备共享单个公网IP访问互联网</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">💡 NAT是解决IPv4地址短缺的重要技术！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="私有IP地址范围卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔒</div>
+                    <h2 class="card-title">私有IP地址范围</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">私有IP地址范围</h3>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>三类私有地址段</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>10.0.0.0~10.255.255.255</mark> (10.0.0.0/8)</li>
+                                    <li><mark>172.16.0.0~172.31.255.255</mark> (172.16.0.0/12)</li>
+                                    <li><mark>192.168.0.0~192.168.255.255</mark> (192.168.0.0/16)</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>特性</dt>
+                            <dd>
+                                <ul>
+                                    <li>仅限<mark>局域网内部</mark>使用</li>
+                                    <li>可<mark>复用</mark>（不同局域网可重复使用相同地址）</li>
+                                    <li>不要求全球唯一，只需局域网内唯一</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">🔑 记住这三类地址范围，它们是NAT的基础！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="NAT工作原理卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">⚙️</div>
+                    <h2 class="card-title">NAT工作原理</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">NAT工作原理</h3>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>NAT表</dt>
+                            <dd>维护<mark>&lt;内网IP:端口号&gt; ↔ &lt;外网IP:端口号&gt;</mark>映射关系</dd>
+                            
+                            <dt>转换方向</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>内网→外网</mark>：修改源IP和源端口</li>
+                                    <li><mark>外网→内网</mark>：修改目的IP和目的端口</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>示例转换</dt>
+                            <dd>
+                                <ul>
+                                    <li>192.168.3.74:2111 → 59.175.49.153:23333 (出站)</li>
+                                    <li>59.175.49.153:23333 → 192.168.3.74:2111 (入站)</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">🔄 记住转换方向：出站改源，入站改目的！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="NAT与普通路由器区别卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔄</div>
+                    <h2 class="card-title">NAT与普通路由器区别</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">NAT与普通路由器区别</h3>
+                        <div class="divider"></div>
+                        <table style="width:100%; border-collapse: collapse; margin-bottom: 12px;">
+                            <tr style="background-color: hsl(var(--primary-hue), 20%, 95%);">
+                                <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">特性</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">普通路由器</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">NAT路由器</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">工作层次</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">仅网络层</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">网络层+传输层</td>
+                            </tr>
+                            <tr style="background-color: hsl(0, 0%, 97%);">
+                                <td style="padding: 8px; border: 1px solid #ddd;">IP处理</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">不修改IP地址</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">修改IP地址</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">端口处理</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">不涉及端口</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">修改端口号</td>
+                            </tr>
+                        </table>
+                        <div class="tip">📌 NAT路由器工作在更高层次，能修改IP和端口！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="端口号的作用卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔌</div>
+                    <h2 class="card-title">端口号的作用</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">端口号的作用</h3>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>本质</dt>
+                            <dd>传输层定义的<mark>软件概念</mark>（非物理接口）</dd>
+                            
+                            <dt>数量</dt>
+                            <dd>每台主机可定义<mark>2^16个</mark>（约6.5万）</dd>
+                            
+                            <dt>核心作用</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>IP地址</mark>定位主机（网络层功能）</li>
+                                    <li><mark>端口号</mark>定位进程（传输层功能）</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>分配特性</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>本地自主性</mark>：每台主机可独立分配端口</li>
+                                    <li><mark>可重复性</mark>：不同主机上的相同端口号不冲突</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">🎯 端口号让同一主机上的不同应用能同时通信！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" role="button" aria-label="IP地址查询方法卡片，点击翻转查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🔍</div>
+                    <h2 class="card-title">IP地址查询方法</h2>
+                    <p class="card-subtitle">点击翻转查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <h3 class="card-title">IP地址查询方法</h3>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>外网IP查询</dt>
+                            <dd>
+                                <ul>
+                                    <li>通过<mark>百度搜索"IP地址"</mark>可直接显示</li>
+                                    <li>同一局域网内所有设备共享相同外网IP</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>内网IP查询</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>Windows</mark>：控制面板→网络和共享中心</li>
+                                    <li><mark>Mac</mark>：系统偏好设置→网络</li>
+                                    <li><mark>手机</mark>：设置→无线局域网→点击已连接WIFI旁的"I"图标</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">📱 试试现在查询你设备的IP地址吧！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
