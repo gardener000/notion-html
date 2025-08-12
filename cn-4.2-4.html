@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIDR学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin: 24px 0;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            aspect-ratio: 3/4;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: 16px;
+            background-color: white;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 80%, 90%), white);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: white;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (max-width: 400px) {
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-face {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CIDR学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">📌</div>
+                    <h2 class="card-title">传统IP地址分配的缺陷</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">传统IP地址分配的缺陷</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>地址分类</dt>
+                            <dd>• <mark>A类</mark>：1字节网络号（1-126开头），3字节主机号（16,777,216地址）</dd>
+                            <dd>• <mark>B类</mark>：2字节网络号（128-191开头），2字节主机号（65,536地址）</dd>
+                            <dd>• <mark>C类</mark>：3字节网络号（192-223开头），1字节主机号（256地址）</dd>
+                            
+                            <dt>主要问题</dt>
+                            <dd>• <mark>分配不灵活</mark>：必须选择固定类别（如2000台主机需分配B类）</dd>
+                            <dd>• <mark>资源浪费</mark>：需求2000地址却要占用65536地址的B类块</dd>
+                            <dd>• <mark>耗尽加速</mark>：大量闲置地址导致IPv4资源快速枯竭</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">✨</div>
+                    <h2 class="card-title">CIDR核心改进</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">CIDR核心改进</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>取消分类</dt>
+                            <dd>• 不再区分A/B/C类地址</dd>
+                            
+                            <dt>可变前缀</dt>
+                            <dd>• IP地址分为<mark>网络前缀</mark>和<mark>主机号</mark>两部分</dd>
+                            <dd>• 前缀长度可自由调整</dd>
+                            
+                            <dt>地址表示</dt>
+                            <dd>• <mark>CIDR记法</mark>：如192.168.1.0/21（斜杠后为前缀位数）</dd>
+                            <dd>• 子网掩码：对应21个1和11个0的二进制掩码</dd>
+                            
+                            <dt>分配优势</dt>
+                            <dd>• <mark>精确匹配</mark>：2000台主机可分配/21地址块（2048地址）</dd>
+                            <dd>• <mark>高效利用</mark>：避免传统分类造成的地址浪费</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">📊</div>
+                    <h2 class="card-title">定长子网划分</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">定长子网划分</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>基本原理</dt>
+                            <dd>• 从主机号前<mark>k位</mark>取出作为子网号</dd>
+                            <dd>• 可划分出<mark>2<sup>k</sup></mark>个大小相等的子网</dd>
+                            
+                            <dt>特点</dt>
+                            <dd>• 每个子网包含的IP地址块大小相同</dd>
+                            <dd>• 与传统子网划分技术原理相同</dd>
+                            
+                            <dt>缺陷</dt>
+                            <dd>• IP地址利用率低</dd>
+                            <dd>• 无法满足不同子网的实际需求差异</dd>
+                            
+                            <dt>示例</dt>
+                            <dd>• 某学校获得166.1.X.X地址块（16位主机号）</dd>
+                            <dd>• 取前2位作为子网号（划分4个子网）</dd>
+                            <dd>• 每个子网固定有<mark>16,384</mark>个IP地址</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">🔀</div>
+                    <h2 class="card-title">变长子网划分</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">变长子网划分</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心优势</dt>
+                            <dd>• 子网号长度<mark>可变</mark></dd>
+                            <dd>• 各子网IP地址块大小可以不同</dd>
+                            
+                            <dt>应用场景</dt>
+                            <dd>• 适用于不同子网对IP地址需求差异大的情况</dd>
+                            
+                            <dt>分配原则</dt>
+                            <dd>• 根据实际需求分配不同大小的地址块</dd>
+                            <dd>• 需求大的子网分配更多IP地址</dd>
+                            <dd>• 需求小的子网分配较少IP地址</dd>
+                            
+                            <dt>示例</dt>
+                            <dd>• ICANN分配给中国电信64.0.0.0/6地址块</dd>
+                            <dd>• 北京/上海电信：各分配<mark>838万</mark>地址（9位前缀）</dd>
+                            <dd>• 青海电信：分配<mark>209万</mark>地址（11位前缀）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">🌳</div>
+                    <h2 class="card-title">哈夫曼树建模法</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">哈夫曼树建模法</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>建模步骤</dt>
+                            <dd>• 原始CIDR地址块作为<mark>根节点</mark></dd>
+                            <dd>• 每次划分产生左右子节点（左0右1）</dd>
+                            <dd>• 叶子节点对应最终子网</dd>
+                            
+                            <dt>路径分析</dt>
+                            <dd>• 从根到叶的路径决定子网号</dd>
+                            <dd>• 示例：路径为"10" → 子网号取前两位为"10"</dd>
+                            
+                            <dt>高度限制</dt>
+                            <dd>• 树高 ≤ h-1（h为原始主机号位数）</dd>
+                            <dd>• 原因：最小子网需保留<mark>2位主机号</mark></dd>
+                            <dd>• 示例：原始5位主机号 → 最大树高4</dd>
+                            
+                            <dt>注意事项</dt>
+                            <dd>• 最终划分到30位前缀（2位主机号）时不可再分</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">📝</div>
+                    <h2 class="card-title">定长子网划分例题</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">定长子网划分例题</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>题目</dt>
+                            <dd>给定网络21.3.0.0/16，划分为128个规模相同的子网</dd>
+                            
+                            <dt>计算</dt>
+                            <dd>• 子网号位数：2<sup>7</sup>=128 → 需<mark>7位</mark></dd>
+                            <dd>• 剩余主机号位数：16-7=<mark>9位</mark></dd>
+                            <dd>• 可分配IP数量：2<sup>9</sup>-2=<mark>510</mark>（排除全0和全1）</dd>
+                            
+                            <dt>关键技巧</dt>
+                            <dd>• 从主机号中"扣出"固定位数作为子网号</dd>
+                            <dd>• 不需关心原始网络号的具体值</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片7 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="emoji">🧩</div>
+                    <h2 class="card-title">变长子网划分例题</h2>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">变长子网划分例题</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>题目</dt>
+                            <dd>给定网络101.200.16.0/20，划分为5个子网，求最小子网的可分配IP数</dd>
+                            
+                            <dt>解题方法</dt>
+                            <dd>• 哈夫曼树模型：CIDR地址块视为根节点</dd>
+                            <dd>• 最小子网深度为4</dd>
+                            <dd>• 剩余主机位：12-4=<mark>8位</mark></dd>
+                            <dd>• 可分配IP数：2<sup>8</sup>-2=<mark>254</mark></dd>
+                            
+                            <dt>关键技巧</dt>
+                            <dd>• 深度越大的叶子节点对应子网规模越小</dd>
+                            <dd>• 实际解题时不需要展开原始网络号的二进制形式</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">
+        卡片 1/7
+    </div>
+
+    <script>
+        // 卡片翻转功能
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+            });
+            
+            // 添加键盘支持
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.classList.toggle('flipped');
+                }
+            });
+        });
+        
+        // 简单的卡片进度跟踪
+        const cards = document.querySelectorAll('.card');
+        const progress = document.querySelector('.progress');
+        
+        function updateProgress() {
+            const flippedCount = document.querySelectorAll('.card.flipped').length;
+            progress.textContent = `卡片 ${flippedCount}/${cards.length}`;
+        }
+        
+        cards.forEach(card => {
+            card.addEventListener('click', updateProgress);
+        });
+    </script>
+</body>
+</html>
