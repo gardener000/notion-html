@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARP协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --background-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight-blue: hsl(var(--primary-hue), 80%, 50%);
+            --highlight-yellow: hsl(var(--secondary-hue), 100%, 70%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 100%;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content dl {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 8px 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content dd {
+            margin-left: 0;
+        }
+
+        mark {
+            background-color: var(--highlight-yellow);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .tip {
+            background-color: hsl(var(--primary-hue), 80%, 95%);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tip-title::before {
+            content: "💡";
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-light: hsl(0, 0%, 10%);
+                --text-dark: hsl(0, 0%, 90%);
+                --card-bg: hsl(0, 0%, 15%);
+                --highlight-blue: hsl(var(--primary-hue), 80%, 60%);
+                --highlight-yellow: hsl(var(--secondary-hue), 100%, 60%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>ARP协议学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: ARP协议作用 -->
+        <div class="card" tabindex="0" role="button" aria-label="ARP协议作用卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">🔍</div>
+                    <h2 class="card-title">ARP协议的作用</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">ARP协议的作用</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心功能</dt>
+                            <dd>在局域网(LAN)中查询<mark>IP地址</mark>对应的<mark>MAC地址</mark>，建立<mark>&lt;IP地址, MAC地址&gt;</mark>的映射关系</dd>
+                            
+                            <dt>与其他协议关系</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>• <mark>IP协议</mark>：网络层核心协议，负责逻辑寻址</li>
+                                    <li>• <mark>ARP协议</mark>：辅助IP协议完成物理地址解析</li>
+                                    <li>• <mark>ICMP协议</mark>：通知网络异常(如Ping命令)</li>
+                                    <li>• <mark>IGMP协议</mark>：支持IP组播</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">
+                            <div class="tip-title">记忆技巧</div>
+                            <p>ARP就像网络中的"电话簿"，把IP(姓名)和MAC(电话号码)对应起来</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: ARP分组结构 -->
+        <div class="card" tabindex="0" role="button" aria-label="ARP分组结构卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">🧩</div>
+                    <h2 class="card-title">ARP分组结构</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">ARP分组结构</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>固定长度</dt>
+                            <dd><mark>28字节</mark></dd>
+                            
+                            <dt>关键字段</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>• <mark>操作码(OPER)</mark>：1=请求，2=响应</li>
+                                    <li>• <mark>发送方硬件地址(SHA)</mark>：48位MAC地址</li>
+                                    <li>• <mark>发送方协议地址(SPA)</mark>：32位IP地址</li>
+                                    <li>• <mark>目标硬件地址(THA)</mark>：48位MAC地址(请求中为全0)</li>
+                                    <li>• <mark>目标协议地址(TPA)</mark>：32位目标IP地址</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>封装要求</dt>
+                            <dd>需填充至至少<mark>46字节</mark>才能封装为以太网MAC帧(类型字段为<mark>0x0806</mark>)</dd>
+                        </dl>
+                        <div class="tip">
+                            <div class="tip-title">记忆口诀</div>
+                            <p>"操作码+两对地址"(发送方和目标方的硬件+协议地址)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: ARP工作流程 -->
+        <div class="card" tabindex="0" role="button" aria-label="ARP工作流程卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">ARP工作流程</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">ARP工作流程</h2>
+                    <div class="card-content">
+                        <ol>
+                            <li><mark>ARP请求</mark>：
+                                <ul style="list-style-type: none; margin-left: 16px;">
+                                    <li>• 发送方广播ARP请求帧(目的MAC全1)</li>
+                                    <li>• 内容包含：发送方IP和MAC地址，目标IP地址(目标MAC为全0)</li>
+                                    <li>• 类比：在人群中喊"三年二班的咸鱼同学在哪？"</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>ARP响应</mark>：
+                                <ul style="list-style-type: none; margin-left: 16px;">
+                                    <li>• 目标设备单播回复ARP响应帧</li>
+                                    <li>• 内容包含：自身IP和MAC地址</li>
+                                    <li>• 其他设备：记录发送方的IP-MAC映射</li>
+                                </ul>
+                            </li>
+                            <div class="divider"></div>
+                            <li><mark>更新ARP表</mark>：动态维护映射关系，定期更新</li>
+                        </ol>
+                        <div class="tip">
+                            <div class="tip-title">关键区别</div>
+                            <p>请求是<mark>广播</mark>(目的MAC全1)，响应是<mark>单播</mark>(直接回复请求方)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: ARP表 -->
+        <div class="card" tabindex="0" role="button" aria-label="ARP表卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">📋</div>
+                    <h2 class="card-title">ARP表</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">ARP表</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>功能</dt>
+                            <dd>存储<mark>&lt;IP地址, MAC地址&gt;</mark>映射</dd>
+                            
+                            <dt>特点</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>• 初始为空，通过ARP请求/响应动态填充</li>
+                                    <li>• 需要定期更新(因IP或MAC可能变化)</li>
+                                    <li>• 每台主机和路由器都有自己的ARP表</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>MAC地址特性</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>• <mark>48比特</mark>长度，全球唯一</li>
+                                    <li>• 主机：至少一个MAC地址(一个网络适配器)</li>
+                                    <li>• 路由器：每个接口对应一个MAC地址</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">
+                            <div class="tip-title">考试重点</div>
+                            <p>路由器有<mark>多个MAC地址</mark>(每接口唯一)，主机通常只有<mark>一个MAC地址</mark></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 关键考点 -->
+        <div class="card" tabindex="0" role="button" aria-label="关键考点卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="emoji">⚠️</div>
+                    <h2 class="card-title">关键考点</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">关键考点与易混淆点</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>操作码(OPER)</dt>
+                            <dd><mark>1</mark>=请求，<mark>2</mark>=响应</dd>
+                            
+                            <dt>MAC帧类型字段</dt>
+                            <dd><mark>0x0806</mark>=ARP，<mark>0x0800</mark>=IPv4</dd>
+                            
+                            <dt>广播与单播</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>• 请求：<mark>广播</mark>(目的MAC全1)</li>
+                                    <li>• 响应：<mark>单播</mark>(直接回复请求方)</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>填充要求</dt>
+                            <dd>ARP分组需填充至<mark>46字节</mark>以满足以太网最小帧长</dd>
+                            
+                            <dt>典型应用场景</dt>
+                            <dd>
+                                <ul style="list-style-type: none;">
+                                    <li>1. 主机查询默认网关的MAC地址</li>
+                                    <li>2. 路由器转发IP包时查询下一跳MAC</li>
+                                    <li>3. 局域网内主机间直接通信的ARP交互</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div class="tip">
+                            <div class="tip-title">记忆技巧</div>
+                            <p><mark>0806</mark>像"ARP"(A=1, R=8, P=6的联想)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击/触摸翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止卡片在滚动时意外翻转
+            let touchStartY = 0;
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, {passive: true});
+                
+                card.addEventListener('touchmove', function(e) {
+                    const touchY = e.touches[0].clientY;
+                    const diff = Math.abs(touchY - touchStartY);
+                    
+                    // 如果垂直滚动距离较大，则阻止翻转
+                    if (diff > 10) {
+                        this.style.pointerEvents = 'none';
+                    }
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function() {
+                    this.style.pointerEvents = 'auto';
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
