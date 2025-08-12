@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由聚合学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: var(--card-shadow);
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 90%), white);
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 70%, 35%);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .key-term {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            font-weight: 600;
+        }
+
+        .highlight {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 45%);
+            margin-top: 8px;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>路由聚合学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：路由聚合定义 -->
+        <div class="card" tabindex="0" role="button" aria-label="路由聚合定义卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔗</div>
+                <h2 class="card-title">路由聚合定义</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">路由聚合定义</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="key-term">概念</span>：将多条<span class="highlight">转发接口相同</span>且<span class="highlight">部分网络前缀相同</span>的路由表项合并为一条</li>
+                        <li><span class="key-term">别名</span>：构成超网</li>
+                        <li><span class="key-term">适用条件</span>：
+                            <ul>
+                                <li>转发接口必须相同</li>
+                                <li>部分网络前缀必须相同</li>
+                            </ul>
+                        </li>
+                        <li><span class="key-term">实现方法</span>：保留共同前缀部分，合并转发接口相同的表项</li>
+                    </ul>
+                    <p class="note">记忆提示：想象把多条相似的路由"打包"成一条更简洁的路由</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2：路由聚合优点 -->
+        <div class="card" tabindex="0" role="button" aria-label="路由聚合优点卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">✨</div>
+                <h2 class="card-title">路由聚合优点</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">路由聚合优点</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="highlight">减少路由表大小</span>：合并多条路由表项，降低内存占用</li>
+                        <li><span class="highlight">提高查询速度</span>：减少路由表对比次数</li>
+                        <li><span class="highlight">降低转发时延</span>：优化数据包转发效率</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="key-term">性能优化</span> vs <span class="key-term">引入无效地址风险</span></p>
+                    <p class="note">记忆提示：3大优点 - 小、快、省</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3：最长前缀匹配原则 -->
+        <div class="card" tabindex="0" role="button" aria-label="最长前缀匹配原则卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🏆</div>
+                <h2 class="card-title">最长前缀匹配</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">最长前缀匹配原则</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="key-term">定义</span>：当目的IP匹配多个路由表项时，选择<span class="highlight">网络前缀最长</span>的表项</li>
+                        <li><span class="key-term">示例</span>：/28优先于/27</li>
+                        <li><span class="key-term">应用场景</span>：
+                            <ul>
+                                <li>铁柱网吧新增直连线路（128.14.32.128/28）</li>
+                                <li>优先匹配该表项而非聚合路由（128.14.32.128/27）</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="note">记忆提示：越具体（前缀越长）的路由优先级越高</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4：无效地址问题 -->
+        <div class="card" tabindex="0" role="button" aria-label="无效地址问题卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">⚠️</div>
+                <h2 class="card-title">无效地址问题</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">无效地址问题</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="key-term">现象</span>：聚合后可能包含<span class="highlight">未分配的子网地址</span>（如128.14.32.156/30）</li>
+                        <li><span class="key-term">影响</span>：
+                            <ul>
+                                <li>不影响网络正常工作</li>
+                                <li>错误地址的数据包最终会被丢弃</li>
+                            </ul>
+                        </li>
+                        <li><span class="key-term">处理流程</span>：
+                            <ol>
+                                <li>上级路由器按聚合路由转发</li>
+                                <li>下级路由器发现无匹配路由</li>
+                                <li>根据默认路由规则丢弃数据包</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    <p class="note">记忆提示：无效地址就像"幽灵条目"，会被最终过滤掉</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5：路由聚合与CIDR -->
+        <div class="card" tabindex="0" role="button" aria-label="路由聚合与CIDR卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔄</div>
+                <h2 class="card-title">路由聚合与CIDR</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">路由聚合与CIDR的关系</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="key-term">CIDR技术</span>：无分类编址技术，支持<span class="highlight">可变长子网掩码</span>，为路由聚合提供基础</li>
+                        <li><span class="key-term">区别</span>：
+                            <ul>
+                                <li>传统子网划分：固定子网掩码</li>
+                                <li>CIDR：灵活分配地址块（如/27、/28等）</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="highlight">考试重点</span>：CIDR表示法（如/27）与传统子网划分的区别</p>
+                    <p class="note">记忆提示：CIDR是路由聚合的"基石"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
