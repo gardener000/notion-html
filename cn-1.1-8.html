@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算机网络性能指标学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: white;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --primary-light: hsl(var(--primary-hue), 80%, 90%);
+            --secondary-color: hsl(var(--secondary-hue), 80%, 50%);
+            --secondary-light: hsl(var(--secondary-hue), 80%, 90%);
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --spacing-unit: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: var(--spacing-unit);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: calc(2 * var(--spacing-unit));
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: calc(2 * var(--spacing-unit)) 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: calc(2 * var(--spacing-unit));
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: calc(3 * var(--spacing-unit));
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid var(--primary-light);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-unit);
+            color: var(--primary-color);
+        }
+
+        .card-front .card-title {
+            font-size: 1.6rem;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        dl {
+            margin-bottom: var(--spacing-unit);
+        }
+
+        dt {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: var(--spacing-unit);
+        }
+
+        dd {
+            margin-left: calc(2 * var(--spacing-unit));
+            margin-bottom: var(--spacing-unit);
+        }
+
+        ul {
+            padding-left: calc(2 * var(--spacing-unit));
+            margin-bottom: var(--spacing-unit);
+        }
+
+        li {
+            margin-bottom: calc(0.5 * var(--spacing-unit));
+        }
+
+        mark {
+            background-color: var(--secondary-light);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: var(--spacing-unit) 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-unit);
+        }
+
+        .progress {
+            margin-top: calc(2 * var(--spacing-unit));
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: hsl(0, 0%, 10%);
+                --text-dark: hsl(0, 0%, 90%);
+                --card-bg: hsl(0, 0%, 15%);
+                --primary-light: hsl(var(--primary-hue), 80%, 20%);
+                --secondary-light: hsl(var(--secondary-hue), 80%, 20%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>计算机网络性能指标</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 时延 -->
+        <div class="card" tabindex="0" role="button" aria-label="时延卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⏱️</div>
+                    <h2 class="card-title">时延 (Delay)</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">⏱️ 时延 (Delay)</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>数据从网络的一端传送到另一端所需的总时间</dd>
+                            
+                            <dt>组成要素</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>发送时延</mark>：节点将数据推向信道的时间<br>
+                                        公式: <span class="highlight">数据长度(bit) / 发送速率(bit/s)</span><br>
+                                        示例: 80MB数据以100Mbps发送 = 0.8s
+                                    </li>
+                                    <li><mark>传播时延</mark>：电磁波传播时间<br>
+                                        公式: <span class="highlight">信道长度(m) / 电磁波速度(m/s)</span><br>
+                                        介质: 铜线≈2.3×10⁵km/s, 光纤≈2.0×10⁵km/s
+                                    </li>
+                                    <li>处理时延：路由器处理时间</li>
+                                    <li>排队时延：数据排队时间</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>总时延公式</dt>
+                            <dd class="highlight">发送时延 + 传播时延 + 处理时延 + 排队时延</dd>
+                            
+                            <dt>考试重点</dt>
+                            <dd>通常只需计算<span class="highlight">发送时延</span>和<span class="highlight">传播时延</span></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 时延带宽积 -->
+        <div class="card" tabindex="0" role="button" aria-label="时延带宽积卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📊</div>
+                    <h2 class="card-title">时延带宽积</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">📊 时延带宽积</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd><span class="highlight">传播时延 × 带宽</span>，单位比特(bit)</dd>
+                            
+                            <dt>物理意义</dt>
+                            <dd>链路中已发送但未到达接收端的最大比特数</dd>
+                            
+                            <dt>类比理解</dt>
+                            <dd>
+                                <ul>
+                                    <li>水管横截面积 = 带宽</li>
+                                    <li>水管长度 = 传播时延</li>
+                                    <li>水量 = 时延带宽积</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>应用场景</dt>
+                            <dd>主要用于设计<span class="highlight">最短帧长</span></dd>
+                            
+                            <dt>考试提示</dt>
+                            <dd>常作为计算传播时延的中间步骤</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 往返时延 -->
+        <div class="card" tabindex="0" role="button" aria-label="往返时延卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">往返时延 (RTT)</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">🔄 往返时延 (RTT)</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>从<span class="highlight">发送方发送完数据</span>开始，到收到接收方确认的总时间</dd>
+                            
+                            <dt>组成要素</dt>
+                            <dd>
+                                <ul>
+                                    <li>数据传播时间 (t2)</li>
+                                    <li>接收方处理时间 (t3)</li>
+                                    <li>确认发送时间 (t4)</li>
+                                    <li>确认传播时间 (t5)</li>
+                                </ul>
+                                公式: <span class="highlight">RTT = t2 + t3 + t4 + t5</span>
+                            </dd>
+                            
+                            <dt>关键注意</dt>
+                            <dd>计时起点是<span class="highlight">发送完成时刻</span>，不是开始发送时刻</dd>
+                            
+                            <dt>应用场景</dt>
+                            <dd>
+                                <ul>
+                                    <li>游戏延迟 = 手机与服务器间的RTT</li>
+                                    <li>操作指令需要RTT时间才能得到反馈</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 信道利用率 -->
+        <div class="card" tabindex="0" role="button" aria-label="信道利用率卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📶</div>
+                    <h2 class="card-title">信道利用率</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">📶 信道利用率</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>信道有数据通过的时间占总时间的百分比</dd>
+                            
+                            <dt>计算公式</dt>
+                            <dd class="highlight">有数据时间 / (有数据时间 + 无数据时间)</dd>
+                            
+                            <dt>示例计算</dt>
+                            <dd>
+                                <ul>
+                                    <li>传输20张10MB照片 = 200MB = 1600Mb</li>
+                                    <li>传输速率: 80Mbps</li>
+                                    <li>传输时间: 1600Mb/80Mbps = 20s</li>
+                                    <li>连接时长: 60s</li>
+                                    <li>利用率: <span class="highlight">20s/60s ≈ 33.3%</span></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>优化原则</dt>
+                            <dd>
+                                <ul>
+                                    <li>不能过低 → 浪费带宽资源</li>
+                                    <li>不能过高 → 导致网络拥塞</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 发送时延 vs 传播时延 -->
+        <div class="card" tabindex="0" role="button" aria-label="发送时延与传播时延对比卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">发送时延 vs 传播时延</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">🔄 发送时延 vs 传播时延</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>发送时延 (传输时延)</dt>
+                            <dd>
+                                <ul>
+                                    <li>节点将数据推向信道的时间</li>
+                                    <li>取决于: <span class="highlight">数据大小</span>和<span class="highlight">发送速率</span></li>
+                                    <li>公式: 数据长度(bit) / 发送速率(bit/s)</li>
+                                    <li>类比: 车辆排队上高速的时间</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>传播时延</dt>
+                            <dd>
+                                <ul>
+                                    <li>电磁波在信道中传播的时间</li>
+                                    <li>取决于: <span class="highlight">信道长度</span>和<span class="highlight">介质</span></li>
+                                    <li>公式: 信道长度(m) / 电磁波速度(m/s)</li>
+                                    <li>类比: 车辆在高速行驶的时间</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>关键区别</dt>
+                            <dd>
+                                <ul>
+                                    <li>计算方法和影响因素完全不同</li>
+                                    <li>考试中最常混淆的两个概念</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">5/5 张卡片</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 触摸设备优化
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const activeCard = document.querySelector('.card:focus');
+                if (!activeCard) return;
+                
+                if (touchEndX < touchStartX - 50) {
+                    // 向左滑动 - 翻转卡片
+                    activeCard.classList.add('flipped');
+                } else if (touchEndX > touchStartX + 50) {
+                    // 向右滑动 - 翻转回来
+                    activeCard.classList.remove('flipped');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
