@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>计算机网络性能指标学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --spacing: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            padding: var(--spacing);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing);
+            color: hsl(var(--primary-hue), 70%, 40%);
+            text-align: center;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing);
+        }
+
+        .card {
+            perspective: 1000px;
+            width: 100%;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: var(--spacing);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            border: 2px solid hsl(var(--primary-hue), 60%, 80%);
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        dl {
+            margin-bottom: 8px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-top: 8px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .highlight {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-top: var(--spacing);
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: hsl(var(--primary-hue), 60%, 60%);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card-inner {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>计算机网络性能指标</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">📊</div>
+                    <div class="card-title">速率 (Rate)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>节点在信道上传输数据的速率，也称<mark>数据率</mark>、<mark>比特率</mark>或<mark>数据传输速率</mark></dd>
+                            
+                            <dt>单位</dt>
+                            <dd>基本单位：<span class="highlight">bit/s</span> (比特每秒)</dd>
+                            <dd>常用表示：b/s 或 bps</dd>
+                            <dd>大小写区别：<mark>小写b</mark>表示bit，<mark>大写B</mark>表示Byte (1B=8b)</dd>
+                            
+                            <dt>数量前缀</dt>
+                            <dd>k (千) = 10³</dd>
+                            <dd>M (兆) = 10⁶</dd>
+                            <dd>G (吉) = 10⁹</dd>
+                            <dd>T (太) = 10¹²</dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <div class="note">注意：计算机网络中k=1000，不同于计组中的k=1024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="翻转卡片">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-emoji">🚀</div>
+                    <div class="card-title">带宽 (Bandwidth)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>计算机网络定义</dt>
+                            <dd>某信道所能传送的<mark>最高数据率</mark></dd>
+                            <dd>单位：<span class="highlight">bps</span> (如1000Mbps宽带)</dd>
+                            
+                            <dt>通信原理定义</dt>
+                            <dd>信道允许通过的<mark>信号频带范围</mark></dd>
+                            <dd>单位：<span class="highlight">Hz</span> (赫兹)</dd>
+                            
+                            <dt>实际应用</dt>
+                            <dd>受限于网络中最慢环节 (如主机B网卡仅10Mbps)</dd>
+                            <dd>网线类别影响：五类100Mbps，六类1000Mbps</dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <div class="highlight">关键区别：带宽是理论最高数据率，速率是实际传输速率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="翻转卡片">
+            <div class="card-front">
+                <div class="card-emoji">📦</div>
+                <div class="card-title">吞吐量 (Throughput)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>单位时间内通过某个网络的<mark>实际数据量</mark></dd>
+                        
+                        <dt>计算</dt>
+                        <dd>双向吞吐量 = <mark>发送速率 + 接收速率</mark> (如1.8MB/s + 93.3MB/s = 95.1MB/s)</dd>
+                        <dd>多设备总和 (如电脑+手机+iPad)</dd>
+                        
+                        <dt>影响因素</dt>
+                        <dd>受<mark>带宽</mark>限制</dd>
+                        <dd>受<mark>网络负载</mark>情况影响</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="note">应用场景：反映网络负载，工程师用于监控综合数据传输量</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="翻转卡片">
+            <div class="card-front">
+                <div class="card-emoji">⚠️</div>
+                <div class="card-title">重要考点</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>单位关系</dt>
+                        <dd>1B = <mark>8b</mark></dd>
+                        <dd>前缀按10³递增 (kbps, Mbps, Gbps, Tbps)</dd>
+                        
+                        <dt>带宽双义</dt>
+                        <dd>计算机网络：最高数据率 (bps)</dd>
+                        <dd>通信领域：频带范围 (Hz)</dd>
+                        
+                        <dt>性能指标关系</dt>
+                        <dd>带宽 (理论最大值) vs 吞吐量 (实际综合值)</dd>
+                        <dd>实际速率受<mark>最低性能环节</mark>限制</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="highlight">易混淆点：b(bit) vs B(Byte)，计算机网络(k=1000) vs 计组/OS(k=1024)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="resetCards()">重置所有卡片</button>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        function resetCards() {
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('flipped');
+            });
+        }
+        
+        // Add keyboard support for accessibility
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard(this);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
