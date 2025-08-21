@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算机网络分层结构学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-blue: hsl(var(--primary-hue), 80%, 50%);
+            --card-yellow: hsl(var(--secondary-hue), 90%, 60%);
+            --card-padding: 16px;
+            --card-radius: 12px;
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: grid;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            aspect-ratio: 5/3;
+            perspective: 1000px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--card-radius);
+            padding: var(--card-padding);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--card-blue), hsl(var(--primary-hue), 80%, 60%));
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-back-content {
+            width: 100%;
+            height: 100%;
+            padding: 4px;
+        }
+
+        .card-back dl {
+            margin-bottom: 12px;
+        }
+
+        .card-back dt {
+            font-weight: bold;
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-top: 8px;
+        }
+
+        .card-back dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-back ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: var(--card-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (prefers-reduced-motion) {
+            .card-inner {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>计算机网络分层结构 ✨</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看分层设计思想">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🏗️</div>
+                    <div>分层设计思想</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">📦</div>
+                        <dl>
+                            <dt>快速网络四层结构</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>第四层（顾客层）</mark>：货物打包</li>
+                                    <li><mark>第三层（快递员层）</mark>：取件和派件</li>
+                                    <li><mark>第二层（仓储部门）</mark>：冷链存储和路由</li>
+                                    <li><mark>第一层（运输部门）</mark>：包裹运输</li>
+                                </ul>
+                            </dd>
+                            <dt>节点差异</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>终点站</mark>：实现全部四层功能</li>
+                                    <li><mark>中转站</mark>：仅需运输和仓储功能</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看计算机网络核心功能">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⚙️</div>
+                    <div>计算机网络核心功能</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">🔧</div>
+                        <ul>
+                            <li><mark>差错控制</mark>：确保数据传输过程不出错</li>
+                            <li><mark>流量控制</mark>：调节发送速率使接收端能及时处理</li>
+                            <li><mark>分段与重载</mark>：数据块划分传输后还原</li>
+                            <li><mark>复用与分用</mark>：高层会话共享低层连接</li>
+                            <li><mark>连接管理</mark>：建立/释放逻辑连接</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p>设计思路：类比快速网络，采用分层思想将复杂功能分解到不同层次</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看五层模型">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📚</div>
+                    <div>五层模型</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">🖥️</div>
+                        <dl>
+                            <dt>五层结构</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>应用层</mark>：用户接口</li>
+                                    <li><mark>传输层</mark>：端到端通信</li>
+                                    <li><mark>网络层</mark>：路由选择</li>
+                                    <li><mark>数据链路层</mark>：帧传输</li>
+                                    <li><mark>物理层</mark>：比特传输</li>
+                                </ul>
+                            </dd>
+                            <dt>节点实现</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>主机</mark>：全部五层</li>
+                                    <li><mark>路由器</mark>：下三层（网络层、数据链路层、物理层）</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看三种常见体系结构">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🏛️</div>
+                    <div>三种常见体系结构</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">📊</div>
+                        <table style="width:100%; border-collapse: collapse; margin-bottom:12px;">
+                            <tr style="background-color:hsl(var(--primary-hue), 80%, 90%);">
+                                <th style="padding:6px; text-align:left;">模型</th>
+                                <th style="padding:6px; text-align:left;">层数</th>
+                                <th style="padding:6px; text-align:left;">特点</th>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px; border-bottom:1px solid #eee;"><mark>OSI参考模型</mark></td>
+                                <td style="padding:6px; border-bottom:1px solid #eee;">7层</td>
+                                <td style="padding:6px; border-bottom:1px solid #eee;">理论完善，功能重复，法律标准</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px; border-bottom:1px solid #eee;"><mark>TCP/IP模型</mark></td>
+                                <td style="padding:6px; border-bottom:1px solid #eee;">4层</td>
+                                <td style="padding:6px; border-bottom:1px solid #eee;">设计简单高效，事实标准</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px;"><mark>五层模型</mark></td>
+                                <td style="padding:6px;">5层</td>
+                                <td style="padding:6px;">综合OSI和TCP/IP优点，教学友好</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看关键概念">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔑</div>
+                    <div>关键概念</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">🧠</div>
+                        <dl>
+                            <dt><mark>实体</mark></dt>
+                            <dd>某层的活动元素（软硬件模块）</dd>
+                            
+                            <dt><mark>对等实体</mark></dt>
+                            <dd>不同节点同一层的实体，通过协议通信</dd>
+                            
+                            <dt><mark>协议</mark></dt>
+                            <dd>控制对等实体通信的规则（水平约束）</dd>
+                            
+                            <dt><mark>服务</mark></dt>
+                            <dd>下层为上层提供的功能（垂直交互）</dd>
+                            
+                            <dt><mark>接口（SAP）</mark></dt>
+                            <dd>相邻层交换信息的逻辑接口</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看数据传输流程">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <div>数据传输流程</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-back-content">
+                        <div class="emoji">📤📥</div>
+                        <dl>
+                            <dt><mark>发送方</mark></dt>
+                            <dd>应用层→传输层→网络层→数据链路层→物理层→物理媒体</dd>
+                            
+                            <dt><mark>接收方</mark></dt>
+                            <dd>逆向解封装</dd>
+                            
+                            <dt><mark>路由器</mark></dt>
+                            <dd>仅处理下三层，转发数据包</dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <p><mark>分层设计原则</mark>：功能分配需合理（如运输层不负责派件）</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="shuffle-btn">🔀 打乱顺序</button>
+        <button id="reset-btn">🔄 重置卡片</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 卡片翻转功能
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+
+            // 打乱卡片顺序
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            shuffleBtn.addEventListener('click', function() {
+                const container = document.querySelector('.cards-container');
+                for (let i = container.children.length; i >= 0; i--) {
+                    container.appendChild(container.children[Math.random() * i | 0]);
+                }
+                
+                // 重置所有翻转的卡片
+                cards.forEach(card => {
+                    card.classList.remove('flipped');
+                });
+            });
+
+            // 重置卡片顺序和状态
+            const resetBtn = document.getElementById('reset-btn');
+            resetBtn.addEventListener('click', function() {
+                const container = document.querySelector('.cards-container');
+                const cardsArray = Array.from(container.children);
+                
+                // 按原始顺序排序
+                cardsArray.sort((a, b) => {
+                    return parseInt(a.textContent.match(/\d+/)) - parseInt(b.textContent.match(/\d+/));
+                });
+                
+                // 重新添加卡片
+                cardsArray.forEach(card => {
+                    container.appendChild(card);
+                    card.classList.remove('flipped');
+                });
+            });
+
+            // 触摸设备优化
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, false);
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe(this);
+                }, false);
+            });
+            
+            function handleSwipe(card) {
+                // 如果滑动距离大于50px，则翻转卡片
+                if (Math.abs(touchEndX - touchStartX) > 50) {
+                    card.classList.toggle('flipped');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
