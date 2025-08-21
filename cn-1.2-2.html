@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算机网络分层结构学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 80%, 90%), var(--card-bg));
+            border: 2px solid var(--primary-color);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            width: 100%;
+            text-align: left;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>计算机网络分层结构学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：实体 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🏛️</div>
+                <h2 class="card-title">实体 (Entity)</h2>
+                <p>点击查看定义与特点</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>在计算机网络的分层结构中，第n层中的活动元素（<mark>软件+硬件</mark>）称为第n层实体。</dd>
+                        
+                        <dt>对等关系</dt>
+                        <dd>不同机器上的同一层称为<mark>对等层</mark>，同一层的实体称为<mark>对等实体</mark>。</dd>
+                        
+                        <dt>功能实现</dt>
+                        <dd>每个层次负责实现一个或多个功能，如<mark>压缩传输</mark>、<mark>差错控制</mark>等。</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>实体 = 软件 + 硬件，对等实体 = 同一层的不同机器实体</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2：协议 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🤝</div>
+                <h2 class="card-title">协议 (Protocol)</h2>
+                <p>点击查看定义与三要素</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>网络协议是控制<mark>对等实体</mark>之间进行通信的<mark>规则的集合</mark>，是<mark>水平</mark>方向的。</dd>
+                        
+                        <dt>三要素</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>语法</mark>：数据与控制信息的格式（如首部字节数、字段含义）</li>
+                                <li><mark>语义</mark>：规定对等实体需要发出的控制信息、完成的动作及应答</li>
+                                <li><mark>同步（时序）</mark>：描述操作执行的顺序和条件（如发送方超时重传机制）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>协议三要素 = 语法（格式）、语义（做什么）、同步（何时做）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3：PDU/SDU/PCI -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">📦</div>
+                <h2 class="card-title">PDU/SDU/PCI</h2>
+                <p>点击查看关键概念</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt><mark>PDU</mark> (协议数据单元)</dt>
+                        <dd>对等层次之间传送的数据单位，记为n-PDU</dd>
+                        
+                        <dt><mark>SDU</mark> (服务数据单元)</dt>
+                        <dd>为完成上层功能而传送的数据，记为n-SDU</dd>
+                        
+                        <dt><mark>PCI</mark> (协议控制信息)</dt>
+                        <dd>控制协议操作的信息（如首部/尾部），记为n-PCI</dd>
+                        
+                        <dt>关系</dt>
+                        <dd>n-SDU + n-PCI = n-PDU = (n-1)-SDU</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>PDU = 信封 + 信纸，SDU = 信纸内容，PCI = 信封上的地址</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4：数据传输过程 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">数据传输过程</h2>
+                <p>点击查看垂直视角</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>发送方</dt>
+                        <dd>数据从顶层逐层向下传递，每层添加<mark>协议控制信息</mark>（首部/尾部）</dd>
+                        
+                        <dt>接收方</dt>
+                        <dd>数据从底层逐层向上处理，每层移除本层的<mark>协议控制信息</mark></dd>
+                        
+                        <dt>示例</dt>
+                        <dd>YSCS协议（压缩传输协议）规定发送方添加首部说明压缩算法，接收方根据首部选择解压算法</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>发送方 = 层层包装，接收方 = 层层拆包</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5：网络模型 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-face card-front">
+                <div class="emoji">🏗️</div>
+                <h2 class="card-title">网络模型</h2>
+                <p>点击查看常见模型</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt><mark>OSI参考模型</mark></dt>
+                        <dd>7层，法律标准</dd>
+                        
+                        <dt><mark>TCP/IP模型</mark></dt>
+                        <dd>4层，事实标准</dd>
+                        
+                        <dt><mark>五层模型</mark></dt>
+                        <dd>5层，教学用标准</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>OSI最全(7层)，TCP/IP最实用(4层)，五层最好记</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 触摸设备优化
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe(this);
+                }, {passive: true});
+            });
+            
+            function handleSwipe(card) {
+                const difference = touchStartX - touchEndX;
+                if (Math.abs(difference) > 50) { // 最小滑动距离
+                    card.classList.toggle('flipped');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
