@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络交换技术学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --accent-blue: hsl(var(--primary-hue), 80%, 50%);
+            --accent-yellow: hsl(var(--secondary-hue), 90%, 60%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --spacing: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: var(--spacing);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: calc(var(--spacing) * 1.5);
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius);
+            padding: calc(var(--spacing) * 1.5);
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid hsl(var(--primary-hue), 60%, 85%);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            border: 2px solid hsl(var(--secondary-hue), 60%, 85%);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing);
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-front .card-title {
+            font-size: 1.6rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing);
+        }
+
+        ul {
+            padding-left: calc(var(--spacing) * 1.5);
+        }
+
+        li {
+            margin-bottom: calc(var(--spacing) / 2);
+        }
+
+        mark {
+            background-color: var(--accent-yellow);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: var(--spacing) 0;
+        }
+
+        .pros-cons {
+            display: flex;
+            gap: var(--spacing);
+            margin-top: var(--spacing);
+        }
+
+        .pros, .cons {
+            flex: 1;
+            padding: calc(var(--spacing) / 2);
+            border-radius: 8px;
+        }
+
+        .pros {
+            background-color: hsl(120, 50%, 95%);
+            border: 1px solid hsl(120, 50%, 80%);
+        }
+
+        .cons {
+            background-color: hsl(0, 50%, 95%);
+            border: 1px solid hsl(0, 50%, 80%);
+        }
+
+        .pros h3, .cons h3 {
+            text-align: center;
+            margin-bottom: calc(var(--spacing) / 2);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>网络交换技术学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：电路交换 -->
+        <div class="card" tabindex="0" role="button" aria-label="电路交换卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📞</div>
+                    <h2 class="card-title">电路交换</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">📞 电路交换</h2>
+                    <p><mark>技术基础</mark>：通过物理线路连接实现数据传输</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3>工作流程：</h3>
+                    <ul>
+                        <li>建立连接（如拨号）</li>
+                        <li>资源分配（专用物理线路）</li>
+                        <li>通信过程（独占线路）</li>
+                        <li>释放连接（挂断电话）</li>
+                    </ul>
+                    
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h3>✅ 优点</h3>
+                            <ul>
+                                <li>传输速率高</li>
+                                <li>通信质量稳定</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h3>❌ 缺点</h3>
+                            <ul>
+                                <li>资源独占</li>
+                                <li>利用率低</li>
+                                <li>灵活性差</li>
+                                <li>无差错控制</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><mark>适用场景</mark>：低频次、大量数据传输（如长时间通话）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2：报文交换 -->
+        <div class="card" tabindex="0" role="button" aria-label="报文交换卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">✉️</div>
+                    <h2 class="card-title">报文交换</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">✉️ 报文交换</h2>
+                    <p><mark>基本组成</mark>：</p>
+                    <ul>
+                        <li>报文结构：控制信息+用户数据</li>
+                        <li>交换设备：报文交换机</li>
+                        <li>终端设备：电报机</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3>工作流程：</h3>
+                    <ul>
+                        <li>发送到连接的交换机</li>
+                        <li>交换机存储报文</li>
+                        <li>分析控制信息确定路径</li>
+                        <li>逐跳存储转发</li>
+                    </ul>
+                    
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h3>✅ 优点</h3>
+                            <ul>
+                                <li>无需建立连接</li>
+                                <li>线路共享</li>
+                                <li>高线路利用率</li>
+                                <li>灵活路由</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h3>❌ 缺点</h3>
+                            <ul>
+                                <li>报文不定长</li>
+                                <li>大内存需求</li>
+                                <li>处理开销大</li>
+                                <li>错误率高</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><mark>应用</mark>：20世纪60年代电报网络采用的技术</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3：分组交换 -->
+        <div class="card" tabindex="0" role="button" aria-label="分组交换卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📦</div>
+                    <h2 class="card-title">分组交换</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">📦 分组交换</h2>
+                    <p><mark>技术原理</mark>：将长报文切分为定长分组（Packet Header+数据）</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h3>✅ 优点</h3>
+                            <ul>
+                                <li>线路利用率高</li>
+                                <li>差错控制支持</li>
+                                <li>存储转发管理方便</li>
+                                <li>容错能力强</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h3>❌ 缺点</h3>
+                            <ul>
+                                <li>控制信息占比增加</li>
+                                <li>存储转发时延</li>
+                                <li>分组可能失序/丢失</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><mark>典型实例</mark>：分组可能选择不同路径导致接收顺序错乱</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4：虚电路交换 -->
+        <div class="card" tabindex="0" role="button" aria-label="虚电路交换卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <h2 class="card-title">虚电路交换</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">🔄 虚电路交换</h2>
+                    <p><mark>本质</mark>：分组交换+电路交换的"建立连接"思想</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3>核心特征：</h3>
+                    <ul>
+                        <li>通信前建立虚拟电路</li>
+                        <li>分组按固定路径传输</li>
+                    </ul>
+                    
+                    <h3>三阶段流程：</h3>
+                    <ul>
+                        <li>建立虚拟电路</li>
+                        <li>分组传输</li>
+                        <li>释放连接</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3>与电路交换区别：</h3>
+                    <ul>
+                        <li>链路可共享</li>
+                        <li>建立的是逻辑连接</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5：技术对比 -->
+        <div class="card" tabindex="0" role="button" aria-label="技术对比卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🆚</div>
+                    <h2 class="card-title">技术对比</h2>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h2 class="card-title">🆚 技术对比</h2>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3>电路交换</h3>
+                    <ul>
+                        <li><mark>线路独占性</mark>：独占物理线路</li>
+                        <li><mark>差错控制</mark>：无</li>
+                        <li><mark>适用场景</mark>：电话网络/低频次大量数据传输</li>
+                        <li><mark>主要缺点</mark>：资源利用率低</li>
+                    </ul>
+                    
+                    <h3>报文交换</h3>
+                    <ul>
+                        <li><mark>线路独占性</mark>：共享线路</li>
+                        <li><mark>差错控制</mark>：支持</li>
+                        <li><mark>适用场景</mark>：电报网络</li>
+                        <li><mark>主要缺点</mark>：长报文管理复杂</li>
+                    </ul>
+                    
+                    <h3>分组交换</h3>
+                    <ul>
+                        <li><mark>线路独占性</mark>：共享线路</li>
+                        <li><mark>差错控制</mark>：支持</li>
+                        <li><mark>适用场景</mark>：计算机网络</li>
+                        <li><mark>主要缺点</mark>：控制信息占比高</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止双击选中文本
+            document.addEventListener('mousedown', function(e) {
+                if (e.detail > 1) {
+                    e.preventDefault();
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>
