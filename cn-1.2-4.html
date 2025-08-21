@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP/IP模型学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            cursor: pointer;
+            height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: 12px;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background: hsl(var(--primary-hue), 90%, 96%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-front .card-title {
+            font-size: 1.5rem;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-back .card-content {
+            padding: 8px 0;
+        }
+
+        .card-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            background: hsl(var(--primary-hue), 90%, 96%);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        .memory-tip strong {
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>TCP/IP模型学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-emoji">📚</div>
+                <div class="card-title">TCP/IP模型层次结构</div>
+                <div class="card-content">点击查看各层名称和顺序</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">TCP/IP模型层次结构</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>网络接口层</mark>：对应OSI的物理层+数据链路层</li>
+                        <li><mark>网络层</mark>：对应OSI网络层</li>
+                        <li><mark>传输层</mark>：对应OSI传输层</li>
+                        <li><mark>应用层</mark>：整合OSI会话层、表示层和应用层</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">
+                        <strong>记忆口诀</strong>："接网输用"<br>
+                        (网络接口层、网络层、传输层、应用层)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-emoji">🔄</div>
+                <div class="card-title">TCP/IP与OSI区别</div>
+                <div class="card-content">点击查看设计理念差异</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">TCP/IP与OSI区别</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>层次简化</mark>：TCP/IP将会话层和表示层功能合并到应用层</li>
+                        <li><mark>接口层设计</mark>：OSI详细规定物理层和数据链路层，TCP/IP不具体规定</li>
+                        <li><mark>可靠性保障</mark>：OSI各层都需要差错控制，TCP/IP集中在传输层</li>
+                        <li><mark>网络层服务</mark>：OSI提供虚电路+数据报，TCP/IP仅数据报</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-emoji">🏆</div>
+                <div class="card-title">TCP/IP优势</div>
+                <div class="card-content">点击查看商业成功因素</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">TCP/IP优势</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>灵活性</mark>：应用层可按需实现功能</li>
+                        <li><mark>开放性</mark>：网络接口层不限定具体实现</li>
+                        <li><mark>高效性</mark>：网络层功能简化，路由器负载降低</li>
+                        <li><mark>适应性</mark>：更适合现代网络需求(如直播等)</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">
+                        <strong>商业成功因素</strong>：<br>
+                        1. 硬件厂商创新自由<br>
+                        2. 核心网络负载低
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-emoji">🔀</div>
+                <div class="card-title">网络层功能对比</div>
+                <div class="card-content">点击查看OSI与TCP/IP差异</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">网络层功能对比</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>OSI网络层</mark>：
+                            <ul>
+                                <li>支持差错控制/流量控制</li>
+                                <li>提供虚电路(可靠)和数据报(不可靠)服务</li>
+                            </ul>
+                        </li>
+                        <li><mark>TCP/IP网络层</mark>：
+                            <ul>
+                                <li>仅提供无连接不可靠服务</li>
+                                <li>功能移交传输层</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">
+                        <strong>核心逻辑</strong>：<br>
+                        全局正确→局部正确(传输层保障即可)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="card-emoji">📡</div>
+                <div class="card-title">传输层服务类型</div>
+                <div class="card-content">点击查看TCP与UDP区别</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">传输层服务类型</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>TCP</mark>：
+                            <ul>
+                                <li>有连接可靠服务</li>
+                                <li>保证数据有序/不丢失</li>
+                            </ul>
+                        </li>
+                        <li><mark>UDP</mark>：
+                            <ul>
+                                <li>无连接不可靠服务</li>
+                                <li>容忍数据丢失(如直播)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">
+                        <strong>对比OSI</strong>：<br>
+                        OSI传输层仅支持可靠服务，体现时代局限性
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Add keyboard accessibility
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard(card);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
