@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交换方式性能分析学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 16px 0;
+            font-size: 1.5rem;
+            color: hsl(var(--primary-hue), 70%, 35%);
+            text-align: center;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            position: relative;
+            margin: 16px 0;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 95%), white);
+            border: 1px solid hsl(var(--primary-hue), 70%, 85%);
+        }
+
+        .card-back {
+            background: white;
+            border: 1px solid hsl(var(--primary-hue), 30%, 90%);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            color: hsl(var(--primary-hue), 70%, 35%);
+        }
+
+        .card-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 35%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card-content li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .highlight {
+            color: hsl(var(--primary-hue), 70%, 35%);
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 90%);
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .memory-tip {
+            background-color: hsl(var(--secondary-hue), 90%, 95%);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 4px solid hsl(var(--secondary-hue), 90%, 70%);
+        }
+
+        @media (max-width: 400px) {
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-face {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>交换方式性能分析</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 电路交换性能分析 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="电路交换性能分析卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">电路交换性能分析 ⚡</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>连接建立过程</dt>
+                        <dd>
+                            <ul>
+                                <li>每跳传播时延为<mark>1ms</mark></li>
+                                <li>交换机建立/释放连接耗时<mark>1ms</mark></li>
+                                <li>接收方处理连接请求需<mark>2ms</mark></li>
+                                <li><span class="highlight">连接建立总耗时</span>: 3跳×(1ms+1ms)+2ms=<mark>8ms</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>数据传输特点</dt>
+                        <dd>
+                            <ul>
+                                <li>数据传输速率<mark>0.5kb/ms</mark>，4KB报文需<mark>8ms</mark>发送时间</li>
+                                <li>比特流直达终点，三跳传播总时延<mark>3ms</mark></li>
+                                <li><span class="highlight">总传输时间</span>=8ms(发送)+3ms(传播)=<mark>11ms</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>关键参数</dt>
+                        <dd>
+                            <ul>
+                                <li>报文大小=<mark>4kb</mark></li>
+                                <li>每跳传播时延=<mark>1ms</mark></li>
+                                <li>交换机处理耗时=<mark>1ms</mark></li>
+                                <li>接收方处理时间=<mark>2ms</mark></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    
+                    <div class="memory-tip">
+                        <span class="emoji">💡</span> <strong>记忆要点</strong>: 电路交换建立连接耗时但传输时延最低(11ms)，适合长时间稳定通信
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 报文交换性能分析 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="报文交换性能分析卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">报文交换性能分析 📦</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>存储转发机制</dt>
+                        <dd>
+                            <ul>
+                                <li>中间节点必须接收<mark>完整报文</mark>才能转发</li>
+                                <li>存储转发时延=<mark>2ms</mark>（报文解析处理时间）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>传输过程</dt>
+                        <dd>
+                            <ul>
+                                <li>每跳传输时间=8ms(发送)+1ms(传播)</li>
+                                <li>三跳总耗时=3×(8+1+2)=<mark>29ms</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>性能缺陷</dt>
+                        <dd>
+                            <ul>
+                                <li><span class="highlight">大报文</span>导致长时间占用链路</li>
+                                <li>后发报文需等待前一个完全转发</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    
+                    <div class="memory-tip">
+                        <span class="emoji">⚠️</span> <strong>注意</strong>: 报文交换存储转发时延高(29ms)，大报文导致串行等待效率低
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 分组交换性能分析 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="分组交换性能分析卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">分组交换性能分析 🧩</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>分组策略</dt>
+                        <dd>
+                            <ul>
+                                <li>将4KB报文拆分为<mark>4个1KB分组</mark></li>
+                                <li>分组发送时间=<mark>2ms</mark>（1kb/0.5kb/ms）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>传输优势</dt>
+                        <dd>
+                            <ul>
+                                <li>存储转发时延降至<mark>0.5ms</mark>（小分组处理更快）</li>
+                                <li><span class="highlight">流水线传输</span>: 前一分组处理时可接收下一分组</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>总耗时计算</dt>
+                        <dd>
+                            <ul>
+                                <li>首分组到达时间=3×(2+1+0.5)=<mark>10.5ms</mark></li>
+                                <li>后续分组间隔<mark>0.5ms</mark>到达</li>
+                                <li><span class="highlight">总时间</span>=10.5+3×0.5+2=<mark>17.5ms</mark></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    
+                    <div class="memory-tip">
+                        <span class="emoji">🚀</span> <strong>优势</strong>: 分组交换通过分片实现并行传输，时延(17.5ms)介于电路与报文之间
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 三种交换方式对比 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="三种交换方式对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">三种交换方式对比 🔍</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>传输耗时</dt>
+                        <dd>
+                            <ul>
+                                <li><span class="highlight">电路交换</span>: <mark>11ms</mark>（最快）</li>
+                                <li><span class="highlight">分组交换</span>: <mark>17.5ms</mark></li>
+                                <li><span class="highlight">报文交换</span>: <mark>29ms</mark>（最慢）</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>核心差异</dt>
+                        <dd>
+                            <ul>
+                                <li><span class="highlight">存储转发时延</span>: 电路交换无 😎 > 分组交换低 😊 > 报文交换高 😭</li>
+                                <li><span class="highlight">连接需求</span>: 仅电路交换需预先建立连接</li>
+                                <li><span class="highlight">线路利用率</span>: 分组交换非常高 😎 > 报文交换高 😊 > 电路交换低 😭</li>
+                                <li><span class="highlight">差错控制</span>: 分组/报文交换支持，电路交换不支持</li>
+                                <li><span class="highlight">数据有序性</span>: 电路/报文交换保证有序，分组交换可能乱序</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆要点</dt>
+                        <dd>
+                            <ul>
+                                <li>分组交换控制信息占比最大（需添加分组头）</li>
+                                <li>电路交换线路分配最不灵活</li>
+                                <li>报文交换缓存开销最大</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', String(!isPressed));
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // 防止卡片在滚动时意外翻转
+            let touchStartY = 0;
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+                
+                card.addEventListener('touchmove', function(e) {
+                    const touchY = e.touches[0].clientY;
+                    const diffY = Math.abs(touchY - touchStartY);
+                    
+                    // 如果垂直移动超过10px，认为是滚动而不是点击
+                    if (diffY > 10) {
+                        this.style.pointerEvents = 'none';
+                    }
+                }, { passive: true });
+                
+                card.addEventListener('touchend', function() {
+                    this.style.pointerEvents = 'auto';
+                }, { passive: true });
+            });
+        });
+    </script>
+</body>
+</html>
