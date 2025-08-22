@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有限自动机与正则语言学习卡片</title>
+    <style>
+        :root {
+            --primary-color: 220; /* 蓝色调 */
+            --secondary-color: 45; /* 黄色调 */
+            --card-width: 300px;
+            --card-height: 400px;
+            --font-family: 'Helvetica Neue', Arial, sans-serif;
+            --text-color: hsl(0, 0%, 20%);
+            --background-color: hsl(0, 0%, 98%);
+            --card-background: hsl(0, 0%, 100%);
+            --highlight-color: hsl(var(--secondary-color), 100%, 50%);
+            --border-radius: 16px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+            font-size: 24px;
+            color: hsl(var(--primary-color), 60%, 40%);
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 100%;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            padding: 24px;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--card-background);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-color), 60%, 40%);
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: bold;
+            margin-top: 12px;
+            color: hsl(var(--primary-color), 60%, 30%);
+        }
+
+        .card-content dd {
+            margin-left: 20px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-color), 90%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 16px 0;
+        }
+
+        .hint-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 14px;
+            color: hsl(0, 0%, 60%);
+        }
+
+        @media (max-width: 340px) {
+            :root {
+                --card-width: 280px;
+                --card-height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>有限自动机与正则语言学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">1/15</div>
+                    <div class="card-title">语言基础术语</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>符号 (Symbol)</dt>
+                            <dd>语言的基本构建块</dd>
+                            
+                            <dt>字母表 (Alphabet) <span class="hint-icon">🔤</span></dt>
+                            <dd>符号的有限集合，记为 <mark>Σ</mark></dd>
+                            
+                            <dt>字符串 (String)</dt>
+                            <dd>符号的有限序列，记为 <mark>w</mark></dd>
+                            
+                            <dt>字符串长度</dt>
+                            <dd>记为 <mark>|w|</mark>，空字符串记为 <mark>ε</mark></dd>
+                            
+                            <dt>字符串操作</dt>
+                            <dd>连接(concatenation) <mark>w₁w₂</mark>、指数运算(exponentiation) <mark>wⁱ</mark>、反转(reversal) <mark>wᴿ</mark></dd>
+                            
+                            <dt>语言 (Language)</dt>
+                            <dd>字符串的集合，<mark>L ⊆ Σ∗</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">2/15</div>
+                    <div class="card-title">确定有限自动机 (DFA)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>DFA 是一个五元组：<mark>M = (K, Σ, δ, s, F)</mark></p>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><mark>K</mark>: 状态集合</li>
+                            <li><mark>Σ</mark>: 字母表</li>
+                            <li><mark>δ</mark>: 转移函数，<mark>δ: K × Σ → K</mark></li>
+                            <li><mark>s</mark>: 初始状态</li>
+                            <li><mark>F</mark>: 终止状态集合</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>配置 <mark>(q, w) ∈ K × Σ∗</mark></p>
+                        <p>M 在一步内产生: <mark>⊢ᴍ</mark></p>
+                        <p>M 产生: <mark>⊢ᴍ∗</mark></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">3/15</div>
+                    <div class="card-title">非确定有限自动机 (NFA)</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>NFA 是一个五元组：<mark>M = (K, Σ, Δ, s, F)</mark></p>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><mark>K</mark>: 状态集合</li>
+                            <li><mark>Σ</mark>: 字母表</li>
+                            <li><mark>Δ</mark>: 转移关系，<mark>Δ ⊆ K × (Σ ∪ {ε}) × K</mark></li>
+                            <li><mark>s</mark>: 初始状态</li>
+                            <li><mark>F</mark>: 终止状态集合</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>配置 <mark>(q, w) ∈ K × Σ∗</mark></p>
+                        <p>M 在一步内产生: <mark>⊢ᴍ</mark></p>
+                        <p>M 产生: <mark>⊢ᴍ∗</mark></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">4/15</div>
+                    <div class="card-title">NFA 转 DFA</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p><mark>定理</mark>: 任何 NFA M 都可以找到一个 DFA M′ 使得 L(M) = L(M′)</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>构造思路：</p>
+                        <ul>
+                            <li>M′ 的状态集合 K′ 是 M 中状态集合 K 的幂集</li>
+                            <li>s′ 是 s 的 ε-闭包</li>
+                            <li>从 s′ 开始向外引边</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>⚠️ 注意: 画 DFA 时，任何状态都要包含所有可能 symbol 的对应关系</p>
+                        <p>即 <mark>∀p ∈ K, ∀c ∈ Σ, ∃q ∈ K</mark> 使得 <mark>δ(p, c) = q</mark></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">5/15</div>
+                    <div class="card-title">正则语言</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>如果一个语言可以被某个 DFA 或 NFA 接受，则它是<mark>正则语言</mark></p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>正则语言的封闭性：</p>
+                        <ul>
+                            <li>并运算 (∪): ✅</li>
+                            <li>交运算 (∩): ✅</li>
+                            <li>连接运算 (∘): ✅</li>
+                            <li>补运算 (Ā): ✅</li>
+                            <li>星闭包 (∗): ✅</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>注意: <mark>A - B = A ∩ B̄</mark>，因此如果 ∩ 和 Ā 都封闭，则差运算也封闭</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">6/15</div>
+                    <div class="card-title">正则表达式</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>用于描述正则语言</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><mark>L(∅) = ∅</mark></li>
+                            <li><mark>L(a) = {a}</mark></li>
+                            <li><mark>L(R₁ ∪ R₂) = L(R₁) ∪ L(R₂)</mark></li>
+                            <li><mark>L(R₁R₂) = L(R₁) ∘ L(R₂)</mark></li>
+                            <li><mark>L(R∗) = L(R)∗</mark></li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>优先级: <mark>∗ > ∘ > ∪</mark></p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p><mark>定理</mark>: 任何 NFA M 都能找到一个正则表达式 R 使得 L(M) = L(R)，反之亦然</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片7 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">7/15</div>
+                    <div class="card-title">泵引理</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p><mark>定理</mark>: 若 L 是一个正则语言，则存在泵长度 p ∈ ℤ∗ 使得 ∀w ∈ L 且 |w| ≥ p，w 可被分为三部分 w = xyz，满足：</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <ol>
+                            <li>∀i ≥ 0, xyⁱz ∈ L</li>
+                            <li>|y| > 0</li>
+                            <li>|xy| ≤ p</li>
+                        </ol>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>泵引理是 RL 的一个<mark>必要不充分</mark>条件</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>应用示例: 证明 {0ⁿ1ⁿ : n ≥ 0} 不是正则的</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片8 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">8/15</div>
+                    <div class="card-title">非正则语言证明技巧</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>证明思路：假设 L 是 RL，设泵长度为 p，构造一个含 p 且属于 L 的字符串，证明它不符合泵引理</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>常见非正则语言及证明思路：</p>
+                        <ul>
+                            <li>L = {0ⁿ1ⁿ}: 选 0ᵖ1ᵖ，则 xy⁰z ∉ L</li>
+                            <li>L = {ww}: 选 abᵖabᵖ，则 xy⁰z ∉ L</li>
+                            <li>L = {0ᵐ1ⁿ} 其中 m > n: 选 0ᵖ⁺¹1ᵖ，则 xy⁰z ∉ L</li>
+                            <li>L = {1ⁿ} 其中 n 是质数: 选 1ᵏ (k > p 且为质数)，取 n = k+1 得矛盾</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片9 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">9/15</div>
+                    <div class="card-title">正则表达式示例</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>问题: 写出表示 {w ∈ {a,b}∗: w 中 b 的数量可被 3 整除} 的正则表达式</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>答案: <mark>a∗ ∪ (a∗ba∗ba∗ba∗)∗</mark></p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>解释:</p>
+                        <ul>
+                            <li>a∗: 不含 b 的字符串 (0 个 b，可被 3 整除)</li>
+                            <li>(a∗ba∗ba∗ba∗)∗: 每段包含恰好 3 个 b，重复任意次</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片10 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">10/15</div>
+                    <div class="card-title">NFA 转正则表达式</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>转换思路：</p>
+                        <ol>
+                            <li>简化 M 使得不存在 s 的入边</li>
+                            <li>确保最终状态仅有一个且无出边</li>
+                            <li>每次删除一个状态，对于它的每一对入边和出边进行转换</li>
+                        </ol>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>转换模式：</p>
+                        <p>如果状态 q 有从 p 到 q 的边标记为 A，从 q 到 r 的边标记为 B，q 的自环标记为 C，则删除 q 后添加从 p 到 r 的边标记为 <mark>AC∗B</mark></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片11 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">11/15</div>
+                    <div class="card-title">集合运算等价关系</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>以下关系等价：</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><mark>A ⊆ B</mark></li>
+                            <li><mark>A - B = ∅</mark></li>
+                            <li><mark>A ∪ B = B</mark></li>
+                            <li><mark>A ∩ B = A</mark></li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>这些等价关系在证明语言属性时非常有用</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片12 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">12/15</div>
+                    <div class="card-title">正则语言的判定问题</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>每个判定问题都对应一个语言</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>重要概念：</p>
+                        <ul>
+                            <li>Σᴺ: 无限长度字符串集合</li>
+                            <li>Σ∗: 所有有限长度字符串集合</li>
+                            <li>Σ⁺: 所有非空有限长度字符串集合</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>空字符串 ε 是任何字母表 Σ 上的字符串，但不在 Σ⁺ 中</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片13 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">13/15</div>
+                    <div class="card-title">语言运算的特殊情况</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>RL 和 Non-RL、Non-RL 和 Non-RL 的连接都可能是 RL</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>例子：</p>
+                        <ul>
+                            <li>RL 为 ∅，则与任何语言的连接也是 ∅ (RL)</li>
+                            <li>Non-RL 与 Non-RL 的连接可能是 RL</li>
+                        </ul>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>关键点：正则语言类在适当运算下封闭，但非正则语言类的运算结果不确定</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片14 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">14/15</div>
+                    <div class="card-title">使用泵引理的注意事项</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>泵引理只能用于证明语言<mark>不是</mark>正则的</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>如果一个语言满足泵引理条件，不能断定它是正则的</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>反例：存在非正则语言满足泵引理条件</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>因此，泵引理是正则语言的必要不充分条件</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片15 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-number">15/15</div>
+                    <div class="card-title">解决正则语言问题的策略</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>策略：</p>
+                        <ol>
+                            <li>先尝试构造 DFA/NFA</li>
+                            <li>如果困难，尝试使用正则表达式</li>
+                            <li>如果认为不是正则语言，使用泵引理证明</li>
+                            <li>善用德摩根律等集合运算性质</li>
+                        </ol>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>记忆提示：多思考 {0ⁿ1ⁿ} 不是正则的例子</p>
+                        
+                        <div class="divider"></div>
+                        
+                        <p>常见技巧：通过已知非正则语言构造矛盾</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        // 添加触摸滑动支持
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                let startX = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                });
+                
+                card.addEventListener('touchend', function(e) {
+                    const endX = e.changedTouches[0].clientX;
+                    const diffX = endX - startX;
+                    
+                    // 如果水平滑动距离足够大，则翻转卡片
+                    if (Math.abs(diffX) > 50) {
+                        flipCard(this);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
