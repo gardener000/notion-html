@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>线性代数学习卡片</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-h: 220;
@@ -30,7 +31,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             color: var(--text);
             line-height: 1.6;
             padding: calc(2 * var(--spacing));
@@ -40,18 +41,30 @@
             min-height: 100vh;
         }
 
+        .header {
+            text-align: center;
+            margin-bottom: calc(3 * var(--spacing));
+            width: 100%;
+        }
+
         h1 {
             color: var(--primary);
-            margin-bottom: calc(4 * var(--spacing));
-            text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            margin-bottom: calc(1 * var(--spacing));
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: calc(2 * var(--spacing));
         }
 
         .card-container {
             perspective: 1000px;
             width: 100%;
             max-width: 400px;
-            height: 300px;
+            height: 380px;
             margin-bottom: calc(4 * var(--spacing));
         }
 
@@ -76,7 +89,7 @@
             height: 100%;
             backface-visibility: hidden;
             border-radius: var(--border-radius);
-            padding: calc(4 * var(--spacing));
+            padding: calc(3 * var(--spacing));
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -84,9 +97,10 @@
         }
 
         .card-front {
-            background-color: var(--primary-light);
+            background: linear-gradient(135deg, var(--primary-light) 0%, hsl(var(--primary-h), var(--primary-s), 85%) 100%);
             color: var(--primary);
             border: 2px solid var(--primary);
+            text-align: center;
         }
 
         .card-back {
@@ -99,21 +113,35 @@
         .card-title {
             font-size: 1.4rem;
             font-weight: 700;
-            text-align: center;
             margin-bottom: calc(2 * var(--spacing));
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: calc(2 * var(--spacing));
+            text-align: center;
+        }
+
+        .card-hint {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: auto;
+            text-align: center;
         }
 
         .card-content {
             flex-grow: 1;
+            font-size: 0.95rem;
         }
 
         .card-content ul {
-            padding-left: calc(4 * var(--spacing));
+            padding-left: calc(3 * var(--spacing));
             margin-bottom: calc(2 * var(--spacing));
         }
 
         .card-content li {
-            margin-bottom: calc(1.5 * var(--spacing));
+            margin-bottom: calc(1 * var(--spacing));
         }
 
         mark {
@@ -130,12 +158,6 @@
             margin: calc(2 * var(--spacing)) 0;
         }
 
-        .icon {
-            font-size: 1.8rem;
-            margin-bottom: calc(2 * var(--spacing));
-            text-align: center;
-        }
-
         .navigation {
             display: flex;
             justify-content: space-between;
@@ -148,11 +170,14 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: calc(2 * var(--spacing)) calc(4 * var(--spacing));
+            padding: calc(1.5 * var(--spacing)) calc(3 * var(--spacing));
             border-radius: var(--border-radius);
             cursor: pointer;
             font-weight: 500;
             transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         button:hover {
@@ -168,46 +193,106 @@
             text-align: center;
             color: var(--text-light);
             margin-top: calc(2 * var(--spacing));
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: calc(2 * var(--spacing));
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                height: 420px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-content {
+                font-size: 0.9rem;
+            }
+            
+            button {
+                padding: calc(1.2 * var(--spacing)) calc(2.5 * var(--spacing));
+            }
+        }
+
+        @media (max-width: 350px) {
+            .card-container {
+                height: 450px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-content {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>线性代数核心概念</h1>
+    <div class="header">
+        <h1>线性代数核心概念</h1>
+        <p class="subtitle">点击卡片查看详细内容，滑动切换卡片</p>
+    </div>
+    
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
     
     <div class="card-container">
         <div class="card" id="current-card" tabindex="0" role="button" aria-pressed="false">
             <div class="card-face card-front">
-                <div class="icon">📊</div>
+                <div class="card-icon">📊</div>
                 <div class="card-title" id="card-front-title">核心模块与分值</div>
+                <p class="card-hint">点击翻转卡片</p>
             </div>
             <div class="card-face card-back">
+                <div class="card-title">核心模块与分值</div>
                 <div class="card-content">
-                    <dl>
-                        <dt>核心模块：</dt>
-                        <dd>行列式、矩阵、向量、方程组、特征值、二次型</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>分值设置：</dt>
-                        <dd>共5道题（3选择+1填空+1解答）</dd>
-                        <dd>选择/填空题：每题5分</dd>
-                        <dd>解答题：12分</dd>
-                        <dd>总分：32分（占数学总分150分的21.3%）</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>战略意义：</dt>
-                        <dd>对高分考生（目标985/211）：关键拉分项</dd>
-                        <dd>对基础考生（目标90分）：重要保底分</dd>
-                    </dl>
+                    <p><strong>核心模块：</strong>行列式、矩阵、向量、方程组、特征值、二次型</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>分值设置：</strong></p>
+                    <ul>
+                        <li>共5道题（3选择+1填空+1解答）</li>
+                        <li>选择/填空题：每题5分</li>
+                        <li>解答题：12分</li>
+                        <li>总分：32分（占数学总分150分的21.3%）</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>战略意义：</strong></p>
+                    <ul>
+                        <li>对高分考生（目标985/211）：关键拉分项</li>
+                        <li>对基础考生（目标90分）：重要保底分</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="navigation">
-        <button id="prev-btn" disabled>上一张</button>
-        <button id="next-btn">下一张</button>
+        <button id="prev-btn" disabled><i class="fas fa-chevron-left"></i> 上一张</button>
+        <button id="next-btn">下一张 <i class="fas fa-chevron-right"></i></button>
     </div>
 
     <div class="card-counter">
@@ -221,174 +306,179 @@
                 frontTitle: "核心模块与分值",
                 icon: "📊",
                 backContent: `
-                    <dl>
-                        <dt>核心模块：</dt>
-                        <dd>行列式、矩阵、向量、方程组、特征值、二次型</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>分值设置：</dt>
-                        <dd>共5道题（3选择+1填空+1解答）</dd>
-                        <dd>选择/填空题：每题5分</dd>
-                        <dd>解答题：12分</dd>
-                        <dd>总分：32分（占数学总分150分的21.3%）</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>战略意义：</dt>
-                        <dd>对高分考生（目标985/211）：关键拉分项</dd>
-                        <dd>对基础考生（目标90分）：重要保底分</dd>
-                    </dl>
+                    <p><strong>核心模块：</strong>行列式、矩阵、向量、方程组、特征值、二次型</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>分值设置：</strong></p>
+                    <ul>
+                        <li>共5道题（3选择+1填空+1解答）</li>
+                        <li>选择/填空题：每题5分</li>
+                        <li>解答题：12分</li>
+                        <li>总分：32分（占数学总分150分的21.3%）</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>战略意义：</strong></p>
+                    <ul>
+                        <li>对高分考生（目标985/211）：关键拉分项</li>
+                        <li>对基础考生（目标90分）：重要保底分</li>
+                    </ul>
                 `
             },
             {
                 frontTitle: "复习重点与难点",
                 icon: "🎯",
                 backContent: `
-                    <dl>
-                        <dt>两大重点：</dt>
-                        <dd><mark>特征值</mark>：近三年（2021-2023）解答题全部考查</dd>
-                        <dd><mark>方程组</mark>：与特征值并列核心，2024年数二单独考查</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>难点模块：</dt>
-                        <dd><mark>向量</mark>：涉及线性相关/无关、秩等抽象概念</dd>
-                        <dd><mark>二次型转化</mark>：表面考查二次型，实质仍回归特征值问题</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>高考点：</dt>
-                        <dd><mark>矩阵的秩</mark>：2024年6道题涉及</dd>
-                        <dd><mark>三个平面关系</mark>：通秩分析空位置</dd>
-                    </dl>
+                    <p><strong>两大重点：</strong></p>
+                    <ul>
+                        <li><mark>特征值</mark>：近三年（2021-2023）解答题全部考查</li>
+                        <li><mark>方程组</mark>：与特征值并列核心，2024年数二单独考查</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>难点模块：</strong></p>
+                    <ul>
+                        <li><mark>向量</mark>：涉及线性相关/无关、秩等抽象概念</li>
+                        <li><mark>二次型转化</mark>：表面考查二次型，实质仍回归特征值问题</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>高考点：</strong></p>
+                    <ul>
+                        <li><mark>矩阵的秩</mark>：2024年6道题涉及</li>
+                        <li><mark>三个平面关系</mark>：通秩分析空位置</li>
+                    </ul>
                 `
             },
             {
                 frontTitle: "历年考题分析",
                 icon: "📈",
                 backContent: `
-                    <dl>
-                        <dt>早期（2013-2015）：</dt>
-                        <dd>数一/二/三试题高度重合</dd>
-                        <dd>2015年开始出现差异化</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>中期（2018-2020）：</dt>
-                        <dd>2018年4题相同+1题差异</dd>
-                        <dd>2019年试题结构重大调整</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>近期（2021-2024）：</dt>
-                        <dd>2024年新趋势：</dd>
-                        <dd>- 数一：纯特征值题</dd>
-                        <dd>- 数二：方程组+特征值综合题</dd>
-                        <dd>- 数三：纯方程组题</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>难度规律：</dt>
-                        <dd>数二考生需注意：近年难度已与数一/三趋同</dd>
-                        <dd>特征值相关题占比持续高位（约40%）</dd>
-                    </dl>
+                    <p><strong>早期（2013-2015）：</strong></p>
+                    <ul>
+                        <li>数一/二/三试题高度重合</li>
+                        <li>2015年开始出现差异化</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>中期（2018-2020）：</strong></p>
+                    <ul>
+                        <li>2018年4题相同+1题差异</li>
+                        <li>2019年试题结构重大调整</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>近期（2021-2024）：</strong></p>
+                    <ul>
+                        <li>2024年新趋势：</li>
+                        <li>- 数一：纯特征值题</li>
+                        <li>- 数二：方程组+特征值综合题</li>
+                        <li>- 数三：纯方程组题</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>难度规律：</strong></p>
+                    <ul>
+                        <li>数二考生需注意：近年难度已与数一/三趋同</li>
+                        <li>特征值相关题占比持续高位（约40%）</li>
+                    </ul>
                 `
             },
             {
                 frontTitle: "特征值与特征向量",
                 icon: "λ",
                 backContent: `
-                    <dl>
-                        <dt>基本定义：</dt>
-                        <dd>设A是n阶矩阵，α是n维非零列向量，若存在数λ使得Aα=λα，则称λ为矩阵A的<mark>特征值</mark>，α为对应于λ的<mark>特征向量</mark></dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>特征向量的性质：</dt>
-                        <dd>数据不变性：若α是特征向量，则kα(k≠0)仍是同一特征值的特征向量</dd>
-                        <dd>性合性：同一特征值的特征向量的非零线性组合仍是该特征值的特征向量</dd>
-                        <dd>不同特征值对应的特征向量<mark>线性无关</mark></dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>几何意义：</dt>
-                        <dd>特征向量经过线性变换后与原向量共线，仅长度变化</dd>
-                    </dl>
+                    <p><strong>基本定义：</strong></p>
+                    <p>设A是n阶矩阵，α是n维非零列向量，若存在数λ使得Aα=λα，则称λ为矩阵A的<mark>特征值</mark>，α为对应于λ的<mark>特征向量</mark></p>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>特征向量的性质：</strong></p>
+                    <ul>
+                        <li>数据不变性：若α是特征向量，则kα(k≠0)仍是同一特征值的特征向量</li>
+                        <li>性合性：同一特征值的特征向量的非零线性组合仍是该特征值的特征向量</li>
+                        <li>不同特征值对应的特征向量<mark>线性无关</mark></li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>几何意义：</strong></p>
+                    <p>特征向量经过线性变换后与原向量共线，仅长度变化</p>
                 `
             },
             {
                 frontTitle: "矩阵乘法",
                 icon: "×",
                 backContent: `
-                    <dl>
-                        <dt>基本规则：</dt>
-                        <dd>A为m×s矩阵，B为s×n矩阵时才能相乘</dd>
-                        <dd>结果矩阵维度为m×n</dd>
-                        <dd>结果矩阵第i行第j列元素为A的第i行与B的第j列对应元素乘积之和</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>注意事项：</dt>
-                        <dd>矩阵乘法一般不满足<mark>交换律</mark>，A×B≠B×A</dd>
-                        <dd>A×B=0不能推出A=0或B=0（与数的乘法不同）</dd>
-                        <dd>BA=B不能推出A=I，不能随意约去矩阵</dd>
-                        <dd>A²=A不能推出A=0或A=I</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>特殊矩阵：</dt>
-                        <dd><mark>单位矩阵</mark>：主对角线为1，其余为0的方阵</dd>
-                        <dd><mark>对角矩阵</mark>：两个对角矩阵相乘仍为对角矩阵</dd>
-                        <dd><mark>正交矩阵</mark>：A×Aᵀ=Aᵀ×A=I，对应直角坐标系的旋转变换</dd>
-                    </dl>
+                    <p><strong>基本规则：</strong></p>
+                    <ul>
+                        <li>A为m×s矩阵，B为s×n矩阵时才能相乘</li>
+                        <li>结果矩阵维度为m×n</li>
+                        <li>结果矩阵第i行第j列元素为A的第i行与B的第j列对应元素乘积之和</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>注意事项：</strong></p>
+                    <ul>
+                        <li>矩阵乘法一般不满足<mark>交换律</mark>，A×B≠B×A</li>
+                        <li>A×B=0不能推出A=0或B=0（与数的乘法不同）</li>
+                        <li>BA=B不能推出A=I，不能随意约去矩阵</li>
+                        <li>A²=A不能推出A=0或A=I</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>特殊矩阵：</strong></p>
+                    <ul>
+                        <li><mark>单位矩阵</mark>：主对角线为1，其余为0的方阵</li>
+                        <li><mark>对角矩阵</mark>：两个对角矩阵相乘仍为对角矩阵</li>
+                        <li><mark>正交矩阵</mark>：A×Aᵀ=Aᵀ×A=I，对应直角坐标系的旋转变换</li>
+                    </ul>
                 `
             },
             {
                 frontTitle: "二次型与矩阵表示",
                 icon: "𝑓",
                 backContent: `
-                    <dl>
-                        <dt>表示方法：</dt>
-                        <dd>二次型f(x₁,x₂,x₃)可表示为<mark>xᵀAx</mark></dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>矩阵构造规则：</dt>
-                        <dd>平方项系数直接放在主对角线上</dd>
-                        <dd>混合系数平分后放在对称位置</dd>
-                        <dd>只有对称矩阵A称为二次型的矩阵</dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>示例：</dt>
-                        <dd>f=x₁²+5x₂²+3x₃²-4x₁x₂+6x₂x₃对应的矩阵为：</dd>
-                        <dd>
-                            <table style="margin: 10px auto; border-collapse: collapse;">
-                                <tr>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">1</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">-2</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">0</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">-2</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">5</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">3</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">0</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">3</td>
-                                    <td style="border: 1px solid #ccc; padding: 5px; text-align: center;">3</td>
-                                </tr>
-                            </table>
-                        </dd>
-                        
-                        <div class="divider"></div>
-                        
-                        <dt>解题技巧：</dt>
-                        <dd>矩阵乘法法比展开法更快速简洁，是命题老师期望的解法</dd>
-                        <dd>关键步骤：将中间矩阵记为A，验证Aᵀ=A（对称矩阵）</dd>
-                    </dl>
+                    <p><strong>表示方法：</strong></p>
+                    <p>二次型f(x₁,x₂,x₃)可表示为<mark>xᵀAx</mark></p>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>矩阵构造规则：</strong></p>
+                    <ul>
+                        <li>平方项系数直接放在主对角线上</li>
+                        <li>混合系数平分后放在对称位置</li>
+                        <li>只有对称矩阵A称为二次型的矩阵</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>示例：</strong></p>
+                    <p>f=x₁²+5x₂²+3x₃²-4x₁x₂+6x₂x₃对应的矩阵为：</p>
+                    <div style="display: flex; justify-content: center; margin: 10px 0;">
+                        <div style="background: #f5f5f5; padding: 10px; border-radius: 8px;">
+                            [1  -2  0]<br>
+                            [-2  5  3]<br>
+                            [0   3  3]
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>解题技巧：</strong></p>
+                    <ul>
+                        <li>矩阵乘法法比展开法更快速简洁，是命题老师期望的解法</li>
+                        <li>关键步骤：将中间矩阵记为A，验证Aᵀ=A（对称矩阵）</li>
+                    </ul>
                 `
             }
         ];
@@ -402,9 +492,16 @@
         const nextBtn = document.getElementById('next-btn');
         const currentCardNumber = document.getElementById('current-card-number');
         const totalCardsElement = document.getElementById('total-cards');
+        const progressElement = document.getElementById('progress');
 
         // 设置总卡片数
         totalCardsElement.textContent = totalCards;
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentCardIndex + 1) / totalCards) * 100;
+            progressElement.style.width = `${progress}%`;
+        }
 
         // 更新卡片内容
         function updateCard() {
@@ -413,13 +510,15 @@
             // 更新卡片正面
             const frontElement = cardElement.querySelector('.card-front');
             frontElement.innerHTML = `
-                <div class="icon">${cardData.icon}</div>
+                <div class="card-icon">${cardData.icon}</div>
                 <div class="card-title">${cardData.frontTitle}</div>
+                <p class="card-hint">点击翻转卡片</p>
             `;
             
             // 更新卡片背面
             const backElement = cardElement.querySelector('.card-back');
             backElement.innerHTML = `
+                <div class="card-title">${cardData.frontTitle}</div>
                 <div class="card-content">${cardData.backContent}</div>
             `;
             
@@ -429,6 +528,9 @@
             // 更新按钮状态
             prevBtn.disabled = currentCardIndex === 0;
             nextBtn.disabled = currentCardIndex === totalCards - 1;
+            
+            // 更新进度条
+            updateProgress();
             
             // 确保卡片是未翻转状态
             cardElement.classList.remove('flipped');
