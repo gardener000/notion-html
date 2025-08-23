@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上下文无关语言学习卡片</title>
+    <style>
+        :root {
+            --primary-color: hsl(220, 70%, 50%);
+            --secondary-color: hsl(45, 90%, 60%);
+            --background-color: hsl(0, 0%, 98%);
+            --text-color: hsl(0, 0%, 20%);
+            --card-background: hsl(0, 0%, 100%);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --spacing-unit: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, 'Open Sans', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding: var(--spacing-unit);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .header {
+            margin: calc(var(--spacing-unit) * 2) 0;
+            text-align: center;
+            width: 100%;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+            line-height: 1.3;
+            padding: 0 var(--spacing-unit);
+        }
+        
+        .subtitle {
+            color: hsl(0, 0%, 40%);
+            font-size: 0.9rem;
+        }
+        
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--spacing-unit) * 3);
+            margin-bottom: calc(var(--spacing-unit) * 4);
+        }
+        
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: calc(var(--spacing-unit) * 3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: var(--card-shadow);
+            background-color: var(--card-background);
+        }
+        
+        .card-front {
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .card-back {
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+            line-height: 1.3;
+        }
+        
+        .card-content {
+            flex: 1;
+        }
+        
+        .card-content dl {
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+        
+        .card-content dt {
+            font-weight: bold;
+            margin-top: calc(var(--spacing-unit) * 1.5);
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+        
+        .card-content dd {
+            margin-left: calc(var(--spacing-unit) * 2);
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        mark {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: calc(var(--spacing-unit) * 1.5) 0;
+        }
+        
+        .hint {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-unit);
+            margin-top: var(--spacing-unit);
+            font-size: 0.85rem;
+            color: hsl(0, 0%, 50%);
+        }
+        
+        .icon {
+            font-size: 1.8rem;
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+        
+        .tip {
+            background-color: hsl(220, 50%, 95%);
+            padding: calc(var(--spacing-unit) * 1.5);
+            border-radius: 8px;
+            margin-top: calc(var(--spacing-unit) * 1.5);
+            font-size: 0.85rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                height: 320px;
+            }
+            
+            .card-front, .card-back {
+                padding: calc(var(--spacing-unit) * 2.5);
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>下推自动机与上下文无关语言</h1>
+        <p class="subtitle">点击卡片查看详细内容</p>
+    </div>
+    
+    <div class="cards-container">
+        <!-- 卡片1: CFG定义 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">📝</div>
+                    <div class="card-title">上下文无关文法 (CFG)</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>四元组 <mark>G = (V, Σ, S, R)</mark>，其中：</dd>
+                            <dd>- V: 符号集合</dd>
+                            <dd>- Σ: 终结符集合</dd>
+                            <dd>- S: 开始符号</dd>
+                            <dd>- R: 产生式规则集合</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>推导</dt>
+                            <dd>- 一步推导: ⇒<sub>G</sub></dd>
+                            <dd>- 多步推导: ⇒<sub>G</sub>*</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>语言生成</dt>
+                            <dd>L(G) = {w ∈ Σ* | S ⇒<sub>G</sub>* w}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 乔姆斯基范式 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">📐</div>
+                    <div class="card-title">乔姆斯基范式 (CNF)</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>规则形式</dt>
+                            <dd>1. S → ε</dd>
+                            <dd>2. A → BC (B, C ∈ V-Σ-{S})</dd>
+                            <dd>3. A → a (a ∈ Σ)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>定理</dt>
+                            <dd>每个CFG都有等价的CNF形式</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>推导次数</dt>
+                            <dd>生成长度 n>0 的字符串需要：</dd>
+                            <dd>- 2n-1 次推导</dd>
+                            <dd>- n-1 次使用规则(b)扩展长度</dd>
+                            <dd>- n 次使用规则(c)替换为终结符</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 下推自动机 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🤖</div>
+                    <div class="card-title">下推自动机 (PDA)</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>P = (K, Σ, T, Δ, s, F)</dd>
+                            <dd>- K: 状态集合</dd>
+                            <dd>- Σ: 输入字母表</dd>
+                            <dd>- T: 栈字母表</dd>
+                            <dd>- Δ: 转移关系</dd>
+                            <dd>- s: 初始状态</dd>
+                            <dd>- F: 终止状态集合</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>配置</dt>
+                            <dd>(p, w, α) ∈ (K × Σ* × T*)</dd>
+                            <dd>表示当前状态、未读输入和栈内容</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>接受条件</dt>
+                            <dd>到达终态且栈为空</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: CFG与PDA等价性 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🔄</div>
+                    <div class="card-title">CFG ⇔ PDA</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>CFG → PDA</dt>
+                            <dd>在栈上不确定地使用G生成字符串，与输入比较，匹配则接受</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>简单PDA</dt>
+                            <dd>只有一个终态，每个转移要么只pop一个，要么只push一个</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>PDA → CFG</dt>
+                            <dd>PDA → 简单PDA → CFG</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: CFL泵引理 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">💧</div>
+                    <div class="card-title">CFL泵引理</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>定理</dt>
+                            <dd>若L是CFL，则存在泵长度p∈Z*，使得∀w∈L且|w|≥p，可划分为w=uvxyz，满足：</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>条件</dt>
+                            <dd>1. ∀i≥0, uv<sup>i</sup>xy<sup>i</sup>z ∈ L</dd>
+                            <dd>2. |v| + |y| > 0</dd>
+                            <dd>3. |vxy| ≤ p</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>应用</dt>
+                            <dd>证明语言不是上下文无关的</dd>
+                            <dd>例如: L = {a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> : n≥0} 不是CFL</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片6: CFL封闭性 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🔒</div>
+                    <div class="card-title">CFL封闭性</div>
+                    <p>点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>封闭运算</dt>
+                            <dd>✅ 并集 (Union)</dd>
+                            <dd>✅ 连接 (Concatenation)</dd>
+                            <dd>✅ 克林闭包 (Kleene Star)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>不封闭运算</dt>
+                            <dd>❌ 交集 (Intersection)</dd>
+                            <dd>❌ 补集 (Complement)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>特殊性质</dt>
+                            <dd>CFL与RL的交集仍是CFL</dd>
+                        </dl>
+                        
+                        <div class="tip">
+                            <strong>记忆提示:</strong> CFL对并、连接和星号封闭，但对交和补不封闭。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+    </script>
+</body>
+</html>
