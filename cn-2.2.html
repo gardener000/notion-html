@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>传输介质学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            perspective: 1000px;
+            height: 300px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 90%), white);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            width: 100%;
+            padding-bottom: 16px;
+        }
+
+        .card-content dl {
+            display: grid;
+            gap: 10px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 40%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+        }
+
+        .card-content dd {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .card-content ul {
+            padding-left: 18px;
+        }
+
+        .card-content li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 80%);
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: hsl(var(--primary-hue), 70%, 50%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 320px;
+            }
+            
+            .card-title {
+                font-size: 1.15rem;
+            }
+            
+            .card-icon {
+                font-size: 2rem;
+            }
+            
+            .card-face {
+                padding: 14px;
+            }
+            
+            .card-content {
+                padding-bottom: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>传输介质学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1: 双绞线 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="双绞线学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">🔗</div>
+                    <h2 class="card-title">双绞线</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">双绞线</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>📌 基本构成</dt>
+                            <dd>由两根相互绞合的铜导线组成，绞合形态类似麻花状</dd>
+                            
+                            <dt>🔍 分类</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>STP</mark>：带屏蔽层的屏蔽双绞线</li>
+                                    <li><mark>UTP</mark>：无屏蔽层的非屏蔽双绞线</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>🛡️ 抗干扰原理</dt>
+                            <dd>
+                                <ul>
+                                    <li>绞合结构可抵消外部电磁干扰</li>
+                                    <li>屏蔽层(金属网/铝箔)进一步阻隔噪声</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆提示</dt>
+                            <dd>绞合度越高/屏蔽层越多 → 抗干扰越强 → 成本越高</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2: 同轴电缆 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="同轴电缆学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">📡</div>
+                    <h2 class="card-title">同轴电缆</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">同轴电缆</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>📌 核心结构</dt>
+                            <dd>
+                                <ul>
+                                    <li>内导体：纯铜芯(直径影响传输距离)</li>
+                                    <li>外导体：金属网屏蔽层(覆盖率>95%)</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>⚡ 性能特点</dt>
+                            <dd>
+                                <ul>
+                                    <li>抗干扰性优于双绞线</li>
+                                    <li>传输衰减率：每100米信号衰减约<mark>3dB</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>🕰️ 历史应用</dt>
+                            <dd>
+                                <ul>
+                                    <li>1990-2012年有线电视主流介质</li>
+                                    <li>早期10BASE2以太网传输介质</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆提示</dt>
+                            <dd>同轴电缆 = <mark>有线电视</mark>时代的主流选择</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3: 光纤 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="光纤学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">🔦</div>
+                    <h2 class="card-title">光纤</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">光纤</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>📌 基本结构</dt>
+                            <dd>
+                                <ul>
+                                    <li>纤芯(高折射率) + 包层(低折射率)</li>
+                                    <li>利用<mark>全反射</mark>特性传输光脉冲信号</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>✨ 主要优点</dt>
+                            <dd>
+                                <ul>
+                                    <li>低损耗：电信级≤<mark>0.2db</mark></li>
+                                    <li>空间节省：直径仅约9微米</li>
+                                    <li>抗电磁干扰能力<mark>最强</mark></li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>🔎 分类</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>单模光纤(SMF)</mark>：纤芯小(9μm)，单光线传输，远距低损耗，黄色外皮</li>
+                                    <li><mark>多模光纤(MMF)</mark>：纤芯粗，多光线传输，适合近距，橙色/绿色外皮</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆提示</dt>
+                            <dd>单模=细芯=远距；多模=粗芯=近距</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4: 以太网介质命名规则 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="以太网介质命名规则学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">🏷️</div>
+                    <h2 class="card-title">以太网介质命名规则</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">以太网介质命名规则</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>📝 基本格式</dt>
+                            <dd><mark>速度(Mbps) + "Base" + 介质标识</mark></dd>
+                            
+                            <dt>🔤 介质类型标识</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>同轴电缆</mark>：数字表示最大传输距离<br>
+                                        (如10base5=500米，10base2=200米)</li>
+                                    <li><mark>光纤</mark>：以"F"开头 (如100baseFX)</li>
+                                    <li><mark>双绞线</mark>：以"T"开头 (如1000baseT)</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>📌 典型示例</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>10base5</mark>：10Mbps同轴电缆，500米传输距离</li>
+                                    <li><mark>1000baseT</mark>：千兆双绞线以太网</li>
+                                    <li><mark>2.5GbaseT</mark>：2.5Gbps双绞线以太网</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆口诀</dt>
+                            <dd><mark>"速度+Base+介质"<br>数字=同轴距离<br>T=双绞线，F=光纤</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5: 无线传输介质 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="无线传输介质学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">📶</div>
+                    <h2 class="card-title">无线传输介质</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">无线传输介质</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>📡 无线电波</dt>
+                            <dd>
+                                <ul>
+                                    <li>穿透能力强(可穿墙)</li>
+                                    <li>信号发散(向四面八方)</li>
+                                    <li>应用：<mark>手机通信</mark>、WiFi</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>🛰️ 微波与卫星通信</dt>
+                            <dd>
+                                <ul>
+                                    <li>短波特性：指向性强，需对准</li>
+                                    <li>长波特性：绕射性好，穿墙能力强</li>
+                                    <li>卫星通信时延：
+                                        <ul>
+                                            <li>传统同步卫星：<mark>>500ms</mark></li>
+                                            <li>近地卫星(如星链)：<mark><20ms</mark></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>🌐 基本公式</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>C = λF</mark> (C为光速，λ为波长，F为频率)</li>
+                                    <li>波长与频率成反比</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆提示</dt>
+                            <dd>长波=穿墙好；短波=高速需对准</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 6: 物理层接口特性 -->
+        <div class="card" onclick="flipCard(this)" tabindex="0" role="button" aria-label="物理层接口特性学习卡片">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-icon">🔌</div>
+                    <h2 class="card-title">物理层接口特性</h2>
+                    <p>点击翻转查看详情</p>
+                </div>
+                <div class="card-face card-back">
+                    <h2 class="card-title">物理层接口特性</h2>
+                    <div class="card-content">
+                        <dl>
+                            <dt>1️⃣ 机械特性</dt>
+                            <dd>
+                                <ul>
+                                    <li>接口形状、尺寸、引脚排列</li>
+                                    <li>示例：RJ45接口的8个引脚排列顺序</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>2️⃣ 电气特性</dt>
+                            <dd>
+                                <ul>
+                                    <li>电压范围、传输速率、距离限制等参数</li>
+                                    <li>仅规定范围，不定义具体含义</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>3️⃣ 功能特性</dt>
+                            <dd>
+                                <ul>
+                                    <li>信号电平的具体含义</li>
+                                    <li>示例：+1、+2对应特定二进制编码</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>4️⃣ 过程特性</dt>
+                            <dd>
+                                <ul>
+                                    <li>事件处理顺序和响应规则</li>
+                                    <li>示例：插拔网络时的标准响应流程</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>💡 记忆口诀</dt>
+                            <dd><mark>机械→形状；电气→参数；功能→含义；过程→顺序</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button onclick="shuffleCards()">🔀 随机排序</button>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        function shuffleCards() {
+            const container = document.querySelector('.cards-container');
+            const cards = Array.from(document.querySelectorAll('.card'));
+            
+            // 随机排序卡片数组
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            
+            // 确保所有卡片都翻回正面
+            cards.forEach(card => {
+                card.classList.remove('flipped');
+            });
+            
+            // 重新添加卡片到容器
+            cards.forEach(card => {
+                container.appendChild(card);
+            });
+        }
+        
+        // 为卡片添加键盘可访问性
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard(card);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
