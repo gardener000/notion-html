@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编码与调制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-blue: hsl(var(--primary-hue), 80%, 50%);
+            --card-yellow: hsl(var(--secondary-hue), 100%, 60%);
+            --shadow: 0 4px 8px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --padding: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius);
+            padding: var(--padding);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 80%, 50%), hsl(var(--primary-hue), 80%, 60%));
+            color: white;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            text-align: left;
+        }
+
+        .card-back dl {
+            width: 100%;
+        }
+
+        .card-back dt {
+            font-weight: bold;
+            margin-top: 12px;
+            color: hsl(var(--primary-hue), 80%, 40%);
+        }
+
+        .card-back dd {
+            margin-left: 0;
+            margin-bottom: 12px;
+        }
+
+        .card-back ul {
+            padding-left: 20px;
+        }
+
+        .card-back li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 100%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .icon {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .progress {
+            margin-top: auto;
+            color: hsl(0, 0%, 60%);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>编码与调制学习卡片</h1>
+    
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">📡</div>
+                <div>编码与调制基本概念</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>编码</dt>
+                    <dd>将<mark>二进制数据</mark>转换为<mark>数字信号</mark>的过程，逆过程称为"解码"</dd>
+                    
+                    <dt>调制</dt>
+                    <dd>将<mark>二进制数据</mark>转换为<mark>模拟信号</mark>的过程，逆过程称为"解调"</dd>
+                </dl>
+                <div class="divider"></div>
+                <ul>
+                    <li>编码用于数字信号传输</li>
+                    <li>调制用于模拟信道传输</li>
+                    <li>模拟信号抗干扰能力更强，适合长距离传输</li>
+                </ul>
+                <div class="progress">1/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">📶</div>
+                <div>调幅(AM/ASK)</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>原理</dt>
+                    <dd>通过调整<mark>正弦波振幅</mark>表示不同信号</dd>
+                    
+                    <dt>示例</dt>
+                    <dd>振幅=0表示二进制0，振幅=1表示二进制1</dd>
+                    
+                    <dt>别名</dt>
+                    <dd>幅移键控(ASK)，A代表Amplitude</dd>
+                    
+                    <dt>数据容量</dt>
+                    <dd>k种振幅 → 1码元=<mark>log₂k比特</mark></dd>
+                </dl>
+                <div class="progress">2/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">🔊</div>
+                <div>调频(FM/FSK)</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>原理</dt>
+                    <dd>通过改变<mark>信号频率</mark>区分不同状态</dd>
+                    
+                    <dt>示例</dt>
+                    <dd>频率参数=1表示0，=2表示1</dd>
+                    
+                    <dt>别名</dt>
+                    <dd>频移键控(FSK)，F代表Frequency</dd>
+                    
+                    <dt>特点</dt>
+                    <dd>抗干扰能力<mark>强于调幅</mark></dd>
+                </dl>
+                <div class="progress">3/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">🔄</div>
+                <div>调相(PM/PSK)</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>原理</dt>
+                    <dd>通过改变<mark>相位</mark>区分信号</dd>
+                    
+                    <dt>示例</dt>
+                    <dd>相位=0表示0，相位=π表示1</dd>
+                    
+                    <dt>别名</dt>
+                    <dd>相移键控(PSK)，P代表Phase</dd>
+                    
+                    <dt>扩展</dt>
+                    <dd>可增加相位种类提高数据率</dd>
+                </dl>
+                <div class="progress">4/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">✨</div>
+                <div>正交幅度调制(QAM)</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>组合方式</dt>
+                    <dd><mark>调幅</mark>和<mark>调相</mark>相结合</dd>
+                    
+                    <dt>信号种类</dt>
+                    <dd>m种振幅 × n种相位 = <mark>m×n种信号</mark></dd>
+                    
+                    <dt>数据容量</dt>
+                    <dd>1码元=<mark>log₂(mn)比特</mark></dd>
+                    
+                    <dt>命名规则</dt>
+                    <dd>
+                        <ul>
+                            <li>QAM-16：16种信号组合</li>
+                            <li>QAM-64：64种信号组合</li>
+                            <li>QAM-128：128种信号组合</li>
+                        </ul>
+                    </dd>
+                </dl>
+                <div class="progress">5/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">🧮</div>
+                <div>ASK调制例题</div>
+            </div>
+            <div class="card-face card-back">
+                <p><strong>题目：</strong>200kHz带宽，4种幅值ASK调制，最大数据传输速率是？</p>
+                <div class="divider"></div>
+                <p><strong>解题步骤：</strong></p>
+                <ol>
+                    <li>奈奎斯特定理：极限波特率=2W=<mark>400k波特</mark></li>
+                    <li>4种幅值→1码元=log₂4=<mark>2比特</mark></li>
+                    <li>最大数据率=400k×2=<mark>800kbps</mark></li>
+                </ol>
+                <div class="divider"></div>
+                <p><strong>答案：</strong>C选项(800kbps)</p>
+                <div class="progress">6/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">🧮</div>
+                <div>QAM调制例题</div>
+            </div>
+            <div class="card-face card-back">
+                <p><strong>题目：</strong>3kHz带宽，4相位×4振幅QAM调制，最大数据传输速率是？</p>
+                <div class="divider"></div>
+                <p><strong>解题步骤：</strong></p>
+                <ol>
+                    <li>奈奎斯特定理：极限波特率=2W=<mark>6k波特</mark></li>
+                    <li>4×4=<mark>16种信号</mark>→1码元=log₂16=<mark>4比特</mark></li>
+                    <li>最大数据率=6k×4=<mark>24kbps</mark></li>
+                </ol>
+                <div class="divider"></div>
+                <p><strong>答案：</strong>B选项(24kbps)</p>
+                <div class="progress">7/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">🔣</div>
+                <div>编码技术对比</div>
+            </div>
+            <div class="card-face card-back">
+                <table style="width:100%; border-collapse: collapse; margin-bottom: 12px;">
+                    <tr>
+                        <th style="text-align:left; padding: 4px;">编码类型</th>
+                        <th style="text-align:left; padding: 4px;">自同步</th>
+                        <th style="text-align:left; padding: 4px;">带宽效率</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">NRZ</td>
+                        <td style="padding: 4px;">❌ 无</td>
+                        <td style="padding: 4px;">✅ 高</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">RZ</td>
+                        <td style="padding: 4px;">✅ 有</td>
+                        <td style="padding: 4px;">❌ 低</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">NRZI</td>
+                        <td style="padding: 4px;">🔄 可增加</td>
+                        <td style="padding: 4px;">🔼 中等</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">曼彻斯特</td>
+                        <td style="padding: 4px;">✅ 有</td>
+                        <td style="padding: 4px;">❌ 低</td>
+                    </tr>
+                </table>
+                <div class="divider"></div>
+                <ul>
+                    <li><mark>以太网</mark>默认使用曼彻斯特编码</li>
+                    <li>模拟信道必须使用调制技术</li>
+                    <li>曼彻斯特编码抗干扰能力强</li>
+                </ul>
+                <div class="progress">8/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">📝</div>
+                <div>奈奎斯特定理</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>公式</dt>
+                    <dd>无噪声信道极限波特率 = <mark>2 × 带宽</mark></dd>
+                    
+                    <dt>应用</dt>
+                    <dd>结合调制方式计算比特率</dd>
+                    
+                    <dt>示例</dt>
+                    <dd>200kHz带宽 + 4幅值ASK = <mark>800kbps</mark></dd>
+                </dl>
+                <div class="divider"></div>
+                <p><strong>计算步骤：</strong></p>
+                <ol>
+                    <li>计算波特率 (2×带宽)</li>
+                    <li>确定每码元比特数 (log₂信号种类)</li>
+                    <li>相乘得到比特率</li>
+                </ol>
+                <div class="progress">9/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">⚖️</div>
+                <div>调制技术对比</div>
+            </div>
+            <div class="card-face card-back">
+                <table style="width:100%; border-collapse: collapse; margin-bottom: 12px;">
+                    <tr>
+                        <th style="text-align:left; padding: 4px;">技术</th>
+                        <th style="text-align:left; padding: 4px;">参数</th>
+                        <th style="text-align:left; padding: 4px;">比特/码元</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">ASK</td>
+                        <td style="padding: 4px;">振幅</td>
+                        <td style="padding: 4px;">log₂k</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">FSK</td>
+                        <td style="padding: 4px;">频率</td>
+                        <td style="padding: 4px;">log₂k</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">PSK</td>
+                        <td style="padding: 4px;">相位</td>
+                        <td style="padding: 4px;">log₂k</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px;">QAM</td>
+                        <td style="padding: 4px;">振幅×相位</td>
+                        <td style="padding: 4px;">log₂(mn)</td>
+                    </tr>
+                </table>
+                <div class="divider"></div>
+                <p><strong>效率对比：</strong></p>
+                <ul>
+                    <li>QAM效率最高 (复合维度)</li>
+                    <li>需掌握信号种类与比特数的换算</li>
+                </ul>
+                <div class="progress">10/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">📊</div>
+                <div>重要公式总结</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>奈奎斯特定理</dt>
+                    <dd>最大波特率 = <mark>2 × 带宽(Hz)</mark></dd>
+                    
+                    <dt>比特率计算</dt>
+                    <dd>比特率 = 波特率 × <mark>log₂(信号种类)</mark></dd>
+                    
+                    <dt>ASK/FSK/PSK</dt>
+                    <dd>1码元 = <mark>log₂k</mark> 比特 (k=振幅/频率/相位种类)</dd>
+                    
+                    <dt>QAM</dt>
+                    <dd>1码元 = <mark>log₂(mn)</mark> 比特 (m=振幅种类，n=相位种类)</dd>
+                </dl>
+                <div class="divider"></div>
+                <p><strong>记忆技巧：</strong></p>
+                <ul>
+                    <li>所有调制技术都使用log₂计算</li>
+                    <li>QAM是振幅和相位的乘积</li>
+                </ul>
+                <div class="progress">11/12</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="icon">💡</div>
+                <div>关键考点总结</div>
+            </div>
+            <div class="card-face card-back">
+                <ul>
+                    <li>区分<mark>编码</mark>(数字信号)与<mark>调制</mark>(模拟信号)</li>
+                    <li>ASK别名是<mark>幅移键控</mark>，注意振幅种类与比特数的关系</li>
+                    <li>FSK抗干扰能力<mark>强于ASK</mark></li>
+                    <li>PSK通过<mark>相位偏移</mark>区分码元</li>
+                    <li>QAM后缀数字表示<mark>总信号数</mark>(如QAM16=16种信号=4比特/码元)</li>
+                    <li>奈奎斯特定理计算：波特率→比特率转换</li>
+                    <li><mark>曼彻斯特编码</mark>是以太网默认格式</li>
+                </ul>
+                <div class="divider"></div>
+                <p><strong>最高效技术：</strong> QAM (复合振幅和相位)</p>
+                <div class="progress">12/12</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', String(!isPressed));
+                });
+                
+                // 键盘辅助功能
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // 触摸设备优化
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // 最小滑动距离
+                if (touchEndX < touchStartX - threshold) {
+                    // 向左滑动，翻转下一张卡片
+                    const currentCard = document.querySelector('.card.flipped');
+                    if (currentCard) {
+                        currentCard.classList.remove('flipped');
+                        currentCard.setAttribute('aria-pressed', 'false');
+                        const nextCard = currentCard.closest('.card-container').nextElementSibling?.querySelector('.card');
+                        if (nextCard) {
+                            nextCard.classList.add('flipped');
+                            nextCard.setAttribute('aria-pressed', 'true');
+                            nextCard.focus();
+                        }
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // 向右滑动，翻转上一张卡片
+                    const currentCard = document.querySelector('.card.flipped');
+                    if (currentCard) {
+                        currentCard.classList.remove('flipped');
+                        currentCard.setAttribute('aria-pressed', 'false');
+                        const prevCard = currentCard.closest('.card-container').previousElementSibling?.querySelector('.card');
+                        if (prevCard) {
+                            prevCard.classList.add('flipped');
+                            prevCard.setAttribute('aria-pressed', 'true');
+                            prevCard.focus();
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
