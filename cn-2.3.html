@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物理层设备学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            cursor: pointer;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: var(--border-radius);
+        }
+
+        .card-front {
+            background-color: var(--card-color);
+            color: hsl(var(--primary-hue), 60%, 40%);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .card-back {
+            background-color: var(--card-color);
+            transform: rotateY(180deg);
+            text-align: left;
+            overflow-y: auto;
+        }
+
+        .card-back dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px 16px;
+            align-items: baseline;
+        }
+
+        .card-back dt {
+            font-weight: bold;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-back dd {
+            margin-left: 0;
+            grid-column: 2;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-front {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>物理层设备学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 中继器卡片 -->
+        <div class="card" tabindex="0" role="button" aria-label="中继器卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔁</div>
+                <div>中继器</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>作用</dt>
+                    <dd>解决信号失真问题，<mark>信号整形再生</mark></dd>
+                    
+                    <dt>工作层级</dt>
+                    <dd>OSI模型<mark>物理层</mark></dd>
+                    
+                    <dt>端口特性</dt>
+                    <dd><mark>双端口</mark>设备（输入/输出各一个）</dd>
+                    
+                    <dt>通信模式</dt>
+                    <dd>仅支持<mark>半双工</mark>通信</dd>
+                    
+                    <dt>电平标准</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>低电平：-0.5~1.5V（标准1V）</li>
+                            <li>高电平：4.5~5.5V（标准5V）</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>传输限制</dt>
+                    <dd>10Base5: 500米 | 10Base2: 200米</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- 集线器卡片 -->
+        <div class="card" tabindex="0" role="button" aria-label="集线器卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔀</div>
+                <div>集线器</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>本质</dt>
+                    <dd><mark>多端口中继器</mark>（4/8/16端口）</dd>
+                    
+                    <dt>核心功能</dt>
+                    <dd>信号<mark>广播转发</mark>（所有端口）</dd>
+                    
+                    <dt>拓扑结构</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>物理：<mark>星形</mark>拓扑</li>
+                            <li>逻辑：<mark>总线型</mark>拓扑</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>冲突特性</dt>
+                    <dd>所有端口属于<mark>同一冲突域</mark></dd>
+                    
+                    <dt>带宽特性</dt>
+                    <dd><mark>共享总带宽</mark>（如10Mbps/8主机=1.25Mbps）</dd>
+                    
+                    <dt>特殊功能</dt>
+                    <dd>可连接不同介质/速率（<mark>向下兼容</mark>）</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- 冲突域卡片 -->
+        <div class="card" tabindex="0" role="button" aria-label="冲突域卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">💥</div>
+                <div>冲突域</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>定义</dt>
+                    <dd>多主机同时发送导致<mark>信号冲突</mark>的范围</dd>
+                    
+                    <dt>典型场景</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>单集线器连接的所有主机</li>
+                            <li>主干集线器合并多个冲突域</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>解决方案</dt>
+                    <dd>采用<mark>CSMA/CD</mark>协议</dd>
+                    
+                    <dt>关键设备</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>❌ 中继器/集线器：<mark>不能隔离</mark>冲突域</li>
+                            <li>✅ 交换机：可以隔离冲突域</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>例题</dt>
+                    <dd>4集线器+2交换机 → <mark>4个冲突域</mark></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- 5-4-3原则卡片 -->
+        <div class="card" tabindex="0" role="button" aria-label="5-4-3原则卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔢</div>
+                <div>5-4-3原则</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>应用场景</dt>
+                    <dd>早期<mark>同轴电缆</mark>总线型网络</dd>
+                    
+                    <dt>具体规则</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>5：最多串联<mark>5个网段</mark></li>
+                            <li>4：最多使用<mark>4台中继器/集线器</mark></li>
+                            <li>3：只有<mark>3个网段</mark>可连接计算机</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>网段类型</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>Populated Segment：可连计算机</li>
+                            <li>Link Segment：仅用于连接</li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>实际限制</dt>
+                    <dd>不能无限串联中继器/集线器</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- 对比卡片 -->
+        <div class="card" tabindex="0" role="button" aria-label="对比卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🆚</div>
+                <div>中继器 vs 集线器</div>
+            </div>
+            <div class="card-face card-back">
+                <dl>
+                    <dt>共同点</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>工作于<mark>物理层</mark></li>
+                            <li><mark>信号整形再生</mark></li>
+                            <li>不能隔离<mark>冲突域</mark></li>
+                        </ul>
+                    </dd>
+                    
+                    <div class="divider"></div>
+                    
+                    <dt>中继器特点</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li>只有<mark>2个端口</mark></li>
+                            <li>连接<mark>2个物理网段</mark></li>
+                        </ul>
+                    </dd>
+                    
+                    <dt>集线器特点</dt>
+                    <dd>
+                        <ul style="list-style-type: none;">
+                            <li><mark>多端口</mark>（4/8/16）</li>
+                            <li><mark>广播转发</mark>信号</li>
+                            <li>连接设备<mark>共享带宽</mark></li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘辅助功能
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+                
+                // 触摸设备优化
+                let touchStartX = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    const touchEndX = e.changedTouches[0].screenX;
+                    if (Math.abs(touchEndX - touchStartX) < 30) { // 避免与滑动冲突
+                        this.classList.toggle('flipped');
+                    }
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
