@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编码和调制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            background-color: var(--card-bg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 60%, 95%), var(--card-bg));
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        dl {
+            margin-bottom: 16px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .progress {
+            text-align: center;
+            margin-top: 16px;
+            color: hsl(0, 0%, 50%);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 375px) {
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-face {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📡 编码和调制学习卡片</h1>
+    
+    <div class="card-container">
+        <div class="card" id="card1" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">编码与调制基础概念</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">🔧 编码与调制基础</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>编码/解码</dt>
+                        <dd>二进制数据 ↔ 数字信号（如网卡处理网络信号）</dd>
+                        
+                        <dt>调制/解调</dt>
+                        <dd>二进制数据 ↔ 模拟信号（如光猫处理光纤信号）</dd>
+                        
+                        <dt>核心部件</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>变换器</mark>：将二进制数据转换为信号（编码器/调制器）</li>
+                                <li><mark>反变换器</mark>：将信号转换回二进制数据（解码器/解调器）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>设备实例</dt>
+                        <dd>
+                            <ul>
+                                <li>编码器/解码器：有线网卡芯片（处理数字信号）</li>
+                                <li>调制器/解调器：光猫（处理光信号，英文modem俗称"猫"）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card2" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">不归零编码(NRZ)</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📉 不归零编码(NRZ)</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>低电平表示<mark>0</mark>，高电平表示<mark>1</mark></li>
+                                <li>信号周期中间电平保持不变</li>
+                                <li>缩写：<mark>Non-Return-to-Zero</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>带宽利用率高（无浪费）</dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>无自同步能力，需额外时钟线</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆口诀</dt>
+                        <dd>"低零高一终不变"</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card3" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">归零编码(RZ)</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">⏱️ 归零编码(RZ)</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>低电平表示<mark>0</mark>，高电平表示<mark>1</mark></li>
+                                <li>每个信号周期中间<mark>强制归零</mark></li>
+                                <li>缩写：<mark>Return-to-Zero</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>自带时钟信号，解决信号边界识别问题</dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>浪费50%带宽（1比特对应2赫兹）</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆口诀</dt>
+                        <dd>"低零高一终归零"</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card4" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">反向非归零编码(NRZI)</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">🔄 反向非归零编码(NRZI)</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>信号周期起点<mark>跳变表示0</mark>，<mark>不变表示1</mark></li>
+                                <li>周期中间电平绝对不变</li>
+                                <li>缩写：<mark>Non-Return-to-Zero Inverted</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>同步实现</dt>
+                        <dd>通过8+1冗余位（每8比特加1个零强制跳变）</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆口诀</dt>
+                        <dd>"跳零不跳一看起点终不变"</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card5" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">曼彻斯特编码</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📶 曼彻斯特编码</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>核心规则</dt>
+                        <dd>
+                            <ul>
+                                <li>每个周期中间<mark>必有一次跳变</mark></li>
+                                <li>IEEE 802.3标准：<mark>上跳变表示0</mark>，<mark>下跳变表示1</mark>（考研默认）</li>
+                                <li>G.E.Thomas标准：下跳变表示0，上跳变表示1（1949年原始标准）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>自带时钟信号，抗干扰能力强</dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>浪费50%带宽</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆口诀</dt>
+                        <dd>"跳零反跳一看中间中心变"</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card6" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">差分曼彻斯特编码</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📊 差分曼彻斯特编码</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>起点跳变规则同NRZI：<mark>跳变=0</mark>，<mark>不变=1</mark></li>
+                                <li>每个周期中间<mark>必有一次跳变</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li>自带时钟同步功能</li>
+                                <li>抗干扰能力优于普通曼彻斯特编码</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>记忆口诀</dt>
+                        <dd>"跳零不跳一看起点中必变"</dd>
+                        
+                        <dt>与NRZI区别</dt>
+                        <dd>虽然起点规则相同，但中间必变是其关键特征</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card7" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-title">编码方法对比</div>
+                <div>点击翻转查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">📋 编码方法对比</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>自同步能力</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>NRZ</mark>：无（信号无规律跳变）</li>
+                                <li><mark>RZ</mark>：有（每个周期强制归零）</li>
+                                <li><mark>NRZI</mark>：通过8+1冗余位实现</li>
+                                <li><mark>曼彻斯特/差分曼彻斯特</mark>：中间必跳变（天然时钟信号）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>带宽效率</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>NRZ</mark>：不浪费（1比特对应1赫兹带宽）</li>
+                                <li><mark>RZ</mark>：浪费50%（1比特对应2赫兹）</li>
+                                <li><mark>NRZI</mark>：少量浪费（每8比特加1冗余位）</li>
+                                <li><mark>曼彻斯特/差分曼彻斯特</mark>：浪费50%（1比特消耗2赫兹）</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>抗干扰能力</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>NRZ/RZ/NRZI</mark>：抗干扰能力弱</li>
+                                <li><mark>曼彻斯特/差分曼彻斯特</mark>：抗干扰能力强（规律跳变增强信号识别）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">卡片 1/7</div>
+    
+    <div class="controls">
+        <button id="prevBtn" aria-label="上一张卡片">⬅️ 上一张</button>
+        <button id="nextBtn" aria-label="下一张卡片">下一张 ➡️</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressText = document.querySelector('.progress');
+            let currentCardIndex = 0;
+            
+            // 初始化显示第一张卡片
+            updateCardVisibility();
+            
+            // 为每张卡片添加点击事件
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加触摸支持
+                card.addEventListener('touchstart', function(e) {
+                    this.classList.toggle('flipped');
+                    e.preventDefault(); // 防止触摸事件触发其他行为
+                }, { passive: false });
+            });
+            
+            // 上一张按钮事件
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    currentCardIndex--;
+                    updateCardVisibility();
+                }
+            });
+            
+            // 下一张按钮事件
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    currentCardIndex++;
+                    updateCardVisibility();
+                }
+            });
+            
+            // 键盘导航支持
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft' && currentCardIndex > 0) {
+                    currentCardIndex--;
+                    updateCardVisibility();
+                } else if (e.key === 'ArrowRight' && currentCardIndex < cards.length - 1) {
+                    currentCardIndex++;
+                    updateCardVisibility();
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    // 空格或回车键翻转当前卡片
+                    cards[currentCardIndex].classList.toggle('flipped');
+                }
+            });
+            
+            function updateCardVisibility() {
+                cards.forEach((card, index) => {
+                    if (index === currentCardIndex) {
+                        card.style.display = 'block';
+                        // 聚焦当前卡片以便键盘导航
+                        card.focus();
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                progressText.textContent = `卡片 ${currentCardIndex + 1}/${cards.length}`;
+                
+                // 更新按钮状态
+                prevBtn.disabled = currentCardIndex === 0;
+                nextBtn.disabled = currentCardIndex === cards.length - 1;
+            }
+        });
+    </script>
+</body>
+</html>
