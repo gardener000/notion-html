@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通信基础概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* Blue */
+            --secondary-hue: 45; /* Yellow */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 35%);
+            margin: 16px 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 5/3;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            perspective: 1000px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 95%), white);
+            border: 1px solid hsl(var(--primary-hue), 70%, 85%);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, hsl(var(--secondary-hue), 80%, 95%), white);
+            border: 1px solid hsl(var(--secondary-hue), 80%, 85%);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        .card-content {
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 30%);
+            margin-top: 8px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+            width: 100%;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .card-title {
+                font-size: 1.2rem;
+            }
+            .card-content {
+                font-size: 0.95rem;
+            }
+            .card-face {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>通信基础概念学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="通信基础概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📡</div>
+                <div class="card-title">信源与信宿</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>信源 <mark>🔴考研重点</mark></dt>
+                        <dd>信号的来源，即数据的发送方（如节点A）</dd>
+                        
+                        <dt>信宿 <mark>🔴考研重点</mark></dt>
+                        <dd>信号的归宿，即数据的接收方（如节点B）</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>实例：</strong>电脑与路由器通过网线连接时，电脑和路由器互为信源和信宿</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="信号类型卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📶</div>
+                <div class="card-title">信号类型</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>数字信号 <mark>🔴考研重点</mark></dt>
+                        <dd>特征：信号值离散（如 y = -1 对应0，y = 1 对应1）</dd>
+                        <dd>示例：传输"01001110"时，每秒固定输出-1V或1V电压</dd>
+                        
+                        <dt>模拟信号</dt>
+                        <dd>特征：信号值连续（如 y = sin(2πt)）</dd>
+                        <dd>示例：通过连续变化的电压波形传递信息</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆提示：</strong>数字=离散（计算机），模拟=连续（传统电话）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="信道概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔌</div>
+                <div class="card-title">信道</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义 <mark>🔴考研重点</mark></dt>
+                        <dd>信号的传输通道</dd>
+                        
+                        <dt>特点</dt>
+                        <dd>物理线路通常包含两条信道（发送/接收信道）</dd>
+                        <dd>实例：网线包含发送和接收两条信道</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>易错点：</strong>信道数量常被忽略（实际包含两条）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="码元概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧩</div>
+                <div class="card-title">码元</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义 <mark>🔴考研重点</mark></dt>
+                        <dd>表示二进制编码的元素，一个信号周期称为一个码元宽度</dd>
+                        
+                        <dt>进制关系</dt>
+                        <dd>二进制码元：1码元=1比特（2种信号状态）</dd>
+                        <dd>四进制码元：1码元=2比特（4种信号状态）</dd>
+                        <dd>通用公式：1码元=log₂K比特（K进制码元）</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>设计权衡：</strong>高阶码元提升效率但需要更强信号功率</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="速率概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">⏱️</div>
+                <div class="card-title">速率</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>波特率 <mark>🔴考研重点</mark></dt>
+                        <dd>定义：每秒传输的码元数，单位：波特(Baud)</dd>
+                        <dd>示例：10波特=每秒传输10个码元</dd>
+                        
+                        <dt>比特率</dt>
+                        <dd>定义：每秒传输的比特数，单位：bit/s(bps)</dd>
+                        <dd>换算公式：比特率=波特率×log₂K（K进制码元）</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>实例：</strong>4进制码元时，10波特=20bps</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="核心公式卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧠</div>
+                <div class="card-title">核心公式</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>码元承载量</dt>
+                        <dd>1码元 = log₂K bit</dd>
+                        
+                        <dt>速率换算</dt>
+                        <dd>比特率 = 波特率 × log₂K</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>记忆技巧：</strong>K进制→log₂K比特/码元</p>
+                    <p><strong>示例计算：</strong>8进制码元波特率m → 比特率=3m</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // Click/touch event for flipping
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', String(!isPressed));
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                        const isPressed = this.getAttribute('aria-pressed') === 'true';
+                        this.setAttribute('aria-pressed', String(!isPressed));
+                    }
+                });
+            });
+            
+            // Prevent card content scrolling when not flipped
+            document.addEventListener('touchmove', function(e) {
+                const cardBacks = document.querySelectorAll('.card-back');
+                let shouldPrevent = false;
+                
+                cardBacks.forEach(back => {
+                    if (back.scrollHeight > back.clientHeight && back.parentElement.classList.contains('flipped')) {
+                        shouldPrevent = true;
+                    }
+                });
+                
+                if (!shouldPrevent) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html>
