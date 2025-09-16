@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信道极限容量学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: white;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --primary-light: hsl(var(--primary-hue), 80%, 90%);
+            --secondary-color: hsl(var(--secondary-hue), 90%, 50%);
+            --secondary-light: hsl(var(--secondary-hue), 90%, 90%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+        }
+
+        .card-front {
+            color: var(--primary-color);
+            font-weight: bold;
+            border: 2px solid var(--primary-light);
+        }
+
+        .card-back {
+            color: var(--text-dark);
+            transform: rotateY(180deg);
+            text-align: left;
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 8px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        mark {
+            background-color: var(--secondary-light);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>信道极限容量学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：带宽 -->
+        <div class="card" tabindex="0" role="button" aria-label="带宽概念卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📶</div>
+                    <h2 class="card-title">带宽</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>计算机网络定义</dt>
+                            <dd>表示信道能通过的<mark>最高数据率</mark>，单位是<mark>bps</mark>（或b/s, bit/s）</dd>
+                            
+                            <dt>通信原理定义</dt>
+                            <dd>表示信道允许通过的<mark>信号频带范围</mark>，单位是<mark>Hz</mark>（赫兹）</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>本质联系</dt>
+                            <dd>两种定义都反映信道<mark>传输数据的能力</mark>，带宽越大传输能力越强</dd>
+                            
+                            <dt>实例数据</dt>
+                            <dd>○ 光纤带宽约<mark>500MHz</mark><br>○ 电话线带宽约<mark>3kHz</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2：噪声 -->
+        <div class="card" tabindex="0" role="button" aria-label="噪声概念卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔊</div>
+                    <h2 class="card-title">噪声</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>类比解释</dt>
+                            <dd>听觉信道中，第三方声源（如背单词声）会<mark>干扰信号传输</mark></dd>
+                            
+                            <dt>计算机网络影响</dt>
+                            <dd>环境中的<mark>强电场、强磁场</mark>干扰</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>影响表现</dt>
+                            <dd>降低<mark>有效数据传输速率</mark></dd>
+                            
+                            <dt>重要结论</dt>
+                            <dd>信道传输能力受<mark>带宽和噪声双重影响</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3：奈奎斯特定理 -->
+        <div class="card" tabindex="0" role="button" aria-label="奈奎斯特定理卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⚖️</div>
+                    <h2 class="card-title">奈奎斯特定理</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>适用条件</dt>
+                            <dd><mark>理想低通信道</mark>（无噪声、带宽有限）</dd>
+                            
+                            <dt>极限波特率</dt>
+                            <dd><mark>2W</mark>波特（码元/秒），W为信道频率带宽（Hz）</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>极限比特率</dt>
+                            <dd><mark>2W × log<sub>2</sub>k</mark>（k为信号状态数）</dd>
+                            
+                            <dt>例题</dt>
+                            <dd>带宽200kHz无噪声信道，4幅值ASK调制：<br>
+                                ○ 极限波特率：2×200k=400k波特<br>
+                                ○ 比特率：400k×log<sub>2</sub>4=800kbps</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4：香农定理 -->
+        <div class="card" tabindex="0" role="button" aria-label="香农定理卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📡</div>
+                    <h2 class="card-title">香农定理</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>适用场景</dt>
+                            <dd><mark>有噪声</mark>、带宽有限信道</dd>
+                            
+                            <dt>极限比特率</dt>
+                            <dd><mark>W log<sub>2</sub>(1+S/N)</mark>（单位b/s）<br>
+                                W：信道频率带宽（Hz）<br>
+                                S/N：信噪比（无单位）</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>信噪比记法</dt>
+                            <dd>分贝记法：<mark>10log<sub>10</sub>(S/N)dB</mark></dd>
+                            
+                            <dt>例题</dt>
+                            <dd>带宽8kHz，信噪比30dB：<br>
+                                ○ 信噪比转换：10<sup>30/10</sup> = 1000<br>
+                                ○ 理论速率：8k×log<sub>2</sub>(1+1000)≈80kbps</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5：定理比较 -->
+        <div class="card" tabindex="0" role="button" aria-label="定理比较卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">定理比较</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>奈奎斯特定理</dt>
+                            <dd>○ 适用：<mark>无噪声</mark>信道<br>
+                                ○ 关注：<mark>码元传输上限</mark><br>
+                                ○ 公式：2W波特</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>香农定理</dt>
+                            <dd>○ 适用：<mark>有噪声</mark>信道<br>
+                                ○ 关注：<mark>比特传输上限</mark><br>
+                                ○ 公式：W log<sub>2</sub>(1+S/N)</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>联合结论</dt>
+                            <dd>○ 单个码元携带比特数有上限<br>
+                                ○ 无法通过无限增加单个码元的比特数来提高速率</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6：太阳风暴 -->
+        <div class="card" tabindex="0" role="button" aria-label="太阳风暴卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">☀️</div>
+                    <h2 class="card-title">太阳风暴</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>影响对象</dt>
+                            <dd>主要影响<mark>短波通信系统</mark>（卫星电话、GPS等）</dd>
+                            
+                            <dt>物理机制</dt>
+                            <dd>○ 导致地球磁场变动→增加信道噪声<br>
+                                ○ 信噪比<mark>S/N降低</mark>→影响信道容量</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt>香农定理关系</dt>
+                            <dd>C = B log<sub>2</sub>(1+S/N)<br>
+                                噪声↑ → S/N↓ → C↓</dd>
+                            
+                            <dt>连带现象</dt>
+                            <dd>可能在高纬度地区产生<mark>极光</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
