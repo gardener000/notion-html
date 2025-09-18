@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>线程实现与多线程模型学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+
+        h1 {
+            margin: 16px 0;
+            font-size: 1.5rem;
+            text-align: center;
+            color: hsl(var(--primary-hue), 50%, 30%);
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            max-height: 70vh;
+            margin: 16px 0;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            -webkit-user-select: none;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 50%, 95%), white);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 50%, 30%);
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .card-back .card-content {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-right: 8px; /* 为滚动条留出空间 */
+        }
+
+        .card-back .scroll-content {
+            flex-grow: 1;
+        }
+
+        .card-back ul {
+            padding-left: 20px;
+        }
+
+        .card-back li {
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+            flex-shrink: 0;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .progress {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            text-align: center;
+        }
+
+        /* 自定义滚动条 */
+        .card-back .card-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-back .card-content::-webkit-scrollbar-thumb {
+            background-color: hsl(0, 0%, 80%);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 400px) {
+            .card-face {
+                padding: 16px;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .card {
+                max-height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>线程实现与多线程模型</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 - 用户级线程 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-face card-front">
+                <div class="icon">🧵</div>
+                <div class="card-title">用户级线程</div>
+                <div class="card-content">点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">用户级线程</div>
+                <div class="card-content">
+                    <div class="scroll-content">
+                        <ul>
+                            <li><mark>历史背景</mark>: 早期操作系统(如Unix)只支持进程，线程由线程库实现</li>
+                            <li><mark>实现原理</mark>: 通过循环结构(如while)和条件判断实现线程调度</li>
+                            <li><mark>管理主体</mark>: 所有管理工作由应用程序通过线程库完成</li>
+                            <li><mark>切换机制</mark>: 线程切换完全在用户态下完成</li>
+                            <div class="divider"></div>
+                            <li><strong>优点</strong>:
+                                <ul>
+                                    <li>线程切换在用户空间完成，系统开销小</li>
+                                    <li>线程管理简单，不需要操作系统介入</li>
+                                </ul>
+                            </li>
+                            <li><strong>缺点</strong>:
+                                <ul>
+                                    <li>一个线程被阻塞会导致整个进程阻塞</li>
+                                    <li>无法在多核CPU上并行执行多个线程</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 - 内核级线程 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-face card-front">
+                <div class="icon">⚙️</div>
+                <div class="card-title">内核级线程</div>
+                <div class="card-content">点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">内核级线程</div>
+                <div class="card-content">
+                    <div class="scroll-content">
+                        <ul>
+                            <li><mark>基本概念</mark>: 由操作系统直接支持，OS为每个线程建立TCB</li>
+                            <li><mark>管理主体</mark>: 所有管理工作由操作系统内核完成</li>
+                            <li><mark>切换机制</mark>: 必须切换到核心态，需要OS介入</li>
+                            <div class="divider"></div>
+                            <li><strong>优点</strong>:
+                                <ul>
+                                    <li>一个线程阻塞不会影响其他线程</li>
+                                    <li>可在多核CPU上并行执行</li>
+                                    <li>线程成为CPU调度的基本单位</li>
+                                </ul>
+                            </li>
+                            <li><strong>缺点</strong>:
+                                <ul>
+                                    <li>线程管理需要频繁切换CPU状态，开销大</li>
+                                    <li>系统管理成本高(需要为每个线程维护TCB)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 - 一对一模型 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-face card-front">
+                <div class="icon">1️⃣</div>
+                <div class="card-title">一对一模型</div>
+                <div class="card-content">点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">一对一模型</div>
+                <div class="card-content">
+                    <div class="scroll-content">
+                        <ul>
+                            <li><mark>映射关系</mark>: 每个用户级线程对应一个内核级线程</li>
+                            <div class="divider"></div>
+                            <li><strong>优点</strong>:
+                                <ul>
+                                    <li>并发能力强(一个线程阻塞不影响其他线程)</li>
+                                    <li>可多核并行执行</li>
+                                </ul>
+                            </li>
+                            <li><strong>缺点</strong>:
+                                <ul>
+                                    <li>管理开销大(每个用户线程都需要内核线程支持)</li>
+                                    <li>创建线程数受限于操作系统</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 - 多对一模型 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-face card-front">
+                <div class="icon">🔢</div>
+                <div class="card-title">多对一模型</div>
+                <div class="card-content">点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">多对一模型</div>
+                <div class="card-content">
+                    <div class="scroll-content">
+                        <ul>
+                            <li><mark>映射关系</mark>: 多个用户级线程映射到一个内核级线程</li>
+                            <li><mark>特点</mark>: 等同于纯用户级线程实现方式</li>
+                            <div class="divider"></div>
+                            <li><strong>优点</strong>:
+                                <ul>
+                                    <li>线程管理在用户空间完成，开销小</li>
+                                </ul>
+                            </li>
+                            <li><strong>缺点</strong>:
+                                <ul>
+                                    <li>一个线程阻塞会导致整个进程阻塞</li>
+                                    <li>无法利用多核CPU并行执行</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 - 多对多模型 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false">
+            <div class="card-face card-front">
+                <div class="icon">🔄</div>
+                <div class="card-title">多对多模型</div>
+                <div class="card-content">点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">多对多模型</div>
+                <div class="card-content">
+                    <div class="scroll-content">
+                        <ul>
+                            <li><mark>映射关系</mark>: n个用户级线程映射到m个内核级线程(n ≥ m)</li>
+                            <div class="divider"></div>
+                            <li><strong>优点</strong>:
+                                <ul>
+                                    <li>克服多对一模型并发度不高的问题</li>
+                                    <li>克服一对一模型开销大的问题</li>
+                                </ul>
+                            </li>
+                            <li><strong>灵活性</strong>:
+                                <ul>
+                                    <li>可根据任务需求动态调整映射关系</li>
+                                </ul>
+                            </li>
+                            <li><strong>进程状态</strong>:
+                                <ul>
+                                    <li>只有所有内核线程都阻塞时，进程才进入阻塞状态</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">卡片 1/5</div>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        let currentCardIndex = 0;
+        
+        function updateProgress() {
+            document.querySelector('.progress').textContent = `卡片 ${currentCardIndex + 1}/${cards.length}`;
+        }
+        
+        function flipCard(card) {
+            // 如果点击的是卡片背面且内容正在滚动，则不翻转
+            const backContent = card.querySelector('.card-back .card-content');
+            if (card.classList.contains('flipped') && backContent.scrollTop > 0) {
+                return;
+            }
+            card.classList.toggle('flipped');
+            card.setAttribute('aria-pressed', card.classList.contains('flipped'));
+        }
+        
+        cards.forEach((card, index) => {
+            // 点击事件
+            card.addEventListener('click', function(e) {
+                // 检查是否点击了可滚动区域
+                const backContent = this.querySelector('.card-back .card-content');
+                if (this.classList.contains('flipped') && 
+                    backContent.contains(e.target) && 
+                    backContent.scrollHeight > backContent.clientHeight) {
+                    return; // 如果是可滚动区域且有滚动条，则不翻转
+                }
+                flipCard(this);
+            });
+            
+            // 触摸事件
+            card.addEventListener('touchstart', function(e) {
+                this.isMoved = false;
+                this.touchY = e.touches[0].clientY;
+                this.startScrollTop = this.querySelector('.card-back .card-content')?.scrollTop || 0;
+            });
+            
+            card.addEventListener('touchmove', function(e) {
+                const backContent = this.querySelector('.card-back .card-content');
+                if (this.classList.contains('flipped') && backContent) {
+                    const scrollTop = backContent.scrollTop;
+                    const scrollHeight = backContent.scrollHeight;
+                    const clientHeight = backContent.clientHeight;
+                    
+                    // 如果内容可以滚动，优先处理滚动
+                    if (scrollHeight > clientHeight) {
+                        const deltaY = e.touches[0].clientY - this.touchY;
+                        
+                        // 顶部边界检查
+                        if ((scrollTop === 0 && deltaY > 0) || 
+                            (scrollTop === scrollHeight - clientHeight && deltaY < 0)) {
+                            e.preventDefault();
+                        }
+                        
+                        // 如果用户有明显的垂直滑动，则认为是滚动而不是翻转
+                        if (Math.abs(deltaY) > 5) {
+                            this.isMoved = true;
+                            return;
+                        }
+                    }
+                }
+                
+                if (Math.abs(e.touches[0].clientY - this.touchY) > 10) {
+                    this.isMoved = true;
+                }
+            });
+            
+            card.addEventListener('touchend', function(e) {
+                if (!this.isMoved && (!this.classList.contains('flipped') || 
+                    (this.startScrollTop === this.querySelector('.card-back .card-content')?.scrollTop))) {
+                    flipCard(this);
+                    e.preventDefault();
+                }
+            });
+            
+            // 键盘事件
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flipCard(this);
+                }
+            });
+            
+            // 焦点事件
+            card.addEventListener('focus', function() {
+                currentCardIndex = index;
+                updateProgress();
+            });
+        });
+        
+        cards[0].focus();
+        updateProgress();
+        
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
