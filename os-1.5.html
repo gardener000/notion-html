@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统引导学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            cursor: pointer;
+            height: 300px;
+            transition: var(--transition);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: var(--border-radius);
+        }
+
+        .card-front {
+            background: var(--card-bg);
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background: var(--card-bg);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            text-align: left;
+            width: 100%;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(45, 100%, 90%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .progress {
+            margin-top: 24px;
+            color: hsl(0, 0%, 60%);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统引导学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="icon">💻</div>
+                <h2 class="card-title">操作系统引导的定义</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">操作系统引导的定义</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li>指计算机<mark>开机时</mark>让操作系统运行起来的完整过程</li>
+                        <li>核心问题：解决"<mark>如何将存储在磁盘中的操作系统加载到内存并启动运行</mark>"</li>
+                        <li>与"启动"的区别：引导是启动的前置过程</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="icon">🔄</div>
+                <h2 class="card-title">操作系统引导的四个步骤</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">引导的四个步骤</h3>
+                    <div class="divider"></div>
+                    <ol>
+                        <li><mark>ROM引导程序执行</mark>：CPU通电后执行ROM中的引导程序，进行硬件自检</li>
+                        <li><mark>加载主引导记录(MBR)</mark>：读取磁盘第一块(MBR)，执行磁盘引导程序，定位活动分区</li>
+                        <li><mark>加载分区引导记录(PBR)</mark>：读取活动分区的PBR，执行其中的程序指令</li>
+                        <li><mark>启动操作系统初始化</mark>：从根目录找到启动管理器，完成系统初始化</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="icon">💾</div>
+                <h2 class="card-title">MBR与PBR的区别</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">MBR与PBR的区别</h3>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt><mark>MBR (主引导记录)</mark></dt>
+                        <dd>- 位于磁盘开头</dd>
+                        <dd>- 包含磁盘引导程序和分区表</dd>
+                        <dd>- 负责加载活动分区</dd>
+                        
+                        <dt><mark>PBR (分区引导记录)</mark></dt>
+                        <dd>- 位于活动分区开头</dd>
+                        <dd>- 包含启动过程的关键程序</dd>
+                        <dd>- 负责找到启动管理器</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="icon">🔍</div>
+                <h2 class="card-title">Windows启动管理器位置</h2>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">Windows启动管理器</h3>
+                    <div class="divider"></div>
+                    <ul>
+                        <li>位于：<mark>根目录\Windows\Boot</mark>目录下</li>
+                        <li>包含完整的操作系统初始化程序</li>
+                        <li>开机"转圈圈"画面即执行这些程序的表观</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-face card-front">
+                <div class="icon">🧩</div>
+                <h2 class="card-title">测试题</h2>
+                <p>点击翻转查看问题</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">引导过程测试题</h3>
+                    <div class="divider"></div>
+                    <p><strong>问题：</strong>操作系统引导过程中，首先被CPU执行的是哪个程序？</p>
+                    <ul style="list-style-type: none;">
+                        <li>A. 磁盘引导程序</li>
+                        <li>B. 启动管理器</li>
+                        <li>C. <mark>ROM引导程序</mark> ✅</li>
+                        <li>D. 操作系统初始化程序</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>解析：</strong>CPU通电后从固定内存地址执行ROM中的引导程序，因此首先执行的是ROM引导程序。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">1/5</div>
+
+    <script>
+        // 卡片翻转功能
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            card.setAttribute('aria-pressed', card.classList.contains('flipped'));
+        }
+
+        // 触摸事件支持
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                this.classList.add('touched');
+            }, {passive: true});
+            
+            card.addEventListener('touchend', function(e) {
+                if (this.classList.contains('touched')) {
+                    flipCard(this);
+                    this.classList.remove('touched');
+                    e.preventDefault();
+                }
+            }, {passive: false});
+        });
+
+        // 更新进度
+        const cards = document.querySelectorAll('.card');
+        const progress = document.querySelector('.progress');
+        
+        cards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                progress.textContent = `${index + 1}/${cards.length}`;
+            });
+        });
+    </script>
+</body>
+</html>
