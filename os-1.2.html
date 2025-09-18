@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统发展分类学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: hsl(var(--primary-hue), 20%, 95%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 50%, 40%);
+            margin: 16px 0 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            perspective: 1000px;
+            width: 100%;
+            height: 280px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            padding: 24px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 50%, 95%);
+            color: hsl(var(--primary-hue), 50%, 30%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 50%, 40%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 0;
+            margin-bottom: 8px;
+            padding-left: 12px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .progress {
+            margin-top: 24px;
+            color: hsl(0, 0%, 60%);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 300px;
+            }
+            
+            .card-front, .card-back {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统的发展与分类</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="手工操作阶段卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🖥️</div>
+                    <div class="card-title">手工操作阶段</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>工作方式</dt>
+                            <dd>程序员通过<mark>穿孔纸带</mark>编写程序（有孔=1，无孔=0），手工装入纸带机运行</dd>
+                            
+                            <dt>主要缺点</dt>
+                            <dd>• <mark>独占性</mark>：用户独占全机资源</dd>
+                            <dd>• <mark>资源利用率低</mark>：手工操作(90秒)与CPU速度(毫秒级)不匹配</dd>
+                            <dd>• <mark>经济性差</mark>：昂贵设备长时间闲置</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="单道批处理系统卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📼</div>
+                    <div class="card-title">单道批处理系统</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>技术改进</dt>
+                            <dd>• <mark>脱机I/O技术</mark>：使用磁带（比纸带机快10倍以上）</dd>
+                            <dd>• <mark>监督程序</mark>：自动控制作业输入/输出流程</dd>
+                            
+                            <dt>工作流程</dt>
+                            <dd>磁带顺序读入作业→CPU计算→结果输出到磁带（<mark>串行执行</mark>）</dd>
+                            
+                            <dt>进步性</dt>
+                            <dd>缓解人机速度矛盾，CPU利用率提升</dd>
+                            
+                            <dt>局限性</dt>
+                            <dd>内存中仅能驻留一道程序，I/O时CPU仍空闲</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="多道批处理系统卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">多道批处理系统</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心创新</dt>
+                            <dd>支持<mark>多道程序并发</mark>执行（操作系统正式出现）</dd>
+                            
+                            <dt>工作原理</dt>
+                            <dd>• CPU计算作业1时，输入设备加载作业2</dd>
+                            <dd>• 作业1输出时，CPU可计算作业2</dd>
+                            
+                            <dt>优势</dt>
+                            <dd>• <mark>资源利用率最大化</mark>（CPU、I/O设备并行）</dd>
+                            <dd>• <mark>吞吐量提升</mark></dd>
+                            
+                            <dt>缺点</dt>
+                            <dd>缺乏人机交互功能</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="分时操作系统卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">⏱️</div>
+                    <div class="card-title">分时操作系统</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心机制</dt>
+                            <dd>以<mark>时间片</mark>（如50ms）为单位轮流服务用户</dd>
+                            
+                            <dt>关键特性</dt>
+                            <dd>• <mark>及时响应</mark>：最长等待时间≤N×时间片</dd>
+                            <dd>• <mark>独占感</mark>：用户感知不到其他用户</dd>
+                            
+                            <dt>局限性</dt>
+                            <dd>无法优先处理紧急任务（<mark>绝对公平</mark>）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="实时操作系统卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🚨</div>
+                    <div class="card-title">实时操作系统</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>核心特性</dt>
+                            <dd>• <mark>及时性</mark>：严格时限内响应（如毫秒级）</dd>
+                            <dd>• <mark>可靠性</mark>：必须保证结果正确</dd>
+                            
+                            <dt>分类</dt>
+                            <dd>• <mark>硬实时</mark>：绝对严格时限（如导弹控制）</dd>
+                            <dd>• <mark>软实时</mark>：允许偶尔超时（如12306票务）</dd>
+                            
+                            <dt>优势</dt>
+                            <dd>支持任务优先级调度，可中断常规任务</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-label="其他操作系统类型卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🌐</div>
+                    <div class="card-title">其他操作系统类型</div>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>网络操作系统</dt>
+                            <dd>实现资源共享和通信（如<mark>Windows NT</mark>）</dd>
+                            
+                            <dt>分布式操作系统</dt>
+                            <dd>多计算机并行协同（如<mark>谷歌计算集群</mark>）</dd>
+                            
+                            <dt>个人计算机操作系统</dt>
+                            <dd>优化用户体验（如<mark>Windows XP</mark>、<mark>MacOS</mark>）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">1/6</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // Update progress text
+            function updateProgress() {
+                document.querySelector('.progress').textContent = 
+                    `${currentCardIndex + 1}/${cards.length}`;
+            }
+            
+            // Flip card on click/tap
+            cards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    
+                    // Update current card index when flipping back
+                    if(!this.classList.contains('flipped') && index === currentCardIndex) {
+                        currentCardIndex = (currentCardIndex + 1) % cards.length;
+                        updateProgress();
+                    }
+                });
+                
+                // Also support keyboard navigation
+                card.addEventListener('keydown', function(e) {
+                    if(e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Initial progress update
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
