@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程状态学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 50%);
+            --border-radius: 16px;
+            --box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 0;
+            perspective: 1000px;
+            height: 300px;
+            width: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            width: 100%;
+            text-align: left;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: hsl(var(--primary-hue), 60%, 50%);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 100%, 90%);
+            color: inherit;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>进程状态与转换学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 进程的五种状态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看进程的五种状态">
+            <div class="card-face card-front">
+                <div class="emoji">📌</div>
+                <h2 class="card-title">进程的五种状态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>创建态(New)</mark>：进程正在被创建时的状态</li>
+                        <li><mark>就绪态(Ready)</mark>：已具备运行条件但未获得CPU</li>
+                        <li><mark>运行态(Running)</mark>：进程正在CPU上执行</li>
+                        <li><mark>阻塞态(Blocked)</mark>：等待资源/事件无法执行</li>
+                        <li><mark>终止态(Terminated)</mark>：进程结束，资源被回收</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：创建→就绪→运行→(可能阻塞)→终止</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2: 创建态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看创建态详情">
+            <div class="card-face card-front">
+                <div class="emoji">🆕</div>
+                <h2 class="card-title">创建态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>定义</mark>：进程正在被创建时的状态</li>
+                        <li><mark>系统操作</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>分配内存空间等系统资源</li>
+                                <li>完成PCB的初始化工作</li>
+                            </ul>
+                        </li>
+                        <li><mark>转换时机</mark>：创建完成后进入就绪态</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：创建态是进程的"出生"阶段</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3: 就绪态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看就绪态详情">
+            <div class="card-face card-front">
+                <div class="emoji">⏳</div>
+                <h2 class="card-title">就绪态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>定义</mark>：已具备运行条件但未获得CPU的状态</li>
+                        <li><mark>特点</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>仅缺少CPU资源</li>
+                                <li>系统中可能存在多个就绪态进程</li>
+                            </ul>
+                        </li>
+                        <li><mark>调度机制</mark>：CPU空闲时从就绪队列中选择进程运行</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：就绪态就像排队等待上台的演员</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4: 运行态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看运行态详情">
+            <div class="card-face card-front">
+                <div class="emoji">⚡</div>
+                <h2 class="card-title">运行态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>定义</mark>：进程正在CPU上执行的状态</li>
+                        <li><mark>执行特征</mark>：CPU正在处理该进程对应的程序指令序列</li>
+                        <li><mark>系统限制</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>单CPU环境下同一时刻最多一个运行态进程</li>
+                                <li>多核CPU可并行运行多个进程</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：运行态是进程的"表演时间"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5: 阻塞态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看阻塞态详情">
+            <div class="card-face card-front">
+                <div class="emoji">🚧</div>
+                <h2 class="card-title">阻塞态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>别称</mark>：等待态(Waiting/Blocked)</li>
+                        <li><mark>触发条件</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>等待系统资源分配(如打印机)</li>
+                                <li>等待其他进程响应</li>
+                                <li>等待特定事件发生</li>
+                            </ul>
+                        </li>
+                        <li><mark>特点</mark>：进程无法继续执行，必须释放CPU</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：阻塞态就像等待红绿灯的汽车</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6: 终止态 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看终止态详情">
+            <div class="card-face card-front">
+                <div class="emoji">⏹️</div>
+                <h2 class="card-title">终止态</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>别称</mark>：结束态(Terminated)</li>
+                        <li><mark>触发条件</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>进程主动调用exit系统调用</li>
+                                <li>遇到不可修复错误(如除零错误)</li>
+                            </ul>
+                        </li>
+                        <li><mark>系统操作</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>回收所有资源(内存、设备等)</li>
+                                <li>撤销PCB</li>
+                                <li>进程从系统中彻底消失</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：终止态是进程的"生命终点"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片7: 状态转换 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看进程状态转换详情">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">状态转换</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>就绪态→运行态</mark>：进程被调度获得CPU</li>
+                        <li><mark>运行态→就绪态</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>时间片用完(时钟中断触发)</li>
+                                <li>被更高优先级进程抢占</li>
+                            </ul>
+                        </li>
+                        <li><mark>运行态→阻塞态</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>主动请求等待资源/事件</li>
+                                <li>属于进程主动行为(通过系统调用)</li>
+                            </ul>
+                        </li>
+                        <li><mark>阻塞态→就绪态</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>等待的资源/事件已就绪</li>
+                                <li>属于被动行为(进程无法控制)</li>
+                            </ul>
+                        </li>
+                        <li><mark>创建态→就绪态</mark>：系统完成创建相关工作</li>
+                        <li><mark>运行态→终止态</mark>：进程正常结束或异常终止</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片8: 进程组织方式 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看进程组织方式">
+            <div class="card-face card-front">
+                <div class="emoji">🗂️</div>
+                <h2 class="card-title">进程组织方式</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 style="color: hsl(var(--primary-hue), 60%, 40%); margin-bottom: 12px;">链接方式</h3>
+                    <ul>
+                        <li><mark>队列结构</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li><mark>执行指针</mark>：指向当前运行态进程PCB</li>
+                                <li><mark>就绪队列</mark>：按优先级排序(高优先级在队头)</li>
+                                <li><mark>阻塞队列</mark>：可按等待资源类型细分</li>
+                            </ul>
+                        </li>
+                        <li><mark>管理优势</mark>：便于操作系统统一调度管理</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    
+                    <h3 style="color: hsl(var(--primary-hue), 60%, 40%); margin-bottom: 12px;">索引方式</h3>
+                    <ul>
+                        <li><mark>实现方式</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>为不同状态建立索引表</li>
+                                <li>表项指向对应PCB</li>
+                            </ul>
+                        </li>
+                        <li><mark>应用现状</mark>：多数操作系统采用链接方式</li>
+                    </ul>
+                    
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：链接方式类似排队，索引方式类似查目录</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片9: 重要考点 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片查看重要考点">
+            <div class="card-face card-front">
+                <div class="emoji">⚠️</div>
+                <h2 class="card-title">重要考点</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><mark>状态转换条件</mark>：特别是运行↔就绪↔阻塞</li>
+                        <li><mark>主动/被动转换</mark>：运行→阻塞为主动，阻塞→就绪为被动</li>
+                        <li><mark>不可能发生的转换</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>阻塞→运行(必须经过就绪态)</li>
+                                <li>就绪→阻塞</li>
+                            </ul>
+                        </li>
+                        <li><mark>易错点</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>时间片用完导致运行→就绪(非阻塞)</li>
+                                <li>阻塞态必须等待外部事件触发</li>
+                                <li>创建/终止态的系统操作内容差异</li>
+                            </ul>
+                        </li>
+                        <li><mark>进程组织</mark>：
+                            <ul style="margin-top: 8px;">
+                                <li>链式方式更常见</li>
+                                <li>阻塞队列可细分(如等待打印机、磁盘等)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p class="hint">记忆提示：丁字裤模型(三种基本状态)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击事件
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘事件，增强可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+                
+                // 触摸事件优化
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                card.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    // 如果滑动距离大于50px，则不触发翻转
+                    if (Math.abs(touchEndX - touchStartX) < 50) {
+                        this.classList.toggle('flipped');
+                    }
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
