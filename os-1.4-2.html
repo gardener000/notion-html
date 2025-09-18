@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统体系结构学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* 蓝色系 */
+            --secondary-hue: 45; /* 黄色系 */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 400px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px; /* 固定高度 */
+            margin-bottom: 24px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 16px;
+            border-radius: var(--radius);
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* 防止内容溢出 */
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 95%, 50%), hsl(var(--primary-hue), 70%, 60%));
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .card-content {
+            width: 100%;
+            height: calc(100% - 30px);
+            overflow-y: auto; /* 内容过多时滚动 */
+            padding-right: 4px; /* 为滚动条留空间 */
+        }
+
+        /* 自定义滚动条 */
+        .card-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .card-content::-webkit-scrollbar-thumb {
+            background: hsl(var(--primary-hue), 50%, 80%);
+            border-radius: 2px;
+        }
+
+        dl {
+            margin-bottom: 8px;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            word-wrap: break-word; /* 确保长单词换行 */
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 70%);
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-size: inherit;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 10px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 280px; /* 小屏幕稍矮 */
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            dd, li {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统体系结构学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1：分层结构 -->
+        <div class="card" tabindex="0" role="button" aria-label="分层结构学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧅</div>
+                <div class="card-title">分层结构</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">分层结构</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>内核分多层，每层<mark>单向调用</mark>更低一层接口</dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li>调试便利：<mark>自底向上</mark>逐层验证</li>
+                                <li>维护扩展性强</li>
+                                <li>开发规范</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>层边界定义困难</li>
+                                <li>效率低（需<mark>逐层传递</mark>）</li>
+                                <li>通信开销大</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2：模块化结构 -->
+        <div class="card" tabindex="0" role="button" aria-label="模块化结构学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🧩</div>
+                <div class="card-title">模块化结构</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">模块化结构</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>组成</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>主模块</mark>：核心功能</li>
+                                <li><mark>可加载模块</mark>：动态扩展</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li>逻辑清晰</li>
+                                <li>支持<mark>并行开发</mark></li>
+                                <li><mark>动态加载</mark>新模块</li>
+                                <li>高效通信（直接调用）</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>接口设计困难</li>
+                                <li>调试复杂（模块间依赖）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3：宏内核 -->
+        <div class="card" tabindex="0" role="button" aria-label="宏内核学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🏰</div>
+                <div class="card-title">宏内核</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">宏内核</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>所有功能集中在内核</li>
+                                <li>模块间<mark>直接调用</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>性能高</mark>（无消息传递）</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>内核庞大复杂</li>
+                                <li><mark>可靠性低</mark>（单模块崩溃影响系统）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4：微内核 -->
+        <div class="card" tabindex="0" role="button" aria-label="微内核学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">💎</div>
+                <div class="card-title">微内核</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">微内核</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>仅<mark>核心功能</mark>在内核</li>
+                                <li>其他功能通过<mark>消息传递</mark>调用</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li>内核小巧易维护</li>
+                                <li><mark>可靠性高</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>性能较低</mark>（频繁状态切换）</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5：外核 -->
+        <div class="card" tabindex="0" role="button" aria-label="外核学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔧</div>
+                <div class="card-title">外核</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">外核</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>
+                            <ul>
+                                <li>内核：基础功能</li>
+                                <li>外核：分配<mark>未经抽象的硬件资源</mark></li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li>资源使用灵活</li>
+                                <li><mark>性能提升</mark>（减少虚拟化开销）</li>
+                                <li>安全性高</li>
+                            </ul>
+                        </dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>系统一致性降低</li>
+                                <li>复杂度增加</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 点击翻转
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
