@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统特征学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* Blue */
+            --secondary-hue: 45; /* Yellow */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 420px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            margin-bottom: 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 100%, 95%), white);
+            border: 1px solid hsl(var(--primary-hue), 60%, 90%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            border: 1px solid hsl(var(--primary-hue), 30%, 90%);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            text-align: center;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 8px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: hsl(var(--primary-hue), 60%, 50%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 320px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统特征学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="操作系统基本特征卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">💻</div>
+                <h2 class="card-title">操作系统四个基本特征</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>1. <mark>并发</mark></dt>
+                        <dd>多个事件在同一时间间隔内发生</dd>
+                        
+                        <dt>2. <mark>共享</mark></dt>
+                        <dd>资源供多个并发进程共同使用</dd>
+                        
+                        <dt>3. <mark>虚拟</mark></dt>
+                        <dd>将物理实体变为多个逻辑对应物</dd>
+                        
+                        <dt>4. <mark>异步</mark></dt>
+                        <dd>进程因资源竞争走走停停</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>核心关系：</strong>并发和共享是最基本特征，互为存在条件</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="并发与并行区别卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">⏱️</div>
+                <h2 class="card-title">并发 vs 并行</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt><mark>并发</mark> (Concurrency)</dt>
+                        <dd>多个事件在<strong>同一时间间隔</strong>内发生</dd>
+                        <dd>宏观上同时，微观上交替</dd>
+                        <dd>单核CPU只能并发</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt><mark>并行</mark> (Parallelism)</dt>
+                        <dd>多个事件在<strong>同一时刻</strong>发生</dd>
+                        <dd>真正同时执行</dd>
+                        <dd>需要多核CPU支持</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><strong>示例：</strong>老渣并发约会 vs 小渣并行约会</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="共享特征卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🤝</div>
+                <h2 class="card-title">共享的两种方式</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>1. <mark>互斥共享</mark></dt>
+                        <dd>一个时间段内只允许一个进程访问</dd>
+                        <dd><strong>示例：</strong>摄像头设备（QQ视频时微信不能用）</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt>2. <mark>同时共享</mark></dt>
+                        <dd>允许多个进程"同时"访问</dd>
+                        <dd>微观上可能交替</dd>
+                        <dd><strong>示例：</strong>QQ和微信同时发送文件（交替访问硬盘）</dd>
+                        <dd><strong>特例：</strong>扬声器可被真正同时使用</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="并发与共享关系卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔗</div>
+                <h2 class="card-title">并发与共享的关系</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <p><strong>互为存在条件：</strong></p>
+                    <ul>
+                        <li>失去并发性 → 系统单程序运行 → 共享性无意义</li>
+                        <li>失去共享性 → 进程无法共同访问资源 → 无法实现并发</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>典型场景：</strong></p>
+                    <p>QQ和微信并发执行需要共享访问硬盘资源</p>
+                    <div class="divider"></div>
+                    <p><mark>没有并发和共享就谈不上虚拟和异步</mark></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="虚拟特征卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🪄</div>
+                <h2 class="card-title">虚拟性</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt><mark>定义</mark></dt>
+                        <dd>将物理实体变为多个逻辑对应物</dd>
+                        <dd>物理实际存在，逻辑用户感知</dd>
+                        
+                        <dt><mark>实现技术</mark></dt>
+                        <dd>1. 空分复用：如虚拟存储器技术</dd>
+                        <dd>2. 时分复用：如虚拟处理器技术</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt><mark>与并发关系</mark></dt>
+                        <dd>没有并发性就失去虚拟意义（单程序无需虚拟）</dd>
+                        <dd><strong>示例：</strong>4GB物理内存表现为更大逻辑内存</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-label="异步特征卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🎢</div>
+                <h2 class="card-title">异步性</h2>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt><mark>定义</mark></dt>
+                        <dd>多道程序并发执行时，进程因资源竞争走走停停，推进速度不可预知</dd>
+                        
+                        <dt><mark>示例分析</mark></dt>
+                        <dd>老渣约会场景：两道程序竞争"真心"资源</dd>
+                        <dd>可能执行序列1：</dd>
+                        <dd>- 8-9点：执行一号指令1（吃饭）</dd>
+                        <dd>- 9-10点：执行一号指令2（给心）→资源被一号占有</dd>
+                        <dd>- 10-11点：二号请求给心被阻塞</dd>
+                        
+                        <div class="divider"></div>
+                        
+                        <dt><mark>与并发关系</mark></dt>
+                        <dd>只有存在并发性才可能产生异步性</dd>
+                        <dd>串行执行则无异步</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // Flip card on click/tap
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Also make cards keyboard accessible
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // Navigation buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            function showCard(index) {
+                // Hide all cards
+                cards.forEach(card => {
+                    card.style.display = 'none';
+                    card.classList.remove('flipped');
+                });
+                
+                // Show selected card
+                cards[index].style.display = 'block';
+                currentCardIndex = index;
+            }
+            
+            // Initialize first card
+            showCard(0);
+            
+            prevBtn.addEventListener('click', function() {
+                const newIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+                showCard(newIndex);
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                const newIndex = (currentCardIndex + 1) % cards.length;
+                showCard(newIndex);
+            });
+            
+            // Swipe gestures for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) {
+                    // Swipe left - next card
+                    const newIndex = (currentCardIndex + 1) % cards.length;
+                    showCard(newIndex);
+                }
+                
+                if (touchEndX > touchStartX + 50) {
+                    // Swipe right - previous card
+                    const newIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+                    showCard(newIndex);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
