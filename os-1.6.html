@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟机管理程序学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* Blue */
+            --secondary-hue: 45; /* Yellow */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --border-radius: 16px;
+            --padding: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin: 24px 0;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            height: 300px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: var(--padding);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            background: hsl(var(--primary-hue), 70%, 95%);
+            border-radius: var(--border-radius);
+        }
+
+        .card-back {
+            background: white;
+            border-radius: var(--border-radius);
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 70%, 30%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-front .card-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .card-back .card-content {
+            font-size: 1rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 70%, 30%);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            text-align: center;
+        }
+
+        @media (max-width: 400px) {
+            :root {
+                --padding: 16px;
+            }
+            
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>虚拟机管理程序学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)" onkeydown="handleKeyDown(event, this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div class="emoji">💻</div>
+                    <div>两类虚拟机管理程序是什么？</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">两类虚拟机管理程序</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>第一类VMM (裸机型/原生型)</dt>
+                        <dd>直接运行在硬件之上，不依赖宿主操作系统</dd>
+                        
+                        <dt>第二类VMM (寄宿型)</dt>
+                        <dd>运行在宿主操作系统之上，如VirtualBox、VMware</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><mark>关键区别</mark>：第一类性能更好，第二类更易迁移</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)" onkeydown="handleKeyDown(event, this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div class="emoji">⚙️</div>
+                    <div>第一类VMM的特点</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">第一类VMM</div>
+                <div class="card-content">
+                    <ul>
+                        <li>运行位置：<mark>直接运行在硬件之上</mark></li>
+                        <li>资源控制：拥有对物理硬件的<mark>完全控制权</mark></li>
+                        <li>特权级别：运行在<mark>最高特权级(Ring 0)</mark></li>
+                        <li>性能特点：<mark>性能更好</mark>，无需通过宿主OS中介</li>
+                        <li>代表产品：<mark>Xen、KVM</mark></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)" onkeydown="handleKeyDown(event, this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div class="emoji">🖥️</div>
+                    <div>第二类VMM的特点</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">第二类VMM</div>
+                <div class="card-content">
+                    <ul>
+                        <li>运行位置：运行在<mark>宿主操作系统</mark>之上</li>
+                        <li>资源控制：依赖<mark>Host OS分配资源</mark></li>
+                        <li>运行模式：部分运行在<mark>用户态</mark>，部分以内核驱动形式存在</li>
+                        <li>使用场景：适合<mark>个人开发测试</mark></li>
+                        <li>代表产品：<mark>VirtualBox、VMware Workstation</mark></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)" onkeydown="handleKeyDown(event, this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div class="emoji">📊</div>
+                    <div>两类VMM对比</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">两类VMM对比</div>
+                <div class="card-content">
+                    <dl>
+                        <dt>控制权</dt>
+                        <dd>○ 第一类：<mark>直接控制物理硬件</mark><br>○ 第二类：通过Host OS间接控制</dd>
+                        
+                        <dt>资源分配</dt>
+                        <dd>○ 第一类：<mark>直接分配物理块</mark><br>○ 第二类：分配虚拟资源(如Host OS文件)</dd>
+                        
+                        <dt>性能表现</dt>
+                        <dd>○ 第一类：<mark>性能更优</mark>(减少映射层级)<br>○ 第二类：性能较差(需经Host OS中介)</dd>
+                        
+                        <dt>迁移性</dt>
+                        <dd>○ 第一类：迁移困难<br>○ 第二类：<mark>只需导出镜像文件</mark>，商业化应用更广泛</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)" onkeydown="handleKeyDown(event, this)">
+            <div class="card-face card-front">
+                <div class="card-content">
+                    <div class="emoji">💡</div>
+                    <div>商业环境中单操作系统问题</div>
+                </div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-title">例题解析</div>
+                <div class="card-content">
+                    <p><strong>题干：</strong>在商业化的环境中，为什么强大的物理机上只能运行一个操作系统可能会导致问题？</p>
+                    <ul>
+                        <li>A. 会导致安全隐患</li>
+                        <li>B. 会导致硬件资源利用率不充分</li>
+                        <li>C. 会使操作系统运行不稳定</li>
+                        <li>D. 会增加系统维护成本</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><mark>正确答案：B</mark></p>
+                    <p><strong>解析：</strong>会导致<mark>硬件资源利用率不充分</mark>。其他选项在视频中均未提及或与题意不符。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">1/5</div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+            const isFlipped = card.classList.contains('flipped');
+            card.setAttribute('aria-pressed', isFlipped);
+            updateProgress();
+        }
+        
+        function handleKeyDown(event, card) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                flipCard(card);
+            }
+        }
+        
+        function updateProgress() {
+            const cards = document.querySelectorAll('.card');
+            let flippedCount = 0;
+            
+            cards.forEach(card => {
+                if (card.classList.contains('flipped')) {
+                    flippedCount++;
+                }
+            });
+            
+            document.querySelector('.progress').textContent = `${flippedCount}/${cards.length}`;
+        }
+        
+        // Initialize ARIA attributes
+        document.querySelectorAll('.card').forEach(card => {
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-pressed', 'false');
+            card.setAttribute('tabindex', '0');
+        });
+    </script>
+</body>
+</html>
