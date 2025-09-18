@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux信号机制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 35%);
+            margin: 16px 0 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 360px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+        
+        .card-front {
+            background: hsl(var(--primary-hue), 60%, 95%);
+            border: 2px solid hsl(var(--primary-hue), 60%, 80%);
+        }
+        
+        .card-back {
+            background: white;
+            border: 2px solid hsl(var(--primary-hue), 20%, 90%);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+        
+        .card-content {
+            width: 100%;
+        }
+        
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+        
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            margin-top: 12px;
+        }
+        
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .card-content ul {
+            padding-left: 20px;
+        }
+        
+        .card-content li {
+            margin-bottom: 8px;
+        }
+        
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .divider {
+            height: 1px;
+            background: hsl(var(--primary-hue), 20%, 85%);
+            margin: 12px 0;
+        }
+        
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            background: hsl(var(--primary-hue), 60%, 50%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        button:hover {
+            background: hsl(var(--primary-hue), 60%, 40%);
+        }
+        
+        .card-counter {
+            margin-top: 16px;
+            color: hsl(var(--primary-hue), 20%, 50%);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linux信号机制学习卡片</h1>
+    
+    <div class="card-container">
+        <div class="card" id="card1" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📶</div>
+                <div class="card-title">信号的定义与作用</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>信号是<mark>进程间通信(IPC)</mark>的一种方式，用于通知进程某个特定事件已经发生</dd>
+                        
+                        <dt>作用</dt>
+                        <dd>
+                            <ul>
+                                <li>读取信号的二进制代码并重新处理</li>
+                                <li>用于<mark>系统异常处理</mark>、<mark>进程控制</mark>等多种场景</li>
+                                <li>当进程收到信号后，需要对该信号进行相应的处理</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：信号就像进程间的"短信通知"</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card2" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔢</div>
+                <div class="card-title">Linux信号类型</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li>Linux定义了<mark>30种</mark>符合POSIX标准的信号</li>
+                        <li><mark>SIGINT(2)</mark>：终端按下Ctrl+C触发，默认终止当前进程 ⚠️</li>
+                        <li><mark>SIGFPE(8)</mark>：浮点异常(如除以0)，默认终止进程并转储内存</li>
+                        <li><mark>SIGKILL(9)</mark>：强制杀死进程，<mark>不能被捕获或忽略</mark> ☠️</li>
+                        <li><mark>SIGSEGV(11)</mark>：无效内存引用(段错误)</li>
+                        <li><mark>SIGCHLD(17)</mark>：子进程停止或终止</li>
+                        <li><mark>SIGSTOP(19)</mark>：停止进程直到收到SIGCONT</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：9号信号(SIGKILL)最强大，无法被阻挡</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card3" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">💾</div>
+                <div class="card-title">信号实现原理</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>存储结构</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>pending位向量</mark>：记录已收到但未处理的信号</li>
+                                <li><mark>blocked位向量</mark>：记录被屏蔽的信号类型(信号掩码)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>信号容量</dt>
+                        <dd>N种信号需要N位向量</dd>
+                        
+                        <dt>信号覆盖规则</dt>
+                        <dd>同类型信号后到达的会被丢弃(pending仅用1bit记录)</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：pending是"待办事项"，blocked是"勿扰模式"</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card4" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📨</div>
+                <div class="card-title">信号发送与处理</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>发送函数</dt>
+                        <dd><code>kill(pid_t pid, int sig)</code>：向指定PID进程发送信号</dd>
+                        
+                        <dt>处理时机</dt>
+                        <dd>当进程从<mark>内核态转为用户态</mark>时(如系统调用返回、中断处理返回)</dd>
+                        
+                        <dt>处理检测算法</dt>
+                        <dd>
+                            <ol>
+                                <li>对blocked位向量按位取反(~blocked)</li>
+                                <li>与pending向量逐位与运算(pending & ~blocked)</li>
+                                <li>结果为非零的位对应信号需要处理</li>
+                            </ol>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：kill不是杀死，而是"发送信号"</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card5" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">⚙️</div>
+                <div class="card-title">信号处理方式</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>默认处理</dt>
+                        <dd>
+                            <ul>
+                                <li>终止进程(如SIGINT)</li>
+                                <li>终止并转储内存(如SIGFPE)</li>
+                                <li>忽略(如SIGWINCH)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>自定义处理</dt>
+                        <dd>
+                            <ul>
+                                <li>用户可通过系统调用覆盖默认处理程序</li>
+                                <li>处理完成后对应pending位自动清零</li>
+                                <li><mark>限制</mark>：SIGKILL和SIGSTOP不可阻塞或自定义</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：9号和19号信号是"终极武器"，无法自定义</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card6" tabindex="0" role="button" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">✨</div>
+                <div class="card-title">信号重要特性</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li>仅用<mark>1bit</mark>记录同类信号→重复信号被丢弃</li>
+                        <li>同时收到多信号时按<mark>序号从小到大</mark>处理</li>
+                        <li>进程可独立设置阻塞信号和自定义处理程序</li>
+                        <li>不同OS对信号类型的定义不同(Linux有30种POSIX标准信号)</li>
+                        <li>信号与异常的关系：
+                            <ul>
+                                <li>内核捕获异常后发送对应信号(如除零→SIGFPE)</li>
+                                <li>完全由内核处理的异常(如缺页)不触发信号</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><small>📌 记忆提示：信号是异常处理的"邮递员"</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+    
+    <div class="card-counter">
+        <span id="current-card">1</span> / <span id="total-cards">6</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentCardSpan = document.getElementById('current-card');
+            const totalCardsSpan = document.getElementById('total-cards');
+            
+            let currentCardIndex = 0;
+            totalCardsSpan.textContent = cards.length;
+            
+            // Initialize first card
+            updateCardCounter();
+            
+            // Flip card on click/tap
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // For accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // Navigation buttons
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex--;
+                    scrollToCard();
+                    updateCardCounter();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex++;
+                    scrollToCard();
+                    updateCardCounter();
+                }
+            });
+            
+            function scrollToCard() {
+                cards[currentCardIndex].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+            
+            function updateCardCounter() {
+                currentCardSpan.textContent = currentCardIndex + 1;
+            }
+            
+            // Swipe gestures for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // Minimum swipe distance
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // Swipe left - next card
+                    if (currentCardIndex < cards.length - 1) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex++;
+                        scrollToCard();
+                        updateCardCounter();
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // Swipe right - previous card
+                    if (currentCardIndex > 0) {
+                        cards[currentCardIndex].classList.remove('flipped');
+                        currentCardIndex--;
+                        scrollToCard();
+                        updateCardCounter();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
