@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* Blue for focus */
+            --secondary-hue: 45; /* Yellow for highlights */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-radius: var(--radius);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: hsl(0, 0%, 40%);
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 80%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 280px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统概念学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="常见操作系统卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">💻</div>
+                <h2 class="card-title">常见操作系统</h2>
+                <p class="card-subtitle">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">常见操作系统</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>主流系统</mark>：MacOS(苹果电脑)、iOS(苹果手机)、Windows、Android</li>
+                        <li><mark>专业系统</mark>：Linux(技术专业人员必学)</li>
+                        <li><mark>特殊案例</mark>：诺基亚塞班系统(少数用户仍在使用)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="计算机层次结构卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📊</div>
+                <h2 class="card-title">计算机层次结构</h2>
+                <p class="card-subtitle">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">计算机层次结构</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>底层</mark>：裸机(纯硬件：CPU、内存、硬盘、主板等)</li>
+                        <li><mark>中层</mark>：操作系统</li>
+                        <li><mark>上层</mark>：应用软件</li>
+                        <li><mark>顶层</mark>：用户</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="操作系统定义卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">📖</div>
+                <h2 class="card-title">操作系统定义</h2>
+                <p class="card-subtitle">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">操作系统定义</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>核心定义</mark>：控制和管理整个计算机系统的硬件和软件资源</li>
+                        <li><mark>三大功能</mark>：
+                            <ol>
+                                <li>资源管理：合理组织调度计算机工作和资源分配</li>
+                                <li>接口服务：提供用户和其他软件方便的接口和环境</li>
+                                <li>系统软件：计算机系统中最基本的系统软件</li>
+                            </ol>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="资源管理功能卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🔄</div>
+                <h2 class="card-title">资源管理功能</h2>
+                <p class="card-subtitle">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">资源管理功能</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <p>以QQ视频聊天为例：</p>
+                    <ul>
+                        <li><mark>文件管理</mark>：通过目录结构找到QQ.exe</li>
+                        <li><mark>存储器管理</mark>：将程序数据从磁盘加载到内存</li>
+                        <li><mark>处理机管理</mark>：为QQ分配CPU资源</li>
+                        <li><mark>设备管理</mark>：分配摄像头等设备资源</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" aria-label="服务接口卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="emoji">🖥️</div>
+                <h2 class="card-title">服务接口</h2>
+                <p class="card-subtitle">点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">服务接口</h2>
+                <div class="divider"></div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>GUI(图形用户界面)</mark>：如拖拽文件到回收站</li>
+                        <li><mark>联机命令接口</mark>：交互式(如Windows的time命令)</li>
+                        <li><mark>脱机命令接口</mark>：批处理(如.bat文件)</li>
+                        <li><mark>程序接口</mark>：系统调用(如printf函数的底层实现)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // Click/tap handler
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                    const isPressed = this.getAttribute('aria-pressed') === 'true';
+                    this.setAttribute('aria-pressed', !isPressed);
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
