@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>线程概念学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 90%, 60%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d; /* 添加此项确保3D效果 */
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            top: 0;
+            left: 0;
+            /* 确保正反面完全对齐 */
+            transform-style: preserve-3d;
+        }
+
+        .card-front {
+            background-color: var(--card-bg);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 2; /* 确保正面在初始状态下显示 */
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: hsl(0, 0%, 40%);
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 12px;
+            color: var(--primary-color);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>线程概念学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="线程定义卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🧵</div>
+                    <h2 class="card-title">线程的定义</h2>
+                    <p class="card-subtitle">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">线程的定义</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>线程</mark>是程序执行流的最小单位</li>
+                            <li>可理解为"<mark>轻量级进程</mark>"</li>
+                            <li>是基本的<mark>CPU执行单元</mark></li>
+                        </ul>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>与传统进程的区别</dt>
+                            <dd>进程是<mark>资源分配</mark>的基本单位</dd>
+                            <dd>线程是<mark>CPU调度</mark>的基本单位</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="引入线程目的卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🎯</div>
+                    <h2 class="card-title">引入线程的目的</h2>
+                    <p class="card-subtitle">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">引入线程的目的</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>增加<mark>系统并发度</mark></li>
+                            <li>使一个进程内可<mark>并发处理多个任务</mark></li>
+                            <li>解决传统进程只能<mark>串行执行</mark>的问题</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <dl>
+                            <dt>实际应用示例</dt>
+                            <dd>QQ同时进行<mark>视频聊天</mark>、<mark>文字聊天</mark>和<mark>文件传输</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="线程机制变化卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">🔄</div>
+                    <h2 class="card-title">线程机制的变化</h2>
+                    <p class="card-subtitle">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">线程机制的变化</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>调度单位变化</dt>
+                            <dd>传统：进程既是资源分配单位也是调度单位</dd>
+                            <dd>引入线程后：<mark>进程是资源分配单位</mark>，<mark>线程成为调度单位</mark></dd>
+                            
+                            <dt>并发性提升</dt>
+                            <dd>传统：仅进程间并发</dd>
+                            <dd>引入线程后：<mark>进程内线程间也可并发</mark></dd>
+                            
+                            <dt>系统开销降低</dt>
+                            <dd>传统进程切换：需要完整切换进程运行环境（类似<mark>图书馆换人需搬走全部书籍</mark>）</dd>
+                            <dd>线程切换：同进程内线程切换<mark>不改变进程环境</mark>（类似<mark>同学共用书桌</mark>）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="线程属性卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="icon">📌</div>
+                    <h2 class="card-title">线程的属性</h2>
+                    <p class="card-subtitle">点击查看详情</p>
+                </div>
+                <div class="card-back">
+                    <h3 class="card-title">线程的属性</h3>
+                    <div class="card-content">
+                        <dl>
+                            <dt>基本特性</dt>
+                            <dd>处理机调度的基本单位</dd>
+                            <dd>多核CPU中不同线程可占用<mark>不同CPU核心</mark></dd>
+                            
+                            <dt>管理结构</dt>
+                            <dd>每个线程有唯一<mark>线程ID</mark>和<mark>线程控制块(TCB)</mark></dd>
+                            <dd>具有<mark>就绪</mark>、<mark>阻塞</mark>、<mark>运行</mark>三种基本状态</dd>
+                    
+                            <dt>资源共享</dt>
+                            <dd>线程几乎<mark>不拥有系统资源</mark>（属于进程）</dd>
+                            <dd>同进程线程<mark>共享进程资源</mark>（I/O设备、内存地址空间等）</dd>
+                            
+                            <dt>通信效率</dt>
+                            <dd>同进程线程通过<mark>共享内存</mark>通信，无需系统干预</dd>
+                            
+                            <dt>切换特性</dt>
+                            <dd>同进程内线程切换<mark>不引起进程切换</mark>，开销小</dd>
+                            <dd>跨进程线程切换会<mark>引起进程切换</mark>，开销较大</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // 添加点击翻转功能
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 导航按钮功能
+            document.getElementById('prev-btn').addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex--;
+                    cards[currentCardIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            
+            document.getElementById('next-btn').addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    cards[currentCardIndex].classList.remove('flipped');
+                    currentCardIndex++;
+                    cards[currentCardIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            
+            // 触摸滑动支持
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.querySelector('.cards-container').addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.querySelector('.cards-container').addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) {
+                    // 向左滑动 - 下一张
+                    document.getElementById('next-btn').click();
+                } else if (touchEndX > touchStartX + 50) {
+                    // 向右滑动 - 上一张
+                    document.getElementById('prev-btn').click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
