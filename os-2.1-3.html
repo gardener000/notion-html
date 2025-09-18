@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程控制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        .card {
+            width: 100%;
+            height: 60vh;
+            max-height: 400px;
+            min-height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            background-color: white;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            border: 2px solid hsl(var(--primary-hue), 60%, 80%);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-right: 8px;
+        }
+
+        .card-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb {
+            background-color: hsl(var(--primary-hue), 30%, 80%);
+            border-radius: 2px;
+        }
+
+        .card-content dl {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 30%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-content dd {
+            margin-left: 24px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 8px 0;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 4px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: hsl(var(--primary-hue), 60%, 60%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 50%);
+        }
+
+        .hint-text {
+            color: hsl(var(--primary-hue), 40%, 50%);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 65vh;
+                min-height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>进程控制学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="card-title">进程控制概念 🧠</div>
+                    <p>点击翻转查看详情</p>
+                    <p class="hint-text">(内容较长时可上下滚动)</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <div class="card-title">进程控制概念 🧠</div>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">🔧</span>核心功能</dt>
+                            <dd>对系统中所有进程实施有效管理，包括<mark>创建新进程</mark>、<mark>撤销已有进程</mark>、实现<mark>进程状态转换</mark></dd>
+                            
+                            <dt><span class="icon">💡</span>本质</dt>
+                            <dd>实现进程状态转换（创建态→就绪态→运行态→终止态/阻塞态）</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">⚛️</span>原语原子性</dt>
+                            <dd>通过<mark>关中断</mark>和<mark>开中断</mark>指令实现不可中断的操作序列</dd>
+                            
+                            <dt><span class="icon">⚠️</span>必要性</dt>
+                            <dd>防止进程状态转换过程中出现数据不一致（如PCB状态变量与队列位置不符）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="card-title">创建原语 🛠️</div>
+                    <p>点击翻转查看详情</p>
+                    <p class="hint-text">(内容较长时可上下滚动)</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <div class="card-title">创建原语 🛠️</div>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">📝</span>步骤</dt>
+                            <dd>
+                                <ol>
+                                    <li>申请空白PCB</li>
+                                    <li>分配资源</li>
+                                    <li>初始化PCB</li>
+                                    <li>插入就绪队列</li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🎯</span>触发事件</dt>
+                            <dd>
+                                <ul>
+                                    <li>用户登录成功（分时系统）</li>
+                                    <li>作业调度（批处理系统）</li>
+                                    <li>服务请求（如I/O操作）</li>
+                                    <li>应用请求（创建子进程）</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">💡</span>关键点</dt>
+                            <dd><mark>PCB是进程存在的唯一标志</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="card-title">撤销原语 ❌</div>
+                    <p>点击翻转查看详情</p>
+                    <p class="hint-text">(内容较长时可上下滚动)</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <div class="card-title">撤销原语 ❌</div>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">📝</span>步骤</dt>
+                            <dd>
+                                <ol>
+                                    <li>查找终止进程PCB</li>
+                                    <li>剥夺CPU</li>
+                                    <li>终止子进程（递归）</li>
+                                    <li>归还资源</li>
+                                    <li>删除PCB</li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🎯</span>触发事件</dt>
+                            <dd>
+                                <ul>
+                                    <li>正常结束（任务完成）</li>
+                                    <li>异常结束（如除零错误）</li>
+                                    <li>外界干预（如kill命令）</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">🌳</span>进程树机制</dt>
+                            <dd>子进程终止时资源需返还父进程（如Linux的0号1号进程）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="card-title">阻塞与唤醒原语 ⏳🔔</div>
+                    <p>点击翻转查看详情</p>
+                    <p class="hint-text">(内容较长时可上下滚动)</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <div class="card-title">阻塞与唤醒原语 ⏳🔔</div>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">⏸️</span>阻塞原语</dt>
+                            <dd>
+                                <strong>触发条件：</strong>运行态进程主动请求等待某事件（如I/O完成）<br>
+                                <strong>执行步骤：</strong>
+                                <ol>
+                                    <li>保护进程现场（保存寄存器等）</li>
+                                    <li>修改PCB状态为阻塞态</li>
+                                    <li>将PCB移入对应等待队列</li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">▶️</span>唤醒原语</dt>
+                            <dd>
+                                <strong>触发条件：</strong>进程等待的事件发生时（如I/O操作完成）<br>
+                                <strong>执行步骤：</strong>
+                                <ol>
+                                    <li>从等待队列移除PCB</li>
+                                    <li>修改状态为就绪态</li>
+                                    <li>插入就绪队列</li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">⚠️</span>重要原则</dt>
+                            <dd><mark>唤醒原语必须与阻塞原语成对出现</mark></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-pressed="false" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="false">
+                    <div class="card-title">进程切换原语 🔄</div>
+                    <p>点击翻转查看详情</p>
+                    <p class="hint-text">(内容较长时可上下滚动)</p>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <div class="card-title">进程切换原语 🔄</div>
+                    <div class="card-content">
+                        <dl>
+                            <dt><span class="icon">📝</span>功能步骤</dt>
+                            <dd>
+                                <ol>
+                                    <li>保存运行环境到PCB</li>
+                                    <li>移PCB到就绪队列</li>
+                                    <li>选择新进程</li>
+                                    <li>恢复新进程环境</li>
+                                </ol>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">⏱️</span>触发条件</dt>
+                            <dd>
+                                <ul>
+                                    <li>时间片耗尽</li>
+                                    <li>更高优先级进程到达</li>
+                                    <li>当前进程主动阻塞或终止</li>
+                                </ul>
+                            </dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><span class="icon">💾</span>关键寄存器</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>PSW</mark>：程序状态字（CPU状态）</li>
+                                    <li><mark>PC</mark>：程序计数器（下条指令地址）</li>
+                                    <li><mark>IR</mark>：指令寄存器（当前执行指令）</li>
+                                    <li>通用寄存器（运算中间结果）</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button onclick="resetCards()">重置所有卡片</button>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            // 确保只有一个卡片是翻转状态
+            if (!card.classList.contains('flipped')) {
+                document.querySelectorAll('.card.flipped').forEach(flippedCard => {
+                    flippCard(flippedCard);
+                });
+            }
+            
+            card.classList.toggle('flipped');
+            const isFlipped = card.classList.contains('flipped');
+            card.setAttribute('aria-pressed', isFlipped);
+            
+            // Update aria-hidden attributes
+            const front = card.querySelector('.card-front');
+            const back = card.querySelector('.card-back');
+            front.setAttribute('aria-hidden', isFlipped);
+            back.setAttribute('aria-hidden', !isFlipped);
+            
+            // 滚动到顶部确保内容可见
+            if (isFlipped) {
+                const content = card.querySelector('.card-content');
+                content.scrollTop = 0;
+            }
+        }
+        
+        // 修复函数名拼写错误
+        function flippCard(card) {
+            card.classList.remove('flipped');
+            card.setAttribute('aria-pressed', 'false');
+            const front = card.querySelector('.card-front');
+            const back = card.querySelector('.card-back');
+            front.setAttribute('aria-hidden', 'false');
+            back.setAttribute('aria-hidden', 'true');
+        }
+        
+        function resetCards() {
+            document.querySelectorAll('.card').forEach(card => {
+                flippCard(card);
+            });
+        }
+        
+        // 改进的触摸支持
+        document.querySelectorAll('.card').forEach(card => {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            
+            card.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, {passive: true});
+            
+            card.addEventListener('touchend', function(e) {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                // 检查是否是垂直滚动（不触发翻转）
+                const yDiff = Math.abs(touchEndY - touchStartY);
+                const xDiff = Math.abs(touchEndX - touchStartX);
+                
+                // 如果是水平滑动或轻微触摸（非滚动）则翻转卡片
+                if (xDiff > yDiff || (xDiff < 10 && yDiff < 10)) {
+                    flipCard(this);
+                }
+            }, {passive: true});
+            
+            // 防止卡片内容触摸时触发翻转
+            card.querySelectorAll('.card-content').forEach(content => {
+                content.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
