@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作系统体系结构学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-blue: hsl(var(--primary-hue), 80%, 40%);
+            --card-yellow: hsl(var(--secondary-hue), 80%, 60%);
+            --highlight: hsl(var(--secondary-hue), 90%, 70%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 30%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            touch-action: pan-y; /* 允许垂直滚动 */
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow);
+            background-color: white;
+            overflow: hidden; /* 防止内容溢出 */
+        }
+
+        .card-front {
+            background-color: var(--card-blue);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-back-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 8px; /* 为滚动条留空间 */
+        }
+
+        .card-back h3 {
+            color: var(--card-blue);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .card-back ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card-back li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: hsl(var(--primary-hue), 80%, 40%);
+        }
+
+        @media (max-width: 375px) {
+            .card {
+                height: 280px;
+            }
+            .card-front {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>操作系统体系结构学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容">
+            <div class="card-face card-front">
+                <div>操作系统内核必须包含哪些功能？</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-back-content">
+                    <div class="emoji">💻</div>
+                    <h3>内核核心功能</h3>
+                    <ul>
+                        <li><mark>时钟管理</mark>：通过时钟中断实现计算机计时功能</li>
+                        <li><mark>中断处理</mark>：负责实现中断机制，与硬件交互密切</li>
+                        <li><mark>原语</mark>：具有原子性的特殊程序，执行不可中断</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>非核心功能</strong>：如GUI、应用程序开发等不属于内核功能</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容">
+            <div class="card-face card-front">
+                <div>什么是大内核？</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-back-content">
+                    <div class="emoji">🏢</div>
+                    <h3>大内核特点</h3>
+                    <ul>
+                        <li>将所有操作系统功能模块都包含在内核中</li>
+                        <li>所有内核功能都运行在<mark>内核态</mark></li>
+                        <li>典型代表：<strong>Linux、UNIX系统</strong></li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>优点</strong>：性能高（状态转换少，服务请求只需2次CPU状态转换）</p>
+                    <p><strong>缺点</strong>：内核代码庞大，结构混乱，难以维护</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容">
+            <div class="card-face card-front">
+                <div>什么是微内核？</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-back-content">
+                    <div class="emoji">🏗️</div>
+                    <h3>微内核特点</h3>
+                    <ul>
+                        <li>只保留与硬件最紧密的<mark>核心功能</mark>在内核中</li>
+                        <li>其他功能（如管理功能）运行在<mark>用户态</mark></li>
+                        <li>典型代表：<strong>Windows NT系统</strong></li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>优点</strong>：内核功能少，结构清晰，方便维护</p>
+                    <p><strong>缺点</strong>：需要频繁状态转换（服务请求需6次状态转换），性能较低</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容">
+            <div class="card-face card-front">
+                <div>原语的特点是什么？</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-back-content">
+                    <div class="emoji">⚛️</div>
+                    <h3>原语特性</h3>
+                    <ul>
+                        <li>具有<mark>原子性</mark>：程序要么全部执行完成，要么完全不执行</li>
+                        <li>执行过程<strong>不可中断</strong></li>
+                        <li>即使有外部中断信号，CPU也会先完成原语执行</li>
+                        <li>常见例子：设备驱动、CPU切换等</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看内容">
+            <div class="card-face card-front">
+                <div>大内核 vs 微内核</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-back-content">
+                    <div class="emoji">🆚</div>
+                    <h3>核心区别对比</h3>
+                    <ul>
+                        <li><strong>功能范围</strong>：大内核包含所有功能，微内核只保留核心硬件功能</li>
+                        <li><strong>性能</strong>：大内核性能高（状态转换少），微内核性能低</li>
+                        <li><strong>维护难度</strong>：大内核代码庞大难维护，微内核结构清晰易维护</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><strong>状态转换次数</strong>：大内核2次 vs 微内核6次（相同服务请求）</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">5张卡片</div>
+
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            let startX, startY;
+            let isScrolling = false;
+            const threshold = 10; // 滑动阈值(像素)
+            
+            // 触摸开始
+            card.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isScrolling = false;
+            }, { passive: true });
+            
+            // 触摸移动
+            card.addEventListener('touchmove', function(e) {
+                if (!startX || !startY) return;
+                
+                const xDiff = Math.abs(e.touches[0].clientX - startX);
+                const yDiff = Math.abs(e.touches[0].clientY - startY);
+                
+                // 判断是垂直滚动还是水平滑动
+                if (yDiff > xDiff && yDiff > threshold) {
+                    isScrolling = true;
+                } else if (xDiff > yDiff && xDiff > threshold) {
+                    e.preventDefault(); // 阻止水平滑动时的默认行为
+                }
+            }, { passive: false });
+            
+            // 触摸结束
+            card.addEventListener('touchend', function(e) {
+                if (!isScrolling) {
+                    this.classList.toggle('flipped');
+                }
+                startX = null;
+                startY = null;
+                isScrolling = false;
+            }, { passive: true });
+            
+            // 点击事件(桌面端)
+            card.addEventListener('click', function() {
+                // 确保不是由触摸事件触发的点击
+                if (!('ontouchstart' in window)) {
+                    this.classList.toggle('flipped');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
