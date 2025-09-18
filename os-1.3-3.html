@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统调用学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* Blue */
+            --secondary-hue: 45; /* Yellow */
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 70%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: var(--card-shadow);
+            background-color: white;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 90%, 96%);
+            color: hsl(var(--primary-hue), 70%, 30%);
+            font-weight: bold;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            border: 2px solid hsl(var(--primary-hue), 70%, 70%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 70%, 40%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 70%);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 12px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: hsl(var(--primary-hue), 70%, 50%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 70%, 40%);
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-front {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>系统调用学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="系统调用定义卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="icon">📌</span> 什么是系统调用？
+                </div>
+                <div class="card-back">
+                    <div class="card-title">📌 系统调用定义</div>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>系统调用</mark>是操作系统提供给应用程序请求内核服务的编程接口</li>
+                            <li>作用：作为用户程序和硬件之间的桥梁，实现资源管理和服务请求</li>
+                            <li>接口类型：
+                                <ul>
+                                    <li><mark>命令接口</mark>：包括GUI和命令行接口，面向终端用户</li>
+                                    <li><mark>程序接口</mark>：由系统调用组成，面向应用程序开发者</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>层级关系：</strong></p>
+                        <ol>
+                            <li>模拟硬件层</li>
+                            <li>操作系统层（提供系统调用）</li>
+                            <li>高级语言库函数层</li>
+                            <li>应用程序层</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="系统调用必要性卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="icon">🖨️</span> 为什么需要系统调用？
+                </div>
+                <div class="card-back">
+                    <div class="card-title">🖨️ 系统调用的必要性</div>
+                    <div class="card-content">
+                        <p><strong>打印机资源占用案例：</strong></p>
+                        <ul>
+                            <li><mark>场景</mark>：WPS和Word两个进程同时请求打印服务</li>
+                            <li><mark>问题</mark>：打印内容混杂（先打印一行WPS内容，再打印一行Word内容）</li>
+                            <li><mark>原因</mark>：进程对共享资源（打印机）的无序竞争访问</li>
+                            <li><mark>解决方案</mark>：
+                                <ul>
+                                    <li>操作系统统一管理共享资源</li>
+                                    <li>通过系统调用实现资源的互斥访问</li>
+                                    <li>内核协调处理并发请求</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>关键结论：</strong><br>
+                        <mark>系统调用</mark>是保证资源共享安全性的必要机制</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="系统调用与库函数区别卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="icon">🔄</span> 系统调用 vs 库函数
+                </div>
+                <div class="card-back">
+                    <div class="card-title">🔄 系统调用与库函数的区别</div>
+                    <div class="card-content">
+                        <p><strong>关键区别：</strong></p>
+                        <dl>
+                            <dt><mark>提供者</mark></dt>
+                            <dd>系统调用：操作系统内核</dd>
+                            <dd>库函数：高级语言</dd>
+                            
+                            <dt><mark>特权需求</mark></dt>
+                            <dd>系统调用：需要特权指令的功能必须通过系统调用</dd>
+                            <dd>库函数：部分无需特权</dd>
+                            
+                            <dt><mark>封装关系</mark></dt>
+                            <dd>系统调用：底层接口</dd>
+                            <dd>库函数：可能封装系统调用或完全用户态实现</dd>
+                        </dl>
+                        <div class="divider"></div>
+                        <p><strong>示例：</strong></p>
+                        <ul>
+                            <li><mark>必须使用系统调用</mark>：文件创建、内存分配、设备I/O、进程控制等</li>
+                            <li><mark>无需系统调用</mark>：取绝对值、三角函数等数学运算</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="系统调用执行过程卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="icon">⚙️</span> 系统调用执行过程
+                </div>
+                <div class="card-back">
+                    <div class="card-title">⚙️ 系统调用执行步骤</div>
+                    <div class="card-content">
+                        <ol>
+                            <li><mark>传参阶段</mark>：通过寄存器传递参数（系统调用类型和具体参数）</li>
+                            <li><mark>陷入指令</mark>：执行trap/访管指令（非特权指令但会引发中断）</li>
+                            <li><mark>权限转换</mark>：CPU从用户态切换到内核态</li>
+                            <li><mark>入口程序</mark>：执行系统调用对应的内核处理程序</li>
+                            <li><mark>服务执行</mark>：内核完成请求的服务</li>
+                            <li><mark>返回恢复</mark>：切换回用户态继续执行应用程序</li>
+                        </ol>
+                        <div class="divider"></div>
+                        <p><strong>关键细节：</strong></p>
+                        <ul>
+                            <li>陷入指令是用户态到内核态的唯一合法入口</li>
+                            <li>参数1通常指明系统调用类型</li>
+                            <li>系统调用入口程序本质是特殊的中断处理程序</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="系统调用分类卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <span class="icon">🗂️</span> 系统调用分类
+                </div>
+                <div class="card-back">
+                    <div class="card-title">🗂️ 系统调用功能分类</div>
+                    <div class="card-content">
+                        <p><strong>典型功能分类：</strong></p>
+                        <ul>
+                            <li><mark>设备管理</mark>：请求/释放设备</li>
+                            <li><mark>文件管理</mark>：创建/删除文件</li>
+                            <li><mark>进程控制</mark>：创建/终止进程</li>
+                            <li><mark>进程通信</mark>：消息传递</li>
+                            <li><mark>内存管理</mark>：分配/回收内存</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><strong>核心要点：</strong></p>
+                        <ul>
+                            <li>所有共享资源操作必须通过系统调用实现</li>
+                            <li>陷入指令的三个名称：trap指令/访管指令/陷入指令</li>
+                            <li>系统调用请求在用户态发起，处理在内核态完成</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="reset-btn">重置所有卡片</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Card flip functionality
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Add keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // Reset all cards
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                cards.forEach(card => {
+                    card.classList.remove('flipped');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
