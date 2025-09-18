@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进程管理学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210; /* 蓝色 */
+            --secondary-hue: 45; /* 黄色 */
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight-color: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 300px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--border-radius);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 60%, 95%);
+            color: hsl(var(--primary-hue), 60%, 30%);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .card-content li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: hsl(var(--primary-hue), 60%, 60%);
+            font-weight: bold;
+        }
+
+        mark {
+            background-color: var(--highlight-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-front, .card-back {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 进程管理学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1: 进程概念 -->
+        <div class="card" tabindex="0" aria-label="进程概念卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">🔍</span> 进程 vs 程序
+            </div>
+            <div class="card-back">
+                <div class="card-title">🔍 进程 vs 程序</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>程序</mark>：静态存放在磁盘中的可执行文件（如QQ.exe），是指令的集合</li>
+                        <li><mark>进程</mark>：动态的程序执行过程，同一程序多次执行会对应多个不同进程</li>
+                        <li>示例：打开3个QQ登录不同账号，系统会创建3个独立进程，但都运行相同的QQ程序</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="emoji">💡</span> <strong>关键区别</strong>：程序是静态的，进程是动态的</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2: 进程组成 -->
+        <div class="card" tabindex="0" aria-label="进程组成卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">🧩</span> 进程组成
+            </div>
+            <div class="card-back">
+                <div class="card-title">🧩 进程组成</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>PCB（进程控制块）</mark>：操作系统管理进程所需的所有信息</li>
+                        <li><mark>程序段</mark>：程序的指令序列</li>
+                        <li><mark>数据段</mark>：程序运行中产生的数据</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="emoji">📌</span> <strong>PCB内容</strong>：进程描述信息、控制管理信息、资源分配清单、处理机信息</p>
+                    <p><span class="emoji">🐧</span> Linux中PCB实现为<mark>task_struct</mark>结构体（1900+行代码定义）</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 进程特征 -->
+        <div class="card" tabindex="0" aria-label="进程特征卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">🌟</span> 进程特征
+            </div>
+            <div class="card-back">
+                <div class="card-title">🌟 进程特征</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>动态性</mark>：最基本的特征，有创建、执行、消亡的生命周期</li>
+                        <li><mark>并发性</mark>：多个进程实体可同时存在于内存并发执行</li>
+                        <li><mark>独立性</mark>：独立运行、获取资源、接受调度的基本单位</li>
+                        <li><mark>异步性</mark>：各进程以不可预知速度推进</li>
+                        <li><mark>结构性</mark>：每个进程都有PCB+程序段+数据段的结构</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: PID机制 -->
+        <div class="card" tabindex="0" aria-label="PID机制卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">🆔</span> PID机制
+            </div>
+            <div class="card-back">
+                <div class="card-title">🆔 PID机制</div>
+                <div class="card-content">
+                    <ul>
+                        <li>每个进程有唯一<mark>进程ID（PID）</mark>，类似身份证号</li>
+                        <li>操作系统通过PID区分名称相同的进程</li>
+                        <li>新建进程时PID通常采用<mark>递增分配策略</mark></li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="emoji">🔑</span> <strong>关键点</strong>：PID是操作系统识别和管理进程的重要标识</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: 进程实体 vs 进程 -->
+        <div class="card" tabindex="0" aria-label="进程实体与进程卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">🔄</span> 进程实体 vs 进程
+            </div>
+            <div class="card-back">
+                <div class="card-title">🔄 进程实体 vs 进程</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>进程实体</mark>：静态的快照（PCB+程序段+数据段）</li>
+                        <li><mark>进程</mark>：动态的进程实体运行过程</li>
+                        <li>资源分配：进程是系统资源分配和调度的基本单位</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="emoji">📝</span> <strong>考试重点</strong>：PCB是进程存在的唯一标志</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片6: 关键区别 -->
+        <div class="card" tabindex="0" aria-label="关键区别卡片，点击翻转查看详情" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <span class="emoji">❗</span> 关键区别
+            </div>
+            <div class="card-back">
+                <div class="card-title">❗ 关键区别</div>
+                <div class="card-content">
+                    <ul>
+                        <li><mark>程序 vs 进程</mark>：静态指令集合 vs 动态执行过程</li>
+                        <li><mark>进程实体 vs 进程</mark>：静态快照 vs 动态运行过程</li>
+                        <li>同一程序的多次执行对应不同进程（不同PID和数据段）</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <p><span class="emoji">🧠</span> <strong>记忆提示</strong>：程序是死的，进程是活的</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加触摸事件支持
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 触摸开始事件
+                card.addEventListener('touchstart', function(e) {
+                    this.classList.toggle('flipped');
+                    e.preventDefault(); // 防止触摸事件触发其他行为
+                });
+                
+                // 键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        this.classList.toggle('flipped');
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
