@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>令牌传递协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 100%, 95%), var(--card-bg));
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+            color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 12px;
+            color: hsl(var(--primary-hue), 60%, 30%);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), 60%, 50%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), 60%, 40%);
+        }
+
+        @media (max-width: 480px) {
+            .card-title {
+                font-size: 1.2rem;
+            }
+            .card-face {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 令牌传递协议学习卡片</h1>
+    
+    <div class="card-container">
+        <div class="card" id="card1" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">令牌环网技术起源</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">🔍 令牌环网技术起源</h2>
+                <div class="card-content">
+                    <ul>
+                        <li><span class="icon">🏛️</span> <mark>技术起源</mark>: IBM公司于1984年开发</li>
+                        <li><span class="icon">🔄</span> 采用<mark>环形拓扑结构</mark>实现局域网连接</li>
+                        <li><span class="icon">⚔️</span> 竞争对手: 以太网(总线型拓扑)存在信道冲突问题</li>
+                        <li><span class="icon">📉</span> 被淘汰原因: 以太网交换机技术出现后</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>核心特点</dt>
+                        <dd>节点轮询访问信道，只有获得<mark>令牌</mark>的节点才能发送数据</dd>
+                        <dd>完全避免<mark>信道冲突</mark></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card2" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">令牌控制机制</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">⚙️ 令牌控制机制</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>令牌帧</dt>
+                        <dd>包含当前获得令牌的<mark>节点编号</mark></dd>
+                        
+                        <dt>数据发送规则</dt>
+                        <dd>获得令牌的节点可将令牌帧转换为<mark>数据帧</mark>发送</dd>
+                        <dd>每次只能发送<mark>一帧数据</mark></dd>
+                        <dd>无数据发送时立即将令牌传递给下一节点</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="icon">🔄</span> 传递顺序: 严格按<mark>节点编号</mark>单向传递</li>
+                        <li><span class="icon">🚫</span> 冲突避免: 任何时候只有一个节点能发送数据</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card3" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">数据帧传输流程</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">📨 数据帧传输流程</h2>
+                <div class="card-content">
+                    <ol>
+                        <li>发送节点将<mark>令牌帧</mark>转为含目标地址的<mark>数据帧</mark></li>
+                        <li>数据帧沿环形网络<mark>单向传递</mark>，非目标节点直接转发</li>
+                        <li>目标节点<mark>复制数据</mark>并标记已接收为TRUE</li>
+                        <li>数据帧返回源节点后，根据接收状态决定是否重发(最多重试2-3次)</li>
+                    </ol>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>关键字段</dt>
+                        <dd><mark>令牌号</mark>、源/目的地址(48位MAC地址)</dd>
+                        <dd>数据部分、<mark>已接收标志</mark>(初始为FALSE)</dd>
+                        <dd><mark>CRC校验</mark>字段</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card4" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">令牌帧与数据帧结构</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">📜 令牌帧与数据帧结构</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>令牌帧 (24bit)</dt>
+                        <dd><mark>开始定界符</mark>(8bit)</dd>
+                        <dd><mark>访问控制字段</mark>(8bit，含令牌号)</dd>
+                        <dd><mark>结束定界符</mark>(8bit)</dd>
+                        
+                        <dt>数据帧</dt>
+                        <dd><mark>开始定界符</mark>(SD，8bit)</dd>
+                        <dd><mark>访问控制</mark>(AC，8bit，含令牌号)</dd>
+                        <dd>帧控制(FC，8bit)</dd>
+                        <dd><mark>目的地址</mark>(DA，48bit)</dd>
+                        <dd><mark>源地址</mark>(SA，48bit)</dd>
+                        <dd>数据(最多4500×8bit)</dd>
+                        <dd><mark>CRC校验</mark>(32bit)</dd>
+                        <dd>结束定界符(ED，8bit)</dd>
+                        <dd><mark>帧状态</mark>(FS，8bit，含已接收标志)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card5" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">MAU设备功能</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">🖥️ MAU设备功能</h2>
+                <div class="card-content">
+                    <ul>
+                        <li><span class="icon">🔢</span> <mark>节点管理</mark>: 通过8个接口连接计算机，分配唯一节点编号</li>
+                        <li><span class="icon">🔗</span> <mark>网络扩展</mark>: 通过RI(Ring In)和RO(Ring Out)接口级联多台MAU</li>
+                        <li><span class="icon">🎛️</span> <mark>集中控制</mark>: 协调令牌传递、节点编号分配等核心功能</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <dl>
+                        <dt>组网方式</dt>
+                        <dd>单MAU构建小型环网(2-8节点)</dd>
+                        <dd>多MAU级联构建大型环网(通过RI/RO接口串联)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card6" tabindex="0" role="button" aria-pressed="false" aria-label="学习卡片，点击翻转">
+            <div class="card-face card-front">
+                <h2 class="card-title">协议特点与考点</h2>
+                <div>👆 点击查看详情</div>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">📝 协议特点与考点</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>优点</dt>
+                        <dd>高负载网络下效率稳定(<mark>冲突概率0%</mark>)</dd>
+                        
+                        <dt>局限性</dt>
+                        <dd>必须使用<mark>专用MAU设备</mark></dd>
+                        <dd>节点故障可能影响整个环网</dd>
+                        <dd>已被<mark>以太网交换机技术</mark>淘汰</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <ul>
+                        <li><span class="icon">🔑</span> 考试重点1: <mark>令牌帧与数据帧的转换条件</mark></li>
+                        <li><span class="icon">🔄</span> 考试重点2: 数据帧的<mark>传输流程</mark>(绕环一周机制)</li>
+                        <li><span class="icon">✅</span> 考试重点3: <mark>已接收标志</mark>的作用和异常处理</li>
+                        <li><span class="icon">⚖️</span> 考试重点4: 与<mark>CSMA/CD协议</mark>的对比</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" aria-label="上一张卡片">⬅️ 上一张</button>
+        <button id="nextBtn" aria-label="下一张卡片">下一张 ➡️</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            let currentCardIndex = 0;
+            
+            // 初始化显示第一张卡片
+            updateCardVisibility();
+            
+            // 为每张卡片添加点击事件
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 上一张按钮
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    currentCardIndex--;
+                    updateCardVisibility();
+                }
+            });
+            
+            // 下一张按钮
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    currentCardIndex++;
+                    updateCardVisibility();
+                }
+            });
+            
+            // 更新卡片可见性
+            function updateCardVisibility() {
+                cards.forEach((card, index) => {
+                    if (index === currentCardIndex) {
+                        card.style.display = 'block';
+                        // 确保新卡片是正面朝上
+                        card.classList.remove('flipped');
+                        // 滚动到可视区域
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // 更新按钮状态
+                document.getElementById('prevBtn').disabled = currentCardIndex === 0;
+                document.getElementById('nextBtn').disabled = currentCardIndex === cards.length - 1;
+            }
+            
+            // 添加触摸事件支持
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const threshold = 50; // 最小滑动距离阈值
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // 向左滑动 - 下一张
+                    if (currentCardIndex < cards.length - 1) {
+                        currentCardIndex++;
+                        updateCardVisibility();
+                    }
+                } else if (touchEndX > touchStartX + threshold) {
+                    // 向右滑动 - 上一张
+                    if (currentCardIndex > 0) {
+                        currentCardIndex--;
+                        updateCardVisibility();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
