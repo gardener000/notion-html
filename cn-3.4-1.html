@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信道划分介质访问控制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --primary: hsl(var(--primary-hue), 80%, 50%);
+            --radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            perspective: 1000px;
+            cursor: pointer;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            top: 0;
+            left: 0;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .card-emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 12px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 8px;
+            color: var(--primary);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card-content li {
+            margin-bottom: 6px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .memory-tip {
+            display: inline-block;
+            background-color: hsl(var(--secondary-hue), 90%, 90%);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>信道划分介质访问控制</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">📡</div>
+                <div class="card-title">介质访问控制 (MAC)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>定义</dt>
+                        <dd>多个节点共享同一个"总线型"广播信道时，为避免信号冲突而采取的控制机制。</dd>
+                        
+                        <dt>应用场景</dt>
+                        <dd>
+                            <ul>
+                                <li>早期同轴电缆网络</li>
+                                <li>集线器连接网络</li>
+                                <li>现代WIFI/5G等无线通信技术</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>核心问题</dt>
+                        <dd>当<mark>节点A</mark>和<mark>节点B</mark>同时发送数据时会产生信号冲突，需要通过控制各节点对传输介质的访问来减少或避免冲突。</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 共享信道冲突控制</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">📚</div>
+                <div class="card-title">408考研大纲</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>考查范围</dt>
+                        <dd>数据链路层中的介质访问控制部分，包含三种主要方法：</dd>
+                        
+                        <dt>三种方法</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>信道划分</mark>: 频分/时分/波分/码分多路复用</li>
+                                <li><mark>随机访问</mark>: ALOHA/CSMA系列协议</li>
+                                <li><mark>轮询访问</mark>: 令牌传递协议</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 三种方法对比</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">⏱️</div>
+                <div class="card-title">时分复用 (TDM)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>基本原理</dt>
+                        <dd>将时间划分为等长的<mark>TDM帧</mark>，每个帧再分为m个等长时隙，固定分配给m对节点使用。</dd>
+                        
+                        <dt>宿舍案例</dt>
+                        <dd>六人间轮流发言机制，每人固定时间发言，避免声音信号干扰。</dd>
+                        
+                        <dt>技术特点</dt>
+                        <dd>
+                            <ul>
+                                <li>每个节点分配的时隙在帧中位置固定</li>
+                                <li>节点最多获得信道总带宽的1/m</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>带宽限制: 节点只能获得固定比例的信道带宽</li>
+                                <li>资源浪费: 当节点无数据传输时，分配的时隙闲置</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 固定时隙分配</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">📊</div>
+                <div class="card-title">统计时分复用 (STDM)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>改进原理</dt>
+                        <dd>在TDM基础上<mark>动态按需分配</mark>时隙，又称异步时分复用。</dd>
+                        
+                        <dt>优势</dt>
+                        <dd>
+                            <ul>
+                                <li>节点可临时获得全部带宽资源</li>
+                                <li>显著提高信道利用率</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>实现方式</dt>
+                        <dd>统计各节点对信道的使用需求，动态调整时隙分配。</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 动态分配 vs 固定分配</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">🎛️</div>
+                <div class="card-title">频分复用 (FDM)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>基本原理</dt>
+                        <dd>将信道总频带划分为多个<mark>互不重叠</mark>的子频带，每对节点使用一个子信道。</dd>
+                        
+                        <dt>宿舍案例</dt>
+                        <dd>按声音频率区分说话者(低音20-5500Hz，中音6000-12500Hz，高音13000-20000Hz)。</dd>
+                        
+                        <dt>技术特点</dt>
+                        <dd>
+                            <ul>
+                                <li>设置隔离频带防止信号干扰</li>
+                                <li>使用复用器复合信号，分用器分离信号</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优缺点</dt>
+                        <dd>
+                            <ul>
+                                <li>优点: 节点可同时发送信号，充分利用总带宽</li>
+                                <li>缺点: 仅适用于模拟信号传输</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 子频带隔离</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">🌈</div>
+                <div class="card-title">波分复用 (WDM)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>本质</dt>
+                        <dd>光信号的<mark>频分复用</mark>，利用C=λ/关系(光速=波长×频率)。</dd>
+                        
+                        <dt>实现方式</dt>
+                        <dd>
+                            <ul>
+                                <li>复用器复合不同波长光信号</li>
+                                <li>分用器按波长分离信号</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>优势</dt>
+                        <dd>光纤频带范围大，适合拆分为多个子信道。</dd>
+                        
+                        <dt>应用</dt>
+                        <dd>单根光纤逻辑上拆分为多个信道，提高传输效率。</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 光信号的FDM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-emoji">🔢</div>
+                <div class="card-title">码分复用 (CDMA)</div>
+            </div>
+            <div class="card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>特点</dt>
+                        <dd>通过<mark>编码区分</mark>信号，允许多节点同时传输。</dd>
+                        
+                        <dt>考试重点</dt>
+                        <dd>可能考察计算题(难度高于其他复用技术)。</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆点: 编码区分信号</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加触摸事件支持
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                // 触摸开始事件
+                card.addEventListener('touchstart', function(e) {
+                    this.style.transition = 'none';
+                }, {passive: true});
+                
+                // 触摸结束事件
+                card.addEventListener('touchend', function(e) {
+                    this.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    this.classList.toggle('flipped');
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
