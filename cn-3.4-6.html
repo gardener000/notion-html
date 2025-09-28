@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSMA/CA协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --primary-color: hsl(var(--primary-hue), 80%, 50%);
+            --secondary-color: hsl(45, 100%, 50%);
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .flashcards-container {
+            display: grid;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            width: 100%;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front,
+        .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flashcard-front {
+            border: 2px solid var(--primary-color);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .card-content {
+            width: 100%;
+            text-align: left;
+        }
+
+        .card-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .card-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        mark {
+            background-color: hsl(45, 100%, 85%);
+            padding: 0 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .flashcard {
+                height: 350px;
+            }
+            
+            .flashcard-front,
+            .flashcard-back {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CSMA/CA协议学习卡片</h1>
+    
+    <div class="flashcards-container">
+        <!-- Card 1 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📡</div>
+                    <h2 class="card-title">CSMA/CA基本概念</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>CSMA/CA</mark>（载波监听多路访问/冲突避免）是无线局域网（如WiFi）的介质访问控制协议</li>
+                            <li>核心机制：<mark>载波监听</mark>，发送前监听信道是否空闲</li>
+                            <li>与CSMA/CD的区别：
+                                <ul>
+                                    <li><mark>CSMA/CD</mark>：用于有线网络，支持边发送边检测冲突</li>
+                                    <li><mark>CSMA/CA</mark>：用于无线网络，通过预约和退避机制避免冲突</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⚠️</div>
+                    <h2 class="card-title">无线网络的问题</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>隐蔽站问题</mark>：节点因距离无法感知彼此信号，导致接收端冲突</li>
+                            <li>示例：A和B同时向AP发送数据，但因距离远无法检测对方信号</li>
+                            <li>硬件限制：
+                                <ul>
+                                    <li>接收信号强度远小于发送信号强度</li>
+                                    <li>无线信号强度动态变化</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⚙️</div>
+                    <h2 class="card-title">CSMA/CA工作机制</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>先听后发</mark>：信道空闲时等待DIFS间隔后发送完整帧</li>
+                            <li><mark>忙则退避</mark>：信道忙时启动二进制指数退避算法</li>
+                            <li><mark>接收确认</mark>：采用停止等待协议，接收方返回ACK</li>
+                            <li><mark>信道预约机制</mark>（可选）：
+                                <ul>
+                                    <li>发送方广播RTS帧</li>
+                                    <li>AP回复CTS帧</li>
+                                    <li>其他节点收到CTS后进入"禁言"状态</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">⏱️</div>
+                    <h2 class="card-title">帧间间隔(IFS)</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>DIFS</mark>：最长（如4ms），用于帧事务开始前的强制等待</li>
+                            <li><mark>SIFS</mark>：最短（如1ms），用于接收方处理时间（如发送ACK）</li>
+                            <li>PIFS：中等长度（考研可不关注）</li>
+                            <li>时序关系：<mark>DIFS > PIFS > SIFS</mark></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">🔒</div>
+                    <h2 class="card-title">解决隐蔽站问题</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>RTS/CTS流程</mark>：
+                                <ol>
+                                    <li>发送方监听信道，空闲DIFS后广播RTS</li>
+                                    <li>AP广播CTS，其他节点收到后禁言</li>
+                                    <li>发送方收到CTS后发送数据</li>
+                                    <li>AP校验后返回ACK</li>
+                                </ol>
+                            </li>
+                            <li>异常处理：未收到CTS时执行退避并重试</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 6 -->
+        <div class="flashcard" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="emoji">📝</div>
+                    <h2 class="card-title">协议要点</h2>
+                </div>
+                <div class="flashcard-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>发送方规则</mark>：
+                                <ul>
+                                    <li>监听信道，空闲DIFS后发送</li>
+                                    <li>信道忙时执行随机退避</li>
+                                </ul>
+                            </li>
+                            <li><mark>接收方规则</mark>：
+                                <ul>
+                                    <li>采用停止等待协议，返回ACK</li>
+                                    <li>超时未收到ACK则触发发送方退避</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="divider"></div>
+                        <p><mark>记忆口诀</mark>：<br>
+                        先听再发，忙则退避；<br>
+                        隐蔽问题，RTS/CTS；<br>
+                        DIFS最长，SIFS最短；<br>
+                        ACK必返，超时重传。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashcards = document.querySelectorAll('.flashcard');
+            
+            flashcards.forEach(card => {
+                // Click/tap event
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // Prevent scrolling when touching cards on mobile
+            flashcards.forEach(card => {
+                card.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
