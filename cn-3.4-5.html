@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSMA/CD协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 20%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: hsl(var(--primary-hue), 20%, 95%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 50%, 40%);
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 12px;
+        }
+
+        .card-front {
+            background-color: hsl(var(--primary-hue), 30%, 95%);
+            border: 2px solid hsl(var(--primary-hue), 50%, 70%);
+        }
+
+        .card-back {
+            background-color: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+            color: hsl(var(--primary-hue), 50%, 40%);
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--primary-hue), 30%, 85%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CSMA/CD协议学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="CSMA/CD核心原则卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🔑</div>
+                    <h2 class="card-title">CSMA/CD核心原则</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>16字口诀</mark>：先听后发，边听边发，冲突停发，随机重发</li>
+                            <li class="divider"></li>
+                            <li><mark>冲突处理</mark>：检测到冲突立即停止发送，采用截断二进制指数退避算法确定重发时间</li>
+                            <li class="divider"></li>
+                            <li><mark>操作流程</mark>：先听后发 → 边听边发 → 冲突停发 → 随机重发</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="争用期概念卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">⏱️</div>
+                    <h2 class="card-title">争用期</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>定义</mark>：确认成功占用信道所需的最长时间段</li>
+                            <li class="divider"></li>
+                            <li><mark>计算公式</mark>：争用期 = 2 × 最大单向传播时延</li>
+                            <li class="divider"></li>
+                            <li><mark>物理意义</mark>：若争用期内未检测到冲突，则确认传输成功</li>
+                            <li class="divider"></li>
+                            <li><mark>示例计算</mark>：
+                                <ul>
+                                    <li>节点距离6000m，信号速度200m/μs</li>
+                                    <li>最大单向传播时延 = 6000/200 = 30μs</li>
+                                    <li>争用期 = 2×30μs = 60μs</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="帧长限制卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📏</div>
+                    <h2 class="card-title">帧长限制</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>最短帧长</mark>：
+                                <ul>
+                                    <li>计算公式：最短帧长 = 2×最大单向传播时延×信道带宽</li>
+                                    <li>以太网规定：64字节（512比特）</li>
+                                    <li>作用：确保发送方能检测到冲突</li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li><mark>最长帧长</mark>：
+                                <ul>
+                                    <li>以太网规定：1518字节</li>
+                                    <li>目的：防止节点长期独占信道</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="退避算法卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🎲</div>
+                    <h2 class="card-title">退避算法</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>随机等待时间</mark> = r × 争用期</li>
+                            <li class="divider"></li>
+                            <li><mark>随机数r的确定</mark>：
+                                <ul>
+                                    <li>冲突次数k ≤ 10：r ∈ [0, 2ᵏ-1]</li>
+                                    <li>k > 10：r ∈ [0, 2¹⁰-1]</li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li><mark>关键阈值</mark>：
+                                <ul>
+                                    <li>第10次冲突：随机数区间分水岭</li>
+                                    <li>第16次冲突：放弃传输并报告网络层</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="接收方处理流程卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">📥</div>
+                    <h2 class="card-title">接收方处理流程</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ol>
+                            <li>检查帧长是否≥最短帧长</li>
+                            <li class="divider"></li>
+                            <li>确认目的地址是否匹配</li>
+                            <li class="divider"></li>
+                            <li>进行CRC差错校验</li>
+                            <li class="divider"></li>
+                            <li><mark>异常处理</mark>：
+                                <ul>
+                                    <li>短帧直接丢弃</li>
+                                    <li>非目标地址帧丢弃</li>
+                                    <li>校验错误帧丢弃</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" tabindex="0" role="button" aria-label="重要对比卡片，点击翻转">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="emoji">🆚</div>
+                    <h2 class="card-title">最短 vs 最长帧长</h2>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt><mark>最短帧长</mark></dt>
+                            <dd>目的：确保冲突检测</dd>
+                            <dd>以太网规定：64字节</dd>
+                            <dd>计算公式：2×传播时延×带宽</dd>
+                            
+                            <div class="divider"></div>
+                            
+                            <dt><mark>最长帧长</mark></dt>
+                            <dd>目的：防止信道独占</dd>
+                            <dd>以太网规定：1518字节</dd>
+                            <dd>无计算公式（固定值）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
