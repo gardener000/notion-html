@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>码分复用技术学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 60%, 35%);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px hsla(0, 0%, 0%, 0.15);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 60%, 95%), white);
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card.flipped .card-front {
+            transform: rotateY(180deg);
+        }
+
+        .card.flipped .card-back {
+            transform: rotateY(360deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), 60%, 35%);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .card-content dl {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 12px 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            color: hsl(var(--primary-hue), 60%, 35%);
+        }
+
+        .card-content dd {
+            margin-left: 0;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 80%, 90%);
+            padding: 0 4px;
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: hsl(var(--primary-hue), 60%, 35%);
+            font-weight: 600;
+        }
+
+        .memory-tip {
+            display: inline-flex;
+            align-items: center;
+            background-color: hsl(var(--secondary-hue), 80%, 90%);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .memory-tip::before {
+            content: "💡";
+            margin-right: 6px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-face {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>码分复用技术(CDM)学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1 -->
+        <div class="card" tabindex="0" role="button" aria-label="码分复用基础概念卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📡</div>
+                <h2 class="card-title">码分复用基础概念</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>现实背景</dt>
+                        <dd>广泛应用于<mark>2G/3G移动网络</mark>时代(2000-2010年)的CDMA技术</dd>
+                        
+                        <dt>通信模型</dt>
+                        <dd>多个基站可同时发送信号，接收站能分离出原始信号</dd>
+                        
+                        <dt>技术优势</dt>
+                        <dd>通过<mark>正交码片序列</mark>实现多节点同时通信</dd>
+                    </dl>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记住：CDMA是码分多址的英文缩写</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="card" tabindex="0" role="button" aria-label="码片序列与数据发送卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔢</div>
+                <h2 class="card-title">码片序列与数据发送</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><span class="highlight">码片序列特性</span>：m维向量(分量取±1)，如a⃗=(1,1,1,1)</li>
+                        <li><span class="highlight">数据发送规则</span>：
+                            <ul>
+                                <li>发送比特1：发出码片序列本身</li>
+                                <li>发送比特0：发出码片序列的反码</li>
+                            </ul>
+                        </li>
+                        <li><span class="highlight">正交性要求</span>：各节点的m维向量必须<mark>相互正交</mark>(内积=0)</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆：1发原码，0发反码，正交是关键</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="card" tabindex="0" role="button" aria-label="信号处理过程卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">🔄</div>
+                <h2 class="card-title">信号处理过程</h2>
+                <p>点击查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <dl>
+                        <dt>信号叠加</dt>
+                        <dd>多个m维向量的加法运算<br>示例：A发a⃗(1,1,1,1)与B发-b⃗(-1,1,-1,1)叠加→(0,2,0,2)</dd>
+                        
+                        <dt>信号分离</dt>
+                        <dd>使用<mark>规格化内积</mark>：1/m(S·d)
+                            <ul>
+                                <li>结果=1→比特1</li>
+                                <li>结果=-1→比特0</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <div class="memory-tip">关键公式：规格化内积 = 1/m × (叠加信号·码片序列)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="card" tabindex="0" role="button" aria-label="2014年真题案例卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📝</div>
+                <h2 class="card-title">2014年真题案例</h2>
+                <p>点击查看解析</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <p><strong>题目</strong>：<br>
+                    站点A、B、C的码片序列分别为(1,1,1,1)、(1,-1,1,-1)和(1,1,-1,-1)，C观察到序列(2,0,2,0)、(0,-2,0,-2)、(0,2,0,2)</p>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>解析步骤</strong>：</p>
+                    <ol>
+                        <li>将接收序列分成三组四维向量</li>
+                        <li>每组与a⃗做<mark>规格化内积</mark></li>
+                        <li>结果依次为1、-1、1→A发送101</li>
+                    </ol>
+                    
+                    <div class="divider"></div>
+                    
+                    <p><strong>正确答案</strong>：<br>
+                    <span class="highlight">B选项（101）</span></p>
+                    
+                    <div class="memory-tip">考试重点：会计算规格化内积</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 5 -->
+        <div class="card" tabindex="0" role="button" aria-label="知识小结卡片，点击翻转">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">知识小结</h2>
+                <p>点击查看要点</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <ul>
+                        <li><span class="highlight">码分复用技术</span>：通过正交码片序列实现多节点同时通信</li>
+                        <li><span class="highlight">CDMA应用</span>：2G/3G网络技术，基于码分复用原理</li>
+                        <li><span class="highlight">码片序列规则</span>：m维向量(±1)，要求相互正交</li>
+                        <li><span class="highlight">信号收发逻辑</span>：比特1发序列，比特0发反码</li>
+                        <li><span class="highlight">信道划分对比</span>：时分、频分、统计时分、码分复用</li>
+                    </ul>
+                    <div class="divider"></div>
+                    <div class="memory-tip">记忆：正交、内积、叠加、分离四个关键词</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // Add keyboard accessibility
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
