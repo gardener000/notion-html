@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机访问介质访问控制学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 20%);
+            --highlight: hsl(var(--secondary-hue), 100%, 85%);
+            --primary: hsl(var(--primary-hue), 80%, 50%);
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --radius: 16px;
+            --padding: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 32px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: var(--padding);
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: var(--padding);
+            left: 0;
+            top: 0;
+            border-radius: var(--radius);
+        }
+
+        .card-front {
+            background-color: var(--card-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: hsl(0, 0%, 50%);
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 12px;
+            color: var(--primary);
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--highlight);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 16px 0;
+        }
+
+        .memory-tip {
+            display: inline-block;
+            background-color: hsl(var(--secondary-hue), 90%, 90%);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>随机访问介质访问控制</h1>
+    
+    <div class="cards-container">
+        <!-- Card 1: ALOHA协议 -->
+        <div class="card" tabindex="0" role="button" aria-label="ALOHA协议学习卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">📡</div>
+                <h2 class="card-title">ALOHA协议</h2>
+                <p class="card-subtitle">随机访问协议起源</p>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">ALOHA协议</h3>
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>起源</dt>
+                        <dd>1968年由美国夏威夷大学团队提出，名称来源于英文首字母缩写和夏威夷问候语"Aloha"</dd>
+                        
+                        <dt>纯ALOHA</dt>
+                        <dd>节点准备好<mark>数据帧后立即发送</mark>，冲突完全随机</dd>
+                        <dd>采用<mark>停止-等待协议</mark>和随机退避重传机制</dd>
+                        
+                        <dt>时隙ALOHA</dt>
+                        <dd>将时间划分为<mark>固定时隙</mark>，节点只能在时隙开始时发送</dd>
+                        <dd>冲突窗口从2T缩短为T，<mark>信道利用率36.8%</mark>（纯ALOHA仅18%）</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">💡 记忆点：纯=随时发，时隙=按时发，利用率翻倍</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 2: CSMA协议 -->
+        <div class="card" tabindex="0" role="button" aria-label="CSMA协议学习卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">👂</div>
+                <h2 class="card-title">CSMA协议</h2>
+                <p class="card-subtitle">载波监听多路访问</p>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">CSMA协议</h3>
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>核心机制</dt>
+                        <dd><mark>先监听后发送</mark>，需要网络适配器配备载波监听装置</dd>
+                        
+                        <dt>1-坚持CSMA</dt>
+                        <dd>信道空闲时<mark>立即发送</mark>（100%概率），忙时持续监听</dd>
+                        <dd>优点：利用率高；缺点：冲突概率大</dd>
+                        
+                        <dt>非坚持CSMA</dt>
+                        <dd>信道忙时<mark>随机退避</mark>后重新尝试</dd>
+                        <dd>优点：冲突少；缺点：利用率可能降低</dd>
+                        
+                        <dt>p-坚持CSMA</dt>
+                        <dd>信道空闲时以<mark>概率p发送</mark>（典型p=0.5）</dd>
+                        <dd>1-坚持与非坚持的折中方案</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">💡 命名规律：数字/p值表示发送概率，"坚持"=持续监听</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 3: CSMA/CD与CA -->
+        <div class="card" tabindex="0" role="button" aria-label="CSMA/CD与CA学习卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">⚡</div>
+                <h2 class="card-title">CSMA/CD与CA</h2>
+                <p class="card-subtitle">冲突检测与避免</p>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">CSMA/CD与CSMA/CA</h3>
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>CSMA/CD</dt>
+                        <dd>用于<mark>有线以太网</mark>，检测到冲突后立即停止发送</dd>
+                        <dd>采用<mark>二进制指数退避</mark>算法</dd>
+                        
+                        <dt>CSMA/CA</dt>
+                        <dd>用于<mark>无线局域网（WiFi）</mark>，通过预约机制避免冲突</dd>
+                        <dd>需要<mark>ACK确认</mark>，解决隐蔽站问题</dd>
+                        
+                        <dt>考研重点</dt>
+                        <dd>CSMA/CD的冲突检测流程是高频考点</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">💡 CD=Collision Detection（检测），CA=Collision Avoidance（避免）</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card 4: 协议对比 -->
+        <div class="card" tabindex="0" role="button" aria-label="协议对比学习卡片">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">协议对比</h2>
+                <p class="card-subtitle">关键特性与性能</p>
+                <p>点击翻转查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content">
+                    <h3 class="card-title">协议对比</h3>
+                    <div class="divider"></div>
+                    
+                    <dl>
+                        <dt>信道利用率</dt>
+                        <dd>纯ALOHA: <mark>约18%</mark></dd>
+                        <dd>时隙ALOHA: <mark>约36.8%</mark></dd>
+                        <dd>CSMA: 更高，但依赖监听精度</dd>
+                        
+                        <dt>冲突处理</dt>
+                        <dd>ALOHA: <mark>随机退避</mark></dd>
+                        <dd>CSMA/CD: <mark>检测后停止</mark></dd>
+                        <dd>CSMA/CA: <mark>预约避免</mark></dd>
+                        
+                        <dt>演进逻辑</dt>
+                        <dd>ALOHA → CSMA: 引入载波监听</dd>
+                        <dd>CSMA → CSMA/CD/CA: 针对有线/无线优化</dd>
+                    </dl>
+                    
+                    <div class="memory-tip">💡 常考数值：纯18%，时隙36.8%（利用率翻倍）</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘可访问性
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止卡片内容滚动时意外翻转
+            const cardBacks = document.querySelectorAll('.card-back');
+            cardBacks.forEach(back => {
+                back.addEventListener('scroll', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
