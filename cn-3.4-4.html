@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSMA/CD协议学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 210;
+            --secondary-hue: 40;
+            --bg-light: hsl(0, 0%, 98%);
+            --text-dark: hsl(0, 0%, 15%);
+            --card-bg: hsl(0, 0%, 100%);
+            --highlight: hsl(var(--primary-hue), 80%, 50%);
+            --accent: hsl(var(--secondary-hue), 90%, 50%);
+            --border-radius: 12px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin: 16px 0 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            overflow-y: auto;
+        }
+
+        .card-front {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), 80%, 40%);
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-front .card-title {
+            font-size: 1.6rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), 90%, 85%);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 90%);
+            margin: 12px 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        dt {
+            font-weight: bold;
+            color: hsl(var(--primary-hue), 80%, 40%);
+            margin-top: 12px;
+        }
+
+        dd {
+            margin-left: 16px;
+            margin-bottom: 12px;
+        }
+
+        .hint {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 50%);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-front .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CSMA/CD协议学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="true">
+                    <div class="emoji">📡</div>
+                    <h2 class="card-title">CSMA/CD协议概述</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">CSMA/CD协议概述</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <ul>
+                            <li>全称：<mark>载波监听多路访问冲突检测</mark></li>
+                            <li>在一坚持CSMA协议基础上增加<mark>冲突检测机制</mark></li>
+                            <li>用于早期<mark>总线型以太网</mark>（同轴电缆连接）</li>
+                            <li>现代有线局域网（交换机星型网络）已不再使用</li>
+                        </ul>
+                        <p class="hint">记忆点：CSMA/CD = 监听 + 检测</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="true">
+                    <div class="emoji">🔄</div>
+                    <h2 class="card-title">工作流程</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">工作流程</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <ol>
+                            <li><mark>先听后发</mark>：持续监听信道，空闲时立即发送</li>
+                            <li><mark>边听边发</mark>：发送同时继续检测冲突</li>
+                            <li><mark>冲突停发</mark>：检测到冲突立即停止发送</li>
+                            <li><mark>随机重发</mark>：按退避算法等待后重传</li>
+                        </ol>
+                        <p class="hint">记忆口诀：听→发→听→停→等</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="true">
+                    <div class="emoji">⏱️</div>
+                    <h2 class="card-title">争用期</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">争用期</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>固定长度时间段 = <mark>2×最大单向传播时延</mark></dd>
+                            
+                            <dt>关键作用</dt>
+                            <dd>若争用期内未检测到冲突，后续不可能再发生冲突</dd>
+                            
+                            <dt>帧长限制</dt>
+                            <dd>最短帧长 = 2×最大单向传播时延×信道带宽（以太网规定<mark>64B</mark>）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="true">
+                    <div class="emoji">🎲</div>
+                    <h2 class="card-title">二进制指数退避算法</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">二进制指数退避算法</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <ul>
+                            <li>随机等待时间 = <mark>r×争用期</mark></li>
+                            <li>随机数r取值规则：
+                                <ul>
+                                    <li>k≤10时：r∈[0,2^k-1]</li>
+                                    <li>k>10时：r∈[0,1023]</li>
+                                </ul>
+                            </li>
+                            <li>冲突阈值：
+                                <ul>
+                                    <li>第10次冲突：随机数范围不再扩大</li>
+                                    <li>第16次冲突：放弃传输并报告网络层</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="hint">示例：第1次冲突r∈[0,1]，第2次r∈[0,3]，第3次r∈[0,7]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="点击翻转卡片">
+            <div class="card-inner">
+                <div class="card-front" aria-hidden="true">
+                    <div class="emoji">🏗️</div>
+                    <h2 class="card-title">应用场景</h2>
+                </div>
+                <div class="card-back" aria-hidden="true">
+                    <h2 class="card-title">应用场景</h2>
+                    <div class="divider"></div>
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>早期同轴电缆总线型以太网</mark></li>
+                            <li><mark>集线器连接的逻辑总线型网络</mark></li>
+                            <li>现代交换机星型网络已不再使用CSMA/CD</li>
+                        </ul>
+                        <div class="divider"></div>
+                        <h3>协议特性</h3>
+                        <ul>
+                            <li><mark>一坚持特性</mark>：持续监听，空闲时立即发送</li>
+                            <li><mark>冲突检测</mark>：发送中实时检测冲突</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.classList.toggle('flipped');
+                    }
+                });
+            });
+            
+            // 防止卡片内容过长时无法滚动
+            const cardBacks = document.querySelectorAll('.card-back');
+            cardBacks.forEach(back => {
+                back.addEventListener('touchmove', function(e) {
+                    e.stopPropagation();
+                }, { passive: false });
+            });
+        });
+    </script>
+</body>
+</html>
