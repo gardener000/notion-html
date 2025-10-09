@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微处理器架构学习卡片</title>
+    <style>
+        :root {
+            --primary-color: 220, 90%, 56%; /* 蓝色 */
+            --secondary-color: 48, 90%, 58%; /* 黄色 */
+            --success-color: 142, 76%, 36%; /* 绿色 */
+            --danger-color: 0, 84%, 60%; /* 红色 */
+            --text-dark: 0, 0%, 13%; /* 深色文本 */
+            --text-light: 0, 0%, 100%; /* 浅色文本 */
+            --bg-light: 0, 0%, 98%; /* 浅色背景 */
+            --bg-card: 0, 0%, 100%; /* 卡片背景 */
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: hsl(var(--bg-light));
+            color: hsl(var(--text-dark));
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-color));
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: hsl(0, 0%, 45%);
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: hsl(var(--bg-card));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid hsl(var(--primary-color), 0.2);
+        }
+
+        .card-front h2 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-color));
+        }
+
+        .card-front .hint {
+            color: hsl(0, 0%, 60%);
+            font-size: 0.9rem;
+            margin-top: 16px;
+        }
+
+        .card-back {
+            background-color: hsl(var(--bg-card));
+            transform: rotateY(180deg);
+            border: 2px solid hsl(var(--secondary-color), 0.2);
+        }
+
+        .card-back h3 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-color));
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-back dl {
+            margin-bottom: 16px;
+        }
+
+        .card-back dt {
+            font-weight: bold;
+            margin-top: 12px;
+            color: hsl(var(--primary-color));
+        }
+
+        .card-back dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-back ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-back li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-color), 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 24px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: hsl(var(--primary-color));
+            color: hsl(var(--text-light));
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background-color: hsl(var(--secondary-color));
+            color: hsl(var(--text-dark));
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-top: 16px;
+            color: hsl(0, 0%, 45%);
+            font-size: 0.9rem;
+        }
+
+        .icon {
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                height: 380px;
+            }
+            
+            .card-front h2 {
+                font-size: 1.5rem;
+            }
+            
+            .card-back h3 {
+                font-size: 1.1rem;
+            }
+            
+            button {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>微处理器架构学习卡片</h1>
+        <p>点击卡片查看答案，使用按钮导航</p>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn" class="secondary">
+            <span class="icon">←</span> 上一张
+        </button>
+        <button id="flip-btn">
+            <span class="icon">↻</span> 翻转卡片
+        </button>
+        <button id="next-btn">
+            下一张 <span class="icon">→</span>
+        </button>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <h2>CPU的三种工作模式</h2>
+                <p>点击卡片查看详情</p>
+                <p class="hint">💡 提示：这些模式决定了CPU如何管理和访问内存</p>
+            </div>
+            <div class="card-face card-back">
+                <h3>🖥️ CPU的三种工作模式</h3>
+                <dl>
+                    <dt>实模式(real mode)</dt>
+                    <dd>非常古老的模式，类似DOS操作系统时代，限制多，功能简单。</dd>
+                    
+                    <dt>保护模式(protected mode)</dt>
+                    <dd>现代操作系统（如Windows、Linux）的基础，功能强大，有安全保护机制。</dd>
+                    
+                    <dt>平坦模式(flat mode)</dt>
+                    <dd>通常指64位系统下的模式，内存管理更简洁、高效。</dd>
+                </dl>
+                <p><mark>一句话总结</mark>：这一章是学习CPU的使用说明书，重点是了解CPU内部的"工具箱"（寄存器）以及在不同"工作模式"下如何指挥CPU去内存里存取数据。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">
+        <span id="card-counter">1/8</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('card');
+            const flipBtn = document.getElementById('flip-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const cardCounter = document.getElementById('card-counter');
+            
+            let currentCardIndex = 0;
+            
+            // 卡片数据
+            const cards = [
+                {
+                    front: "CPU的三种工作模式",
+                    back: `
+                        <h3>🖥️ CPU的三种工作模式</h3>
+                        <dl>
+                            <dt>实模式(real mode)</dt>
+                            <dd>非常古老的模式，类似DOS操作系统时代，限制多，功能简单。</dd>
+                            
+                            <dt>保护模式(protected mode)</dt>
+                            <dd>现代操作系统（如Windows、Linux）的基础，功能强大，有安全保护机制。</dd>
+                            
+                            <dt>平坦模式(flat mode)</dt>
+                            <dd>通常指64位系统下的模式，内存管理更简洁、高效。</dd>
+                        </dl>
+                        <p><mark>一句话总结</mark>：这一章是学习CPU的使用说明书，重点是了解CPU内部的"工具箱"（寄存器）以及在不同"工作模式"下如何指挥CPU去内存里存取数据。</p>
+                    `
+                },
+                {
+                    front: "程序可见 vs 程序不可见寄存器",
+                    back: `
+                        <h3>🔍 程序可见 vs 程序不可见寄存器</h3>
+                        <dl>
+                            <dt>程序可见寄存器 (Program Visible)</dt>
+                            <dd>指的是从8086到Core2处理器中，我们作为程序员在编写汇编代码时可以直接使用的寄存器。</dd>
+                            <dd>例如，你可以写 <mark>MOV EAX, 10</mark> 这样的指令来把10存入EAX寄存器。</dd>
+                            
+                            <dt>程序不可见寄存器 (Program Invisible)</dt>
+                            <dd>指的是另外一些寄存器，它们对CPU的运行至关重要，但应用程序员不能直接通过指令去访问它们。</dd>
+                            <dd>它们通常由操作系统或CPU自己管理。</dd>
+                        </dl>
+                        <p><mark>比喻</mark>：程序可见寄存器就像汽车的方向盘、油门、刹车，是驾驶员（程序员）需要直接操作的部件；程序不可见寄存器就像汽车发动机的电子控制单元（ECU）里的内部参数。</p>
+                    `
+                },
+                {
+                    front: "通用寄存器的约定用途",
+                    back: `
+                        <h3>🛠️ 通用寄存器的约定用途</h3>
+                        <dl>
+                            <dt>RAX (Accumulator - 累加器)</dt>
+                            <dd>最常用的寄存器。很多算术运算（特别是乘除法）默认都用它，函数的返回值通常也放在这个寄存器里。</dd>
+                            
+                            <dt>RBX (Base index - 基址寄存器)</dt>
+                            <dd>通常用来存放一个数组或数据结构的起始地址。</dd>
+                            
+                            <dt>RCX (Counter - 计数器)</dt>
+                            <dd>在循环中非常常用。比如C语言 for(int i=0; i<9; i++) 里的变量 i，在汇编后面就经常用 ECX 或 RCX 来实现。</dd>
+                            
+                            <dt>RDX (Data - 数据寄存器)</dt>
+                            <dd>经常作为累加器的"副手"。比如做32位乘法时，结果是一个64位的数，高32位会存放在 EDX，低32位在 EAX。</dd>
+                        </dl>
+                        <p><mark>一句话总结</mark>：这一页是汇编编程的"常识表"，告诉你虽然寄存器是通用的，但按照惯例，每个寄存器都有自己最擅长扮演的角色。</p>
+                    `
+                },
+                {
+                    front: "部分寄存器结构",
+                    back: `
+                        <h3>🧩 部分寄存器结构</h3>
+                        <p>RAX 寄存器的层级结构：</p>
+                        <ul>
+                            <li><mark>RAX</mark> 是一个64位的寄存器</li>
+                            <li>它的低32位是 <mark>EAX</mark></li>
+                            <li>EAX 的低16位是 <mark>AX</mark></li>
+                            <li>AX 又可以分为两个8位的部分：高8位是 <mark>AH</mark> (High)，低8位是 <mark>AL</mark> (Low)</li>
+                        </ul>
+                        <p><mark>重要提示</mark>：这种兼容性设计是为了让早期的8位、16位、32位代码能在现代的64位CPU上运行。</p>
+                        <p><mark>一句话总结</mark>：一个64位的RAX寄存器就像一个"套娃"，里面包含了32位的EAX、16位的AX和8位的AH/AL，我们可以根据需要选择不同尺寸的"娃"来用。</p>
+                    `
+                },
+                {
+                    front: "EAX的特殊性",
+                    back: `
+                        <h3>⭐ EAX的特殊性</h3>
+                        <dl>
+                            <dt>特殊用途</dt>
+                            <dd>EAX/AX/AL 是乘法（MUL/IMUL）和除法（DIV/IDIV）指令的默认操作数。CPU硬件设计就是这样规定的。</dd>
+                            
+                            <dt>编码优势(Instruction Encoding)</dt>
+                            <dd>使用EAX的指令机器码比其他通用寄存器短一个字节。</dd>
+                            <dd>例如：<mark>ADD EAX, 0xfffff0704</mark> 的机器码是 05 04 07 FF FF (5个字节)</dd>
+                            <dd>而 <mark>ADD EBX, 0xfffff0704</mark> 的机器码是 81 C3 04 07 FF FF (6个字节)</dd>
+                        </dl>
+                        <p><mark>好处</mark>：代码密度更高，程序文件更小；更缓存友好(cache-friendly)；使用频率高，快捷。</p>
+                        <p><mark>一句话总结</mark>：EAX不仅在功能上有特殊地位（乘除法），在硬件层面也有"特权"，使用它的指令更短，执行效率更高。</p>
+                    `
+                },
+                {
+                    front: "64位模式下的寄存器扩展",
+                    back: `
+                        <h3>🚀 64位模式下的寄存器扩展</h3>
+                        <dl>
+                            <dt>新增的R8 - R15寄存器</dt>
+                            <dd>这些是在64位模式下新增的8个通用寄存器。</dd>
+                            <dd>要使用它们，指令前面通常需要一个特殊的<mark>REX前缀</mark>。</dd>
+                            
+                            <dt>64位模式下的寄存器全数据</dt>
+                            <dd>8位寄存器：16个低字节 + 4个高字节（使用REX前缀时高字节不可用）</dd>
+                            <dd>16位寄存器：16个</dd>
+                            <dd>32位寄存器：16个</dd>
+                            <dd>64位寄存器：16个</dd>
+                        </dl>
+                        <p><mark>一句话总结</mark>：64位模式下，寄存器数量和种类都极大丰富，但使用新增寄存器和64位宽度时，需要通过REX前缀来"解锁"。</p>
+                    `
+                },
+                {
+                    front: "部分寄存器写入规则",
+                    back: `
+                        <h3>📝 部分寄存器写入规则</h3>
+                        <dl>
+                            <dt>规则1</dt>
+                            <dd>修改32位部分寄存器（如EAX）：会自动将高32位清零。</dd>
+                            <dd>例如：<mark>MOV EAX, 22222222H</mark> 的结果是 RAX = 0000000022222222H</dd>
+                            
+                            <dt>规则2</dt>
+                            <dd>修改8位或16位部分寄存器（如AX, AL）：不会影响寄存器中其他部分的值。</dd>
+                            <dd>例如：在 RAX = 0000000022222222H 的基础上执行 <mark>MOV AX, 3333H</mark>，结果是 RAX = 0000000022223333H</dd>
+                        </dl>
+                        <p><mark>为什么有这个规则？</mark>：这个设计是为了性能。每次都清零高位可以避免部分寄存器依赖问题，让CPU的乱序执行引擎工作得更高效。</p>
+                        <p><mark>一句话总结</mark>：在64位模式下，写32位寄存器会顺便把高位清零，而写8位或16位寄存器则只改动对应部分，其他位保持不变。</p>
+                    `
+                },
+                {
+                    front: "特殊用途寄存器",
+                    back: `
+                        <h3>🎯 特殊用途寄存器</h3>
+                        <dl>
+                            <dt>RIP (Instruction Pointer - 指令指针)</dt>
+                            <dd>永远指向内存中下一条待执行指令的地址。它是CPU程序的"灵魂"，决定了程序的执行流程。</dd>
+                            
+                            <dt>RSP (Stack Pointer - 栈指针)</dt>
+                            <dd>永远指向栈(Stack)的顶部。栈是内存中一块特殊的区域，用于存放函数调用信息、局部变量等。</dd>
+                            
+                            <dt>段寄存器(Segment Registers)</dt>
+                            <dd>CS, DS, ES, SS, FS, GS，它们在分段内存模型中用来定义不同内存区域的起始位置。</dd>
+                        </dl>
+                        <p><mark>一句话总结</mark>：RIP是程序的导航员，RSP是栈的管理员，RFLAGS是状态记录员。</p>
+                    `
+                }
+            ];
+            
+            // 更新卡片内容
+            function updateCard() {
+                const cardFront = card.querySelector('.card-front');
+                const cardBack = card.querySelector('.card-back');
+                
+                cardFront.innerHTML = `
+                    <h2>${cards[currentCardIndex].front}</h2>
+                    <p>点击卡片查看详情</p>
+                    <p class="hint">💡 提示：点击卡片或使用翻转按钮查看答案</p>
+                `;
+                
+                cardBack.innerHTML = cards[currentCardIndex].back;
+                cardCounter.textContent = `${currentCardIndex + 1}/${cards.length}`;
+                
+                // 确保卡片显示正面
+                card.classList.remove('flipped');
+            }
+            
+            // 翻转卡片
+            function flipCard() {
+                card.classList.toggle('flipped');
+            }
+            
+            // 下一张卡片
+            function nextCard() {
+                currentCardIndex = (currentCardIndex + 1) % cards.length;
+                updateCard();
+            }
+            
+            // 上一张卡片
+            function prevCard() {
+                currentCardIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+                updateCard();
+            }
+            
+            // 事件监听
+            card.addEventListener('click', flipCard);
+            flipBtn.addEventListener('click', flipCard);
+            nextBtn.addEventListener('click', nextCard);
+            prevBtn.addEventListener('click', prevCard);
+            
+            // 初始化
+            updateCard();
+        });
+    </script>
+</body>
+</html>
