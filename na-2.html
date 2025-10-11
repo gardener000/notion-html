@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数值分析学习卡片</title>
+    <style>
+        :root {
+            --primary-color: 220, 90%, 56%; /* 蓝色 */
+            --secondary-color: 48, 90%, 56%; /* 黄色 */
+            --accent-color: 160, 64%, 43%; /* 绿色 */
+            --text-color: 0, 0%, 20%;
+            --bg-color: 0, 0%, 98%;
+            --card-color: 0, 0%, 100%;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: hsl(var(--text-color));
+            background-color: hsl(var(--bg-color));
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: hsl(var(--primary-color));
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: hsl(var(--text-color), 0.7);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            margin-bottom: 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background-color: hsl(var(--card-color));
+            color: hsl(var(--primary-color));
+        }
+
+        .card-back {
+            background-color: hsl(var(--card-color));
+            color: hsl(var(--text-color));
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: hsl(var(--primary-color));
+        }
+
+        .card-content dd {
+            margin-bottom: 12px;
+            margin-left: 0;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-color), 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: hsl(var(--accent-color));
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(var(--text-color), 0.1);
+            margin: 16px 0;
+            width: 100%;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: hsl(var(--text-color), 0.6);
+        }
+
+        .hint-icon {
+            margin-right: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-color));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            margin: 0 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .counter {
+            text-align: center;
+            margin-top: 16px;
+            color: hsl(var(--text-color), 0.6);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 450px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            button {
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>数值分析学习卡片</h1>
+        <p class="subtitle">线性方程组求解的直接方法</p>
+    </div>
+
+    <div class="container">
+        <div class="card" id="card-1">
+            <div class="card-face card-front">
+                <div class="card-icon">🔍</div>
+                <h2 class="card-title">高斯消元法</h2>
+                <p class="hint">点击卡片查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <h2 class="card-title">高斯消元法</h2>
+                <div class="card-content">
+                    <dl>
+                        <dt>目标</dt>
+                        <dd>求解 Ax=b 形式的线性方程组</dd>
+                        
+                        <dt>核心思想</dt>
+                        <dd>分两步：<mark>消元</mark>和<mark>回代</mark></dd>
+                    </dl>
+                    
+                    <div class="divider"></div>
+                    
+                    <ul>
+                        <li><span class="highlight">消元</span>：通过行变换将矩阵A转化为<mark>上三角矩阵U</mark></li>
+                        <li><span class="highlight">回代</span>：求解上三角方程组<mark>Ux=b</mark></li>
+                        <li>计算量：<mark>约n³/3</mark>次乘除法</li>
+                        <li>当n很大时，主要计算量集中在<mark>消元阶段</mark></li>
+                    </ul>
+                    
+                    <div class="hint">
+                        <span class="hint-icon">💡</span>
+                        <span>高斯消元法是后续学习LU分解、迭代法的基础</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <div class="counter">
+        <span id="card-counter">1/10</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = [
+                {
+                    id: 1,
+                    title: "高斯消元法",
+                    icon: "🔍",
+                    content: `
+                        <dl>
+                            <dt>目标</dt>
+                            <dd>求解 Ax=b 形式的线性方程组</dd>
+                            
+                            <dt>核心思想</dt>
+                            <dd>分两步：<mark>消元</mark>和<mark>回代</mark></dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">消元</span>：通过行变换将矩阵A转化为<mark>上三角矩阵U</mark></li>
+                            <li><span class="highlight">回代</span>：求解上三角方程组<mark>Ux=b</mark></li>
+                            <li>计算量：<mark>约n³/3</mark>次乘除法</li>
+                            <li>当n很大时，主要计算量集中在<mark>消元阶段</mark></li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>高斯消元法是后续学习LU分解、迭代法的基础</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 2,
+                    title: "主元选择策略",
+                    icon: "🔄",
+                    content: `
+                        <dl>
+                            <dt>问题</dt>
+                            <dd>小的主元元素可能导致<mark>数值不稳定</mark></dd>
+                            
+                            <dt>解决方法</dt>
+                            <dd>使用主元选择策略</dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">列主元法</span>：选择当前列中<mark>绝对值最大的元素</mark>作为主元</li>
+                            <li><span class="highlight">比例主元法</span>：考虑行的<mark>缩放因子</mark>，选择相对最大的元素</li>
+                            <li><span class="highlight">完全主元法</span>：在整个子矩阵中选最大元素（<mark>计算成本高</mark>）</li>
+                            <li>实践中<mark>列主元法</mark>最常用，在开销和稳定性之间取得平衡</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">⚠️</span>
+                            <span>小主元会导致乘子过大，放大舍入误差</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 3,
+                    title: "LU分解",
+                    icon: "🧩",
+                    content: `
+                        <dl>
+                            <dt>核心思想</dt>
+                            <dd>将高斯消元过程表示为<mark>矩阵分解</mark></dd>
+                            
+                            <dt>分解形式</dt>
+                            <dd>A = <mark>L U</mark></dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">L</span>：<mark>单位下三角矩阵</mark>（存储乘子）</li>
+                            <li><span class="highlight">U</span>：<mark>上三角矩阵</mark>（消元结果）</li>
+                            <li>优势：一次分解<mark>O(n³)</mark>，多次求解不同b时只需<mark>O(n²)</mark></li>
+                            <li>带主元的LU分解：<mark>PA = LU</mark>，其中P是置换矩阵</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">🚀</span>
+                            <span>LU分解在需要反复求解同一系统时效率极高</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 4,
+                    title: "严格对角占优矩阵",
+                    icon: "💪",
+                    content: `
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>每行对角线元素的绝对值<mark>严格大于</mark>该行其他元素绝对值之和</dd>
+                            
+                            <dt>数学公式</dt>
+                            <dd>|a<sub>ii</sub>| > ∑<sub>j≠i</sub> |a<sub>ij</sub>|</dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">性质1</span>：严格对角占优矩阵<mark>一定可逆</mark></li>
+                            <li><span class="highlight">性质2</span>：高斯消元<mark>无需主元选择</mark>，数值稳定</li>
+                            <li>每一步消元后，生成的子矩阵<mark>仍保持严格对角占优</mark></li>
+                            <li>主元<mark>不会为0</mark>，且相对较大</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">✅</span>
+                            <span>这类矩阵在数值计算中频繁出现，具有极佳性质</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 5,
+                    title: "正定矩阵",
+                    icon: "➕",
+                    content: `
+                        <dl>
+                            <dt>前提条件</dt>
+                            <dd>矩阵A必须是<mark>对称的</mark></dd>
+                            
+                            <dt>核心条件</dt>
+                            <dd>对于任何非零向量x，<mark>x<sup>T</sup>Ax > 0</mark></dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">性质1</span>：A<sup>-1</sup>也正定</li>
+                            <li><span class="highlight">性质2</span>：所有<mark>对角元a<sub>ii</sub>必须为正</mark></li>
+                            <li><span class="highlight">性质3</span>：绝对值最大的元素一定在对角线上</li>
+                            <li><span class="highlight">性质4</span>：所有<mark>顺序主子式</mark>的行列式都为正</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">📊</span>
+                            <span>正定矩阵在物理和工程领域（如有限元分析）中至关重要</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 6,
+                    title: "Cholesky分解",
+                    icon: "🔺",
+                    content: `
+                        <dl>
+                            <dt>适用对象</dt>
+                            <dd><mark>对称正定矩阵</mark></dd>
+                            
+                            <dt>分解形式</dt>
+                            <dd>A = <mark>L L<sup>T</sup></mark></dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">优点1</span>：计算量约为<mark>n³/6</mark>，是LU分解的一半</li>
+                            <li><span class="highlight">优点2</span>：只需存储一个L矩阵，<mark>节省空间</mark></li>
+                            <li><span class="highlight">优点3</span>：算法<mark>天然数值稳定</mark>，完全不需要主元选择</li>
+                            <li><span class="highlight">缺点</span>：只适用于对称正定矩阵</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">⚡</span>
+                            <span>Cholesky分解是对称正定矩阵的高效解法</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 7,
+                    title: "三对角矩阵",
+                    icon: "📏",
+                    content: `
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>只有主对角线、主对角线下方一条次对角线和上方一条次对角线有<mark>非零元素</mark></dd>
+                            
+                            <dt>常见场景</dt>
+                            <dd>解微分方程边值问题时非常常见</dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">Crout约简法</span>：专门针对三对角矩阵的LU分解</li>
+                            <li>L和U因子也是<mark>稀疏的</mark>（L是下双对角，U是单位上双对角）</li>
+                            <li>如果三对角矩阵还是<mark>对角占优的</mark>，Crout分解过程稳定</li>
+                            <li>计算量：整个求解过程仅需<mark>O(n)</mark>，相比O(n³)是巨大飞跃</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">🎯</span>
+                            <span>对于大规模三对角系统，这个效率优势是决定性的</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 8,
+                    title: "应用实例",
+                    icon: "🍽️",
+                    content: `
+                        <dl>
+                            <dt>问题</dt>
+                            <dd>"天下没有免费的午餐" - 建立并求解三对角线性方程组</dd>
+                            
+                            <dt>建模</dt>
+                            <dd>根据题意列出方程：价格=2×成本+0.5×相邻菜成本</dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li>对于第i道菜：<mark>0.5×c<sub>i-1</sub> + 2×c<sub>i</sub> + 0.5×c<sub>i+1</sub> = p<sub>i</sub></mark></li>
+                            <li>边界条件特殊处理：i=1和i=n时考虑循环相邻</li>
+                            <li>形成<mark>循环三对角矩阵</mark></li>
+                            <li>矩阵是<mark>严格对角占优的</mark>（|2| > |0.5| + |0.5|）</li>
+                            <li>使用<mark>Crout算法</mark>稳定且高效求解</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">🧠</span>
+                            <span>这个例子完美结合了理论知识与实际应用</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 9,
+                    title: "计算量对比",
+                    icon: "⚖️",
+                    content: `
+                        <dl>
+                            <dt>高斯消元法</dt>
+                            <dd>总计算量约为<mark>n³/3</mark></dd>
+                            
+                            <dt>LU分解</dt>
+                            <dd>分解阶段<mark>O(n³)</mark>，求解阶段<mark>O(n²)</mark></dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">Cholesky分解</span>：计算量约为<mark>n³/6</mark>，是LU分解的一半</li>
+                            <li><span class="highlight">三对角系统</span>：计算量仅为<mark>O(n)</mark>，相比O(n³)是巨大飞跃</li>
+                            <li>当n很大时，主要计算量集中在<mark>消元/分解阶段</mark></li>
+                            <li>特殊矩阵结构可以<mark>大幅降低计算复杂度</mark></li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">📈</span>
+                            <span>选择合适算法对大规模问题至关重要</span>
+                        </div>
+                    `
+                },
+                {
+                    id: 10,
+                    title: "总结回顾",
+                    icon: "📚",
+                    content: `
+                        <dl>
+                            <dt>核心方法</dt>
+                            <dd>从高斯消元法到LU分解</dd>
+                            
+                            <dt>数值稳定性</dt>
+                            <dd>通过主元选择策略解决</dd>
+                        </dl>
+                        
+                        <div class="divider"></div>
+                        
+                        <ul>
+                            <li><span class="highlight">高斯消元法</span>：消元+回代，计算量O(n³)</li>
+                            <li><span class="highlight">主元选择</span>：解决小主元导致的数值不稳定问题</li>
+                            <li><span class="highlight">LU分解</span>：A=LU，适用于多次求解同一系统</li>
+                            <li><span class="highlight">特殊矩阵</span>：严格对角占优、对称正定、三对角矩阵有高效算法</li>
+                            <li><span class="highlight">Cholesky分解</span>：A=LL<sup>T</sup>，适用于对称正定矩阵</li>
+                            <li><span class="highlight">三对角系统</span>：使用Crout约简法，计算量O(n)</li>
+                        </ul>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">🎉</span>
+                            <span>恭喜完成线性方程组直接求解方法的学习！</span>
+                        </div>
+                    `
+                }
+            ];
+
+            let currentCardIndex = 0;
+            const cardContainer = document.querySelector('.container');
+            const cardCounter = document.getElementById('card-counter');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            // 初始化卡片
+            function initCard() {
+                const card = cards[currentCardIndex];
+                cardContainer.innerHTML = `
+                    <div class="card" id="card-${card.id}">
+                        <div class="card-face card-front">
+                            <div class="card-icon">${card.icon}</div>
+                            <h2 class="card-title">${card.title}</h2>
+                            <p class="hint">点击卡片查看详情</p>
+                        </div>
+                        <div class="card-face card-back">
+                            <h2 class="card-title">${card.title}</h2>
+                            <div class="card-content">
+                                ${card.content}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加翻转事件
+                const cardElement = document.querySelector('.card');
+                cardElement.addEventListener('click', function() {
+                    this.classList.toggle('flipped');
+                });
+                
+                // 更新计数器
+                cardCounter.textContent = `${currentCardIndex + 1}/${cards.length}`;
+                
+                // 更新按钮状态
+                prevBtn.disabled = currentCardIndex === 0;
+                nextBtn.disabled = currentCardIndex === cards.length - 1;
+            }
+
+            // 上一张卡片
+            prevBtn.addEventListener('click', function() {
+                if (currentCardIndex > 0) {
+                    currentCardIndex--;
+                    initCard();
+                }
+            });
+
+            // 下一张卡片
+            nextBtn.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    currentCardIndex++;
+                    initCard();
+                }
+            });
+
+            // 初始化第一张卡片
+            initCard();
+        });
+    </script>
+</body>
+</html>
