@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数值分析学习卡片</title>
+    <style>
+        :root {
+            --primary-hue: 220;
+            --primary-saturation: 80%;
+            --primary-lightness: 45%;
+            --secondary-hue: 50;
+            --secondary-saturation: 90%;
+            --secondary-lightness: 60%;
+            --bg-color: hsl(0, 0%, 98%);
+            --card-bg: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+        }
+
+        .subtitle {
+            color: hsl(0, 0%, 45%);
+            font-size: 0.9rem;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 320px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-bg);
+            text-align: center;
+        }
+
+        .card-back {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-top: 12px;
+            color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+        }
+
+        .card-content dd {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-content ul, .card-content ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-hue), var(--secondary-saturation), var(--secondary-lightness));
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: hsl(0, 0%, 85%);
+            margin: 16px 0;
+        }
+
+        .hint {
+            font-size: 0.85rem;
+            color: hsl(0, 0%, 60%);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), var(--primary-lightness));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            margin: 0 8px;
+        }
+
+        button:hover {
+            background-color: hsl(var(--primary-hue), var(--primary-saturation), calc(var(--primary-lightness) - 10%));
+            transform: translateY(-2px);
+        }
+
+        .progress {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 45%);
+        }
+
+        @media (max-width: 480px) {
+            .card-container {
+                height: 380px;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            .card-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>数值分析学习卡片</h1>
+        <p class="subtitle">点击卡片翻转查看详细内容</p>
+    </header>
+
+    <div class="card-container">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title" id="card-title">数值分析简介</h2>
+                <p class="hint">点击卡片查看详情</p>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-content" id="card-content">
+                    <dl>
+                        <dt>什么是数值分析？</dt>
+                        <dd>研究如何设计和分析各种算法，利用计算机来近似解决复杂的数学问题。</dd>
+                        
+                        <dt>核心流程</dt>
+                        <dd>输入 → 计算机 → 输出</dd>
+                        
+                        <dt>课程目标</dt>
+                        <dd>
+                            <ul>
+                                <li>介绍经典的近似技巧</li>
+                                <li>解释这些技巧如何工作、为什么能工作以及何时使用</li>
+                                <li>为将来学习科学计算打下坚实的基础</li>
+                                <li>培养独立解决问题的能力</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress" id="progress">卡片 1 / 10</div>
+
+    <div class="controls">
+        <button id="prev-btn">上一张</button>
+        <button id="next-btn">下一张</button>
+    </div>
+
+    <script>
+        // 卡片数据
+        const cards = [
+            {
+                title: "数值分析简介",
+                icon: "📊",
+                content: `
+                    <dl>
+                        <dt>什么是数值分析？</dt>
+                        <dd>研究如何设计和分析各种算法，利用计算机来近似解决复杂的数学问题。</dd>
+                        
+                        <dt>核心流程</dt>
+                        <dd>输入 → 计算机 → 输出</dd>
+                        
+                        <dt>课程目标</dt>
+                        <dd>
+                            <ul>
+                                <li>介绍经典的近似技巧</li>
+                                <li>解释这些技巧如何工作、为什么能工作以及何时使用</li>
+                                <li>为将来学习科学计算打下坚实的基础</li>
+                                <li>培养独立解决问题的能力</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            },
+            {
+                title: "误差类型",
+                icon: "⚖️",
+                content: `
+                    <dl>
+                        <dt>截断误差</dt>
+                        <dd>用有限的过程去近似一个无限过程时产生的误差。例如：用有限项级数近似无穷级数。</dd>
+                        
+                        <dt>舍入误差</dt>
+                        <dd>在用有限位数的机器进行实数运算时产生的误差。例如：1/3在计算机中只能存储为0.333。</dd>
+                        
+                        <dt>总误差</dt>
+                        <dd>截断误差和舍入误差的总和。</dd>
+                        
+                        <dt>误差度量</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>绝对误差</mark>: |p - p*|</li>
+                                <li><mark>相对误差</mark>: |p - p*| / |p|</li>
+                                <li><mark>有效数字</mark>: 相对误差小于5×10⁻ᵗ时，精确到t位有效数字</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            },
+            {
+                title: "数值不稳定性",
+                icon: "⚠️",
+                content: `
+                    <dl>
+                        <dt>灾难性抵消</dt>
+                        <dd>两个非常接近的数相减，会导致有效数字的大量损失。例如：0.12346 - 0.12345 = 0.00001，只剩1位有效数字。</dd>
+                        
+                        <dt>误差放大</dt>
+                        <dd>除以一个很小的数，等价于乘以一个很大的数，会导致误差被放大。</dd>
+                        
+                        <dt>黄金法则</dt>
+                        <dd><mark>在把公式交给计算机之前，一定要先化简你的公式！</mark></dd>
+                        
+                        <dt>霍纳方法</dt>
+                        <dd>将多项式改写为嵌套形式，减少运算次数和舍入误差。例如：f(x) = ((x - 6.1)x + 3.2)x + 1.5</dd>
+                    </dl>
+                `
+            },
+            {
+                title: "算法稳定性",
+                icon: "🔄",
+                content: `
+                    <dl>
+                        <dt>稳定算法</dt>
+                        <dd>初始数据的微小改变，只导致最终结果的微小改变。</dd>
+                        
+                        <dt>不稳定算法</dt>
+                        <dd>初始数据的微小扰动，导致最终结果出现巨大变化。</dd>
+                        
+                        <dt>条件稳定</dt>
+                        <dd>算法只在某些特定的初始数据下稳定。</dd>
+                        
+                        <dt>误差增长方式</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>线性增长</mark>: Eₙ ∝ C × n × E₀</li>
+                                <li><mark>指数增长</mark>: Eₙ ∝ Cⁿ × E₀ (C > 1)</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>实例对比</dt>
+                        <dd>
+                            <ul>
+                                <li>正向递推：误差阶乘增长，不稳定</li>
+                                <li>反向递推：误差被抑制，稳定</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            },
+            {
+                title: "二分法",
+                icon: "✂️",
+                content: `
+                    <dl>
+                        <dt>理论基础</dt>
+                        <dd><mark>介值定理</mark>: 如果函数f在闭区间[a,b]上连续，且f(a)和f(b)异号，则在(a,b)内至少存在一个点p，使得f(p)=0。</dd>
+                        
+                        <dt>基本思想</dt>
+                        <dd>
+                            <ol>
+                                <li>找到区间[a,b]使得f(a)×f(b) < 0</li>
+                                <li>取区间中点p = (a+b)/2</li>
+                                <li>判断根在哪一半区间，缩小范围</li>
+                                <li>重复直到区间足够小</li>
+                            </ol>
+                        </dd>
+                        
+                        <dt>停止准则</dt>
+                        <dd>
+                            <ul>
+                                <li>绝对步长: |pₙ - pₙ₋₁| < ε</li>
+                                <li>相对步长: |pₙ - pₙ₋₁| / |pₙ| < ε</li>
+                                <li>残差: |f(pₙ)| < ε</li>
+                                <li><mark>最可靠</mark>: (b-a)/2ⁿ < TOL</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>收敛性</dt>
+                        <dd>|pₙ - p| ≤ (b-a)/2ⁿ</dd>
+                    </dl>
+                `
+            },
+            {
+                title: "二分法优缺点",
+                icon: "⚖️",
+                content: `
+                    <dl>
+                        <dt>优点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>简单</mark>: 算法逻辑清晰，容易理解和实现</li>
+                                <li><mark>总能收敛</mark>: 只要初始区间选对，收敛性有绝对保证</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>缺点</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>收敛慢</mark>: 每次迭代误差只减少一半，线性收敛</li>
+                                <li><mark>无法处理特殊情况</mark>: 不能找偶数量根，也无法找到复数根</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>实现细节</dt>
+                        <dd>中点计算使用p = a + (b-a)/2而非(a+b)/2，避免大数相加溢出</dd>
+                    </dl>
+                `
+            },
+            {
+                title: "不动点迭代法",
+                icon: "🎯",
+                content: `
+                    <dl>
+                        <dt>核心思想</dt>
+                        <dd>将求根问题f(x)=0等价变形为x=g(x)的形式。f(x)=0的根就是x=g(x)的不动点。</dd>
+                        
+                        <dt>迭代过程</dt>
+                        <dd>
+                            <ol>
+                                <li>从初始猜测值p₀开始</li>
+                                <li>生成序列{pᵢ}，迭代公式为pᵢ = g(pᵢ₋₁)</li>
+                                <li>如果序列收敛到p，且g(x)连续，则p=g(p)</li>
+                            </ol>
+                        </dd>
+                        
+                        <dt>几何解释</dt>
+                        <dd>"垂直到曲线，水平到直线"的迭代过程</dd>
+                        
+                        <dt>收敛关键</dt>
+                        <dd>与不动点附近g(x)曲线的斜率有关：|g'(x)| < 1则收敛</dd>
+                    </dl>
+                `
+            },
+            {
+                title: "不动点定理",
+                icon: "📐",
+                content: `
+                    <dl>
+                        <dt>条件1 - 存在性</dt>
+                        <dd>如果g在[a,b]上连续，且g(x)的值域完全落在[a,b]内，则g在[a,b]内至少有一个不动点。</dd>
+                        
+                        <dt>条件2 - 唯一性与收敛性</dt>
+                        <dd>在条件1基础上，如果g'(x)在(a,b)上存在，且|g'(x)| ≤ k < 1对所有x∈(a,b)成立，则：
+                            <ul>
+                                <li>不动点是唯一的</li>
+                                <li>对于任何初始点p₀∈[a,b]，迭代序列pₙ=g(pₙ₋₁)必定收敛到这个唯一的不动点p</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>误差估计</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>事后估计</mark>: |pₙ - p| ≤ (k/(1-k)) |pₙ - pₙ₊₁|</li>
+                                <li><mark>事前估计</mark>: |pₙ - p| ≤ (kⁿ/(1-k)) |p₁ - p₀|</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            },
+            {
+                title: "牛顿法",
+                icon: "🚀",
+                content: `
+                    <dl>
+                        <dt>核心思想</dt>
+                        <dd>用线性函数（切线）去近似非线性函数f(x)</dd>
+                        
+                        <dt>迭代公式</dt>
+                        <dd>pₙ = pₙ₋₁ - f(pₙ₋₁) / f'(pₙ₋₁)</dd>
+                        
+                        <dt>几何意义</dt>
+                        <dd>在点(p₀, f(p₀))处作f(x)的切线，切线与x轴的交点就是下一个近似值p₁</dd>
+                        
+                        <dt>收敛性分析</dt>
+                        <dd>
+                            <ul>
+                                <li>牛顿法是不动点迭代的特例，g(x) = x - f(x)/f'(x)</li>
+                                <li>在真根p处，g'(p) = 0</li>
+                                <li>只要初始猜测值p₀离p足够近，牛顿法必然收敛</li>
+                                <li>对于单根，牛顿法<mark>二次收敛</mark></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            },
+            {
+                title: "收敛速度与重根处理",
+                icon: "📈",
+                content: `
+                    <dl>
+                        <dt>收敛阶定义</dt>
+                        <dd>lim (|pₙ₊₁ - p| / |pₙ - p|ᵃ) = λ (n→∞)</dd>
+                        
+                        <dt>重要收敛阶</dt>
+                        <dd>
+                            <ul>
+                                <li><mark>线性收敛</mark> (a=1): |pₙ₊₁ - p| ≈ λ × |pₙ - p|</li>
+                                <li><mark>二次收敛</mark> (a=2): |pₙ₊₁ - p| ≈ λ × |pₙ - p|²</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>重根问题</dt>
+                        <dd>
+                            <ul>
+                                <li>如果p是f的m重根，则f(x) = (x-p)ᵐq(x)，q(p)≠0</li>
+                                <li>标准牛顿法遇到重根时退化为<mark>线性收敛</mark></li>
+                                <li>g'(p) = 1 - 1/m</li>
+                            </ul>
+                        </dd>
+                        
+                        <dt>修正方法</dt>
+                        <dd>
+                            <ul>
+                                <li>构造新函数μ(x) = f(x)/f'(x)，对μ(x)使用牛顿法</li>
+                                <li>修正迭代公式: pₙ = pₙ₋₁ - m × f(pₙ₋₁) / f'(pₙ₋₁)</li>
+                            </ul>
+                        </dd>
+                    </dl>
+                `
+            }
+        ];
+
+        // DOM元素
+        const card = document.getElementById('card');
+        const cardTitle = document.getElementById('card-title');
+        const cardContent = document.getElementById('card-content');
+        const progress = document.getElementById('progress');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // 当前卡片索引
+        let currentCardIndex = 0;
+
+        // 更新卡片内容
+        function updateCard() {
+            const currentCard = cards[currentCardIndex];
+            cardTitle.textContent = currentCard.title;
+            cardContent.innerHTML = currentCard.content;
+            
+            // 更新图标
+            const iconElement = document.querySelector('.card-icon');
+            iconElement.textContent = currentCard.icon;
+            
+            // 更新进度
+            progress.textContent = `卡片 ${currentCardIndex + 1} / ${cards.length}`;
+            
+            // 重置卡片为正面
+            card.classList.remove('flipped');
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentCardIndex === 0;
+            nextBtn.disabled = currentCardIndex === cards.length - 1;
+        }
+
+        // 翻转卡片
+        card.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+
+        // 上一张卡片
+        prevBtn.addEventListener('click', function() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateCard();
+            }
+        });
+
+        // 下一张卡片
+        nextBtn.addEventListener('click', function() {
+            if (currentCardIndex < cards.length - 1) {
+                currentCardIndex++;
+                updateCard();
+            }
+        });
+
+        // 初始化
+        updateCard();
+    </script>
+</body>
+</html>
