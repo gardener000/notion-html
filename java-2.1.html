@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java基础学习卡片</title>
+    <style>
+        :root {
+            --primary-color: 220, 90%, 56%; /* 蓝色 */
+            --secondary-color: 48, 89%, 58%; /* 黄色 */
+            --accent-color: 142, 76%, 36%; /* 绿色 */
+            --text-color: 0, 0%, 20%;
+            --bg-color: 0, 0%, 98%;
+            --card-bg: 0, 0%, 100%;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: hsl(var(--text-color));
+            background-color: hsl(var(--bg-color));
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: hsl(var(--primary-color));
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background-color: hsl(var(--card-bg));
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            perspective: 1000px;
+            height: 280px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px hsla(0, 0%, 0%, 0.15);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            border-radius: var(--border-radius);
+        }
+
+        .card-front {
+            background-color: hsl(var(--card-bg));
+            color: hsl(var(--primary-color));
+            border: 2px solid hsl(var(--primary-color), 0.2);
+        }
+
+        .card-back {
+            background-color: hsl(var(--card-bg));
+            color: hsl(var(--text-color));
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            text-align: left;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: hsl(var(--primary-color));
+        }
+
+        .card-content dd {
+            margin-bottom: 12px;
+            margin-left: 0;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: hsl(var(--secondary-color), 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 8px 12px;
+            background-color: hsl(var(--accent-color), 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .hint-icon {
+            font-size: 1.2rem;
+        }
+
+        .progress {
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: hsl(var(--text-color), 0.7);
+        }
+
+        .progress-bar {
+            width: 120px;
+            height: 6px;
+            background-color: hsl(var(--bg-color));
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: hsl(var(--primary-color));
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 300px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📚 Java基础学习卡片</h1>
+    
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔢</div>
+                    <div class="card-title">Java数据类型系统</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>两大类数据类型</dt>
+                            <dd><mark>8种原始类型</mark> (int, double等) 和对应的<mark>包装类</mark> (Integer, Double等)</dd>
+                            
+                            <dt>原始类型特点</dt>
+                            <dd>存储纯粹的值，性能高，但不是对象</dd>
+                            
+                            <dt>包装类作用</dt>
+                            <dd>把原始类型的值"装箱"成对象，以便在面向对象的环境中使用</dd>
+                            
+                            <dt>现代实践</dt>
+                            <dd>使用<mark>valueOf()</mark>或<mark>自动装箱</mark>来创建包装类对象，而不是过时的new构造器</dd>
+                        </dl>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>理解原始类型和包装类的区别与联系，是掌握Java基础的关键一步</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-title">Java数值原始类型</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>整型</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>byte</mark> (1字节)</li>
+                                    <li><mark>short</mark> (2字节)</li>
+                                    <li><mark>int</mark> (4字节) - 日常编程中最常用</li>
+                                    <li><mark>long</mark> (8字节) - 处理大数字时使用</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>浮点型（小数）</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>float</mark> (4字节)</li>
+                                    <li><mark>double</mark> (8字节) - 日常编程中最常用</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>固定大小特性</dt>
+                            <dd>Java中这些类型的大小是固定的，不随操作系统或CPU架构改变，这是Java<mark>跨平台特性</mark>的基石之一</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">❓</div>
+                    <div class="card-title">为什么Java没有unsigned</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>设计哲学</dt>
+                            <dd>Java设计者James Gosling认为unsigned类型是导致C/C++中很多难以发现的bug的根源</dd>
+                            
+                            <dt>目的</dt>
+                            <dd>为了贯彻<mark>简单、安全</mark>的设计哲学，Java决定不支持unsigned类型</dd>
+                            
+                            <dt>优势</dt>
+                            <dd>减少了语言的复杂性，避免了潜在的错误</dd>
+                            
+                            <dt>替代方案</dt>
+                            <dd>如果需要处理无符号数据，通常可以通过使用<mark>更大范围的有符号类型</mark>来解决（比如用long来处理一个32位的无符号整数）</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🍬</div>
+                    <div class="card-title">语法糖</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>定义</dt>
+                            <dd>编程语言中添加的某些语法，这种语法对语言的功能没有影响，但能让程序员写代码时更方便、更简洁</dd>
+                            
+                            <dt>核心特点</dt>
+                            <dd>
+                                <ul>
+                                    <li>不增加新功能</li>
+                                    <li>可以被"脱糖" - 编译器会把这些语法自动翻译成更基础的语法结构</li>
+                                    <li>提升开发体验</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>Java中的例子</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>自动装箱/拆箱</mark></li>
+                                    <li><mark>for-each循环</mark></li>
+                                    <li><mark>Lambda表达式</mark></li>
+                                    <li>数字分隔符：145_345.23</li>
+                                    <li>二进制字面量：0b11001011</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>语法糖就是编译器的"宠爱"，允许我们用更优雅的方式写代码</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📦</div>
+                    <div class="card-title">包装类</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>作用</dt>
+                            <dd>为每一种原始类型提供一个对应的类，这个类的对象可以"包装"一个原始类型的值</dd>
+                            
+                            <dt>对应关系</dt>
+                            <dd>
+                                <ul>
+                                    <li>int → <mark>Integer</mark></li>
+                                    <li>char → <mark>Character</mark></li>
+                                    <li>其他都是首字母大写：byte → Byte, double → Double</li>
+                                </ul>
+                            </dd>
+                            
+                            <dt>核心思想</dt>
+                            <dd>包装类就像一个"盒子"，你可以把一个原始类型的值放进这个盒子里，然后这个盒子就可以在只接受对象的地方传递和使用</dd>
+                            
+                            <dt>创建方式（推荐）</dt>
+                            <dd>
+                                <ul>
+                                    <li><mark>Integer.valueOf(123)</mark> - 工厂方法</li>
+                                    <li><mark>Integer b = 123</mark> - 自动装箱</li>
+                                    <li><mark>Integer.valueOf("123")</mark> - 字符串解析</li>
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片6 -->
+        <div class="card" tabindex="0" role="button" aria-label="翻转卡片查看详情">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">自动装箱与拆箱</div>
+                    <p>点击卡片查看详情</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>自动装箱 (Auto-boxing)</dt>
+                            <dd>把原始类型赋值给包装类时，Java编译器自动转换</dd>
+                            <dd>示例：<mark>Integer a = 100;</mark> → 编译器实际做：<mark>Integer a = Integer.valueOf(100);</mark></dd>
+                            
+                            <dt>自动拆箱 (Auto-unboxing)</dt>
+                            <dd>当包装类对象被用在需要原始类型的上下文时，Java自动把它"拆箱"成原始类型的值</dd>
+                            <dd>示例：<mark>int b = a;</mark> → 编译器实际做：<mark>int b = a.intValue();</mark></dd>
+                            
+                            <dt>优势</dt>
+                            <dd>让我们可以方便地在原始类型和包装类之间无缝切换，让代码更简洁</dd>
+                        </dl>
+                        
+                        <div class="hint">
+                            <span class="hint-icon">⚠️</span>
+                            <span>记住自动装箱/拆箱背后是编译器帮我们做了转换工作</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">
+        <span>学习进度</span>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <span id="progress-text">0/6</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.getElementById('progress-text');
+            let flippedCards = 0;
+            const totalCards = cards.length;
+            
+            // 更新进度
+            function updateProgress() {
+                const percentage = (flippedCards / totalCards) * 100;
+                progressFill.style.width = `${percentage}%`;
+                progressText.textContent = `${flippedCards}/${totalCards}`;
+            }
+            
+            // 为每张卡片添加点击事件
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 如果卡片还没翻转，增加计数
+                    if (!this.classList.contains('flipped')) {
+                        flippedCards++;
+                        updateProgress();
+                    }
+                    
+                    this.classList.toggle('flipped');
+                });
+                
+                // 添加键盘支持
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // 初始化进度
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
