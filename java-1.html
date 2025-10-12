@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java闪卡学习卡片</title>
+    <style>
+        :root {
+            --primary-color: hsl(220, 80%, 50%);
+            --secondary-color: hsl(45, 90%, 60%);
+            --background-color: hsl(0, 0%, 98%);
+            --card-color: hsl(0, 0%, 100%);
+            --text-color: hsl(0, 0%, 15%);
+            --border-radius: 16px;
+            --shadow: 0 4px 12px hsla(0, 0%, 0%, 0.1);
+            --transition: all 0.4s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 45%);
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            width: 100%;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .card-front {
+            background-color: var(--card-color);
+            color: var(--primary-color);
+        }
+
+        .card-back {
+            background-color: var(--card-color);
+            color: var(--text-color);
+            transform: rotateY(180deg);
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .card-content {
+            width: 100%;
+        }
+
+        .card-content dl {
+            margin-bottom: 16px;
+        }
+
+        .card-content dt {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .card-content dd {
+            margin-bottom: 12px;
+            margin-left: 0;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-content li {
+            margin-bottom: 8px;
+        }
+
+        mark {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: hsl(0, 0%, 45%);
+        }
+
+        .hint-icon {
+            font-size: 1rem;
+        }
+
+        .progress {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: hsl(0, 0%, 45%);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                height: 280px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-front, .card-back {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Java闪卡学习卡片</h1>
+        <p class="subtitle">点击卡片查看详细内容</p>
+    </header>
+
+    <div class="cards-container">
+        <!-- 卡片1 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">💻</div>
+                    <div class="card-title">编程语言</div>
+                    <p>编译型 vs 解释型</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>编程语言</dt>
+                            <dd>是描述如何做事情的方式</dd>
+                            
+                            <dt>编译型语言</dt>
+                            <dd>以C为例：编译器一次性翻译成机器能直接运行的二进制文件</dd>
+                            <dd>优点：运行速度快</dd>
+                            <dd>缺点：需要重新编译，不能跨平台</dd>
+                            
+                            <dt>解释型语言</dt>
+                            <dd>以Python为例：解释器一边读取代码，一边翻译，一边执行</dd>
+                            <dd>优点：开发方便，天生跨平台</dd>
+                            <dd>缺点：运行速度通常比编译型慢</dd>
+                        </dl>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>Java是编译型和解释型的结合</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">☕</div>
+                    <div class="card-title">Java特性</div>
+                    <p>Java的核心特性</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>编译型语言</mark>：更准确的说法是编译型和解释型的结合</li>
+                            <li><mark>高效的OOP语言</mark>：面向对象编程是Java的核心思想</li>
+                            <li><mark>UNIX世界成员</mark>：设计哲学深受UNIX/Linux系统影响</li>
+                            <li><mark>广泛应用</mark>：广泛用于各种类型的应用程序</li>
+                        </ul>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>Java通过字节码和JVM实现跨平台</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片3 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">📜</div>
+                    <div class="card-title">Java简史</div>
+                    <p>Java的发展历程</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>Java之父</dt>
+                            <dd>James Gosling</dd>
+                            
+                            <dt>起源</dt>
+                            <dd>1991年为"机顶盒"项目开发，最初名为OAK</dd>
+                            
+                            <dt>重生</dt>
+                            <dd>1995年互联网浪潮兴起，OAK改造后命名为Java</dd>
+                            
+                            <dt>发布</dt>
+                            <dd>1995年5月23日正式发布</dd>
+                        </dl>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>"一次编写，到处运行"特性使Java适合网络应用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片4 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-title">Java如何运行</div>
+                    <p>一次编写，到处运行</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ol>
+                            <li>Java源代码(.java文件)</li>
+                            <li>编译 → 字节码文件(.class文件)</li>
+                            <li>JVM执行字节码</li>
+                            <li>JVM将字节码翻译成具体操作系统的指令</li>
+                        </ol>
+                        <p><mark>跨平台原理</mark>：开发者只需写一份.java代码并编译成.class文件，这份.class文件可以被拷贝到任何安装了JVM的机器上运行。</p>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>JVM是关键，它为不同操作系统提供不同的实现</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片5 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">跨平台/可移植性</div>
+                    <p>Java的核心优势</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>可移植性</dt>
+                            <dd>JVM + 统一数据类型</dd>
+                            
+                            <dt>性能低的原因</dt>
+                            <dd>解释执行、代码检查、栈机器</dd>
+                            
+                            <dt>性能高的手段</dt>
+                            <dd>JIT(即时编译器)、多线程、字节码简单设计</dd>
+                        </dl>
+                        <p><mark>JIT</mark>：JVM在运行时会监控代码，如果发现某段代码被频繁执行，JIT就会把它编译成本地机器码并缓存起来。</p>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>Java在统一数据类型方面比C语言更严格</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片6 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🛡️</div>
+                    <div class="card-title">稳定与KISS原则</div>
+                    <p>Keep It Simple, Stupid</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>没有指针</mark>：用"引用"替代指针，提高安全性</li>
+                            <li><mark>数组越界检查</mark>：运行时检查，直接抛出错误</li>
+                            <li><mark>自动内存管理</mark>：垃圾回收器(GC)自动检测和回收不再使用的内存</li>
+                            <li><mark>类C++语法</mark>：方便C++程序员迁移</li>
+                        </ul>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>KISS原则通过简化C++的复杂特性提升稳定性和开发效率</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片7 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-title">更纯粹的OOP</div>
+                    <p>Java = C++ -</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <p>Java相比于C++，在面向对象方面做得更"纯粹"或更"简单"：</p>
+                        <ul>
+                            <li><mark>没有多重继承</mark>：只允许单继承，通过接口实现灵活性</li>
+                            <li><mark>没有虚继承</mark>：不需要解决多重继承带来的问题</li>
+                            <li><mark>没有模板</mark>：用泛型实现类似功能，但更容易理解</li>
+                            <li><mark>没有运算符重载</mark>：禁止运算符重载（除了字符串的+号）</li>
+                        </ul>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>Java牺牲部分灵活性，换取更高的稳定性和简洁性</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片8 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">动态性</div>
+                    <p>Java的动态特性</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li>Java没有具体的程序概念</li>
+                            <li>Java认为所有类和对象都在一个空间里</li>
+                            <li>编译结果是这个空间的一部分</li>
+                            <li>"运行程序"是启动一个线程从一个类的方法开始</li>
+                        </ul>
+                        <p><mark>动态加载机制</mark>：允许程序在运行时才去加载需要的类，是大型框架和热部署技术的基础。</p>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>把JVM想象成一个持续运行的"世界"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片9 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🗂️</div>
+                    <div class="card-title">对象的存储</div>
+                    <p>对象在内存中的位置</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <dl>
+                            <dt>C/C++</dt>
+                            <dd>内存分配灵活，程序员可决定变量放在栈或堆上</dd>
+                            <dd>目的：追求极致性能</dd>
+                            
+                            <dt>Java</dt>
+                            <dd>所有对象都必须在堆上创建</dd>
+                            <dd>堆由垃圾回收器自动管理</dd>
+                            <dd>使用new关键字在堆中创建对象</dd>
+                        </dl>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>Java统一规定对象在堆上创建，简化了内存管理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片10 -->
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+                <div class="card-front">
+                    <div class="card-icon">🔄</div>
+                    <div class="card-title">创建和销毁对象</div>
+                    <p>对象的生命周期</p>
+                </div>
+                <div class="card-back">
+                    <div class="card-content">
+                        <ul>
+                            <li><mark>必须创建对象</mark>：使用new关键字创建对象（基本数据类型除外）</li>
+                            <li><mark>不能自己销毁对象</mark>：与C++的delete或C的free()不同</li>
+                            <li><mark>回收机制</mark>：垃圾回收器(GC)自动检测和回收不再使用的对象</li>
+                        </ul>
+                        <p>GC会巡视堆内存，当发现某个对象已经没有任何引用指向它时，会将其标记为"垃圾"并回收内存。</p>
+                        <div class="hint">
+                            <span class="hint-icon">💡</span>
+                            <span>GC像后台清洁工，自动管理内存</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress">已学习 10 个概念</div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        // 添加触摸事件支持
+        document.addEventListener('touchstart', function(e) {
+            // 防止双击缩放
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
